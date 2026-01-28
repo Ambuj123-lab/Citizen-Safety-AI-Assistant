@@ -12,7 +12,7 @@ import json
 import time
 
 from pybreaker import CircuitBreaker
-from langfuse.langchain import CallbackHandler as LangfuseHandler
+from langfuse.callback import CallbackHandler as LangfuseHandler
 
 from app.config import get_settings
 
