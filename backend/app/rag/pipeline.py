@@ -13,6 +13,7 @@ import time
 
 from pybreaker import CircuitBreaker
 from langfuse.callback import CallbackHandler as LangfuseHandler
+from langchain_chroma import Chroma
 
 from app.config import get_settings
 
