@@ -12,8 +12,9 @@
 
 # Data Privacy & Large Files
 # backend/data/ IS ALLOWED because these are public advisories (The bot's brain)
-# backend/chroma_db/ IS ALLOWED - Pre-built vector DB to avoid re-indexing on deploy
+# chroma_db is rebuilt on first request with batched embedding (rate-limit safe)
 backend/temp_uploads/
+**/chroma_db/
 **/node_modules/
 **/dist/
 **/.cache/

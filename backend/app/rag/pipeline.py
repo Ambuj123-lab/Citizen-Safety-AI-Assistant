@@ -188,11 +188,29 @@ def rebuild_vector_db(data_dir: str):
     )
     chunks = text_splitter.split_documents(documents)
     
-    _vector_db = Chroma.from_documents(
-        documents=chunks,
-        embedding=embeddings,
-        persist_directory=db_path
-    )
+    # Batched embedding to avoid quota limits (100 RPM on free tier)
+    # Process 20 chunks at a time with 3 second delays
+    BATCH_SIZE = 20
+    
+    _vector_db = None
+    for i in range(0, len(chunks), BATCH_SIZE):
+        batch = chunks[i:i + BATCH_SIZE]
+        logger.info(f"Indexing batch {i//BATCH_SIZE + 1}/{(len(chunks) + BATCH_SIZE - 1)//BATCH_SIZE} ({len(batch)} chunks)")
+        
+        if _vector_db is None:
+            # First batch - create new DB
+            _vector_db = Chroma.from_documents(
+                documents=batch,
+                embedding=embeddings,
+                persist_directory=db_path
+            )
+        else:
+            # Subsequent batches - add to existing
+            _vector_db.add_documents(batch)
+        
+        # Delay between batches to stay under rate limit
+        if i + BATCH_SIZE < len(chunks):
+            time.sleep(3)  # 3 second delay = ~20 requests per 3 sec = safe under 100 RPM
     
     logger.info(json.dumps({
         "event": "vector_db_rebuilt",
@@ -201,6 +219,7 @@ def rebuild_vector_db(data_dir: str):
     }))
     
     return _vector_db
+
 
 
 def add_documents_incremental(file_paths: List[str]):
