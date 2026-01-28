@@ -37,7 +37,7 @@ def get_embeddings():
         from langchain_google_genai import GoogleGenerativeAIEmbeddings
         logger.info("Initializing Google Generative AI Embeddings (API-based)...")
         _embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/embedding-001",
+            model="models/text-embedding-004",
             google_api_key=settings.GOOGLE_API_KEY
         )
     return _embeddings
