@@ -71,7 +71,7 @@ app.add_middleware(
         "http://localhost:5173",  # Vite dev server
         "http://localhost:3000",
         settings.FRONTEND_URL,   # Dynamic from .env
-        "https://your-frontend.vercel.app"  # Production
+        "https://citizen-safety-ai-assistant.vercel.app"  # Your specific Vercel URL
     ],
     allow_credentials=True,
     allow_methods=["*"],
