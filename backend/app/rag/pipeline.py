@@ -2,6 +2,7 @@
 RAG Pipeline - Document Processing, Embeddings, and LLM
 """
 
+# Standard imports
 import os
 import re
 from typing import List, Optional
@@ -10,15 +11,6 @@ import logging
 import json
 import time
 
-from langchain_community.document_loaders import PyMuPDFLoader, DirectoryLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_chroma import Chroma
-from langchain_openai import ChatOpenAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
-from presidio_analyzer import AnalyzerEngine
-from presidio_anonymizer import AnonymizerEngine
 from pybreaker import CircuitBreaker
 from langfuse.langchain import CallbackHandler as LangfuseHandler
 
@@ -38,9 +30,11 @@ _anonymizer = None
 
 
 def get_embeddings():
-    """Get or create embeddings model"""
+    """Get or create embeddings model (Lazy Load)"""
     global _embeddings
     if _embeddings is None:
+        from langchain_huggingface import HuggingFaceEmbeddings
+        logger.info("Loading HuggingFace Embeddings (all-MiniLM-L6-v2)...")
         _embeddings = HuggingFaceEmbeddings(
             model_name="sentence-transformers/all-MiniLM-L6-v2"
         )
@@ -52,12 +46,13 @@ def get_security_engines():
     global _analyzer, _anonymizer
     if _analyzer is None:
         from presidio_analyzer.nlp_engine import NlpEngineProvider
-        from presidio_analyzer import PatternRecognizer, Pattern
+        from presidio_analyzer import AnalyzerEngine, PatternRecognizer, Pattern
+        from presidio_anonymizer import AnonymizerEngine
         
-        # Configure spaCy engine explicitly
+        # Configure spaCy engine explicitly (Lightweight model)
         configuration = {
             "nlp_engine_name": "spacy",
-            "models": [{"lang_code": "en", "model_name": "en_core_web_lg"}],
+            "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}],
         }
         provider = NlpEngineProvider(nlp_configuration=configuration)
         nlp_engine = provider.create_engine()
@@ -65,7 +60,6 @@ def get_security_engines():
         _analyzer = AnalyzerEngine(nlp_engine=nlp_engine, default_score_threshold=0.4)
         
         # Add custom recognizer for simple 10-digit phone numbers (common in India)
-        # Regex for 10 digits that might have optional +91 or spaces
         phone_pattern = Pattern(
             name="phone_number_regex",
             regex=r"(\+91[\-\s]?)?[6-9]\d{9}",
@@ -128,6 +122,7 @@ def get_vector_db(data_path: str = None):
     db_path = os.path.join(backend_dir, "chroma_db")
     data_dir = data_path or os.path.join(backend_dir, "data")
     
+    from langchain_chroma import Chroma
     embeddings = get_embeddings()
     
     # Try to load existing DB
@@ -170,6 +165,9 @@ def rebuild_vector_db(data_dir: str):
             logger.error(f"Error clearing DB: {e}")
 
     embeddings = get_embeddings()
+    
+    from langchain_community.document_loaders import PyMuPDFLoader, DirectoryLoader
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
     
     loader = DirectoryLoader(
         data_dir,
@@ -278,6 +276,11 @@ def generate_response(
     user_name: str = "User"
 ) -> tuple[str, float]:
     """Generate response using LLM with circuit breaker"""
+    from langchain_openai import ChatOpenAI
+    from langchain_core.prompts import ChatPromptTemplate
+    from langchain_core.output_parsers import StrOutputParser
+
+    start_time = time.time()
     
     system_prompt = """You are **Citizen Safety AI Assistant** created by Ambuj Kumar Tripathi.
 You are currently helping **{user_name}**.
@@ -302,8 +305,8 @@ You are currently helping **{user_name}**.
 
 ### LANGUAGE:
 - Default: **English**
-- If user writes Hindi (Devanagari) → Reply in Hindi
-- If user writes Hinglish → Reply in Hinglish
+- If user writes Hindi (Devanagari) -> Reply in Hindi
+- If user writes Hinglish -> Reply in Hinglish
 
 ### SAFETY & LEGAL DISCLAIMER:
 - At the end of every response related to law, safety, or citizen rights, you MUST append this mandatory footer:
