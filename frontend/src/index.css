@@ -1,0 +1,184 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+/* Premium Gold Theme - Ambuj Kumar Tripathi Branding */
+
+:root {
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+  --dark-900: #0f172a;
+  --dark-800: #1e293b;
+  --dark-700: #334155;
+  --slate-400: #94a3b8;
+  --slate-300: #cbd5e1;
+}
+
+/* --- Premium Design System --- */
+:root {
+  --accent-color: #f59e0b;
+  /* Amber 500 */
+  --bg-dark: #0f172a;
+}
+
+/* Slim Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(245, 158, 11, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.4);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--dark-900);
+  color: var(--slate-300);
+  min-height: 100vh;
+}
+
+/* Scrollbar Styling */
+/* The new scrollbar styles above replace the old ones */
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold-500);
+  border-radius: 4px;
+}
+
+/* Gold Gradient Text */
+.text-gold-gradient {
+  background: linear-gradient(90deg, var(--gold-400), var(--gold-500));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Premium Button */
+.btn-gold {
+  background: linear-gradient(135deg, var(--gold-500), var(--gold-600));
+  color: var(--dark-900);
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, var(--gold-400), var(--gold-500));
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+}
+
+/* Card Styling */
+.card {
+  background: var(--dark-800);
+  border: 1px solid var(--dark-700);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.card:hover {
+  border-color: rgba(251, 191, 36, 0.3);
+}
+
+/* Chat Bubble */
+.chat-bubble {
+  max-width: 80%;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+}
+
+.chat-bubble.user {
+  background: var(--gold-500);
+  color: var(--dark-900);
+  margin-left: auto;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.chat-bubble.assistant {
+  background: var(--dark-700);
+  color: var(--slate-300);
+  border-bottom-left-radius: 0.25rem;
+}
+
+/* Input Styling */
+.input-dark {
+  background: var(--dark-700);
+  border: 1px solid var(--dark-700);
+  color: var(--slate-300);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-dark:focus {
+  border-color: var(--gold-500);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes pulse-gold {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 10px rgba(251, 191, 36, 0);
+  }
+}
+
+.animate-pulse-gold {
+  animation: pulse-gold 2s infinite;
+}
