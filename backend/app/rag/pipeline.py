@@ -210,6 +210,9 @@ def add_documents_incremental(file_paths: List[str]):
     """
     global _vector_db
     
+    from langchain_community.document_loaders import PyMuPDFLoader
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+    
     if _vector_db is None:
         _vector_db = get_vector_db() or rebuild_vector_db(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data"))
     
