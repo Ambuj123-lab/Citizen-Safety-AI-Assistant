@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     # OpenRouter (LLM)
     OPENROUTER_API_KEY: str = ""
     
+    # Google AI (Embeddings)
+    GOOGLE_API_KEY: str = ""
+    
     # MongoDB
     MONGO_URI: str = ""
     MONGO_DB_NAME: str = "citizen_safety_ai"
