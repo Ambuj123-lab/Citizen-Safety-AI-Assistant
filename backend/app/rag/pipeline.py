@@ -189,8 +189,9 @@ def rebuild_vector_db(data_dir: str):
     chunks = text_splitter.split_documents(documents)
     
     # Batched embedding to avoid quota limits (100 RPM on free tier)
-    # Process 20 chunks at a time with 3 second delays
-    BATCH_SIZE = 20
+    # 15 chunks per 10 seconds = 90 RPM (safe buffer under 100 limit)
+    BATCH_SIZE = 15
+    DELAY_SECONDS = 10
     
     _vector_db = None
     for i in range(0, len(chunks), BATCH_SIZE):
@@ -210,7 +211,8 @@ def rebuild_vector_db(data_dir: str):
         
         # Delay between batches to stay under rate limit
         if i + BATCH_SIZE < len(chunks):
-            time.sleep(3)  # 3 second delay = ~20 requests per 3 sec = safe under 100 RPM
+            time.sleep(DELAY_SECONDS)
+
     
     logger.info(json.dumps({
         "event": "vector_db_rebuilt",
