@@ -9,7 +9,7 @@ const Login = () => {
     };
 
     const handleGitHubLogin = () => {
-        window.location.href = 'http://localhost:8000/auth/github/login';
+        window.location.href = `${authAPI.getLoginUrl().replace('google', 'github')}`;
     };
 
     return (
