@@ -378,11 +378,20 @@ Question: {question}"""
     
     try:
         # CIRCUIT BREAKER: Prevent cascading failures if LLM is down
-        response = llm_breaker.call(
-            chain.invoke,
-            {"context": context, "question": question, "history": history, "user_name": user_name},
-            config=invoke_config
-        )
+        # Wrap in lambda to correctly pass config kwarg through pybreaker
+        def invoke_llm():
+            return chain.invoke(
+                {"context": context, "question": question, "history": history, "user_name": user_name},
+                config=invoke_config
+            )
+        
+        response = llm_breaker.call(invoke_llm)
+        
+        # Handle None response from LLM
+        if response is None:
+            logger.warning("LLM returned None response, using fallback")
+            response = "I apologize, but I'm temporarily unable to process your request. Please try again in a moment."
+            
     except Exception as e:
         logger.error(f"Circuit Breaker/LLM Error: {e}")
         raise e

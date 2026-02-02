@@ -79,7 +79,14 @@ app.add_middleware(
 )
 
 # --- Session Middleware (Required for OAuth) ---
-app.add_middleware(SessionMiddleware, secret_key=settings.SECRET_KEY)
+# For production HTTPS, we need to set cookie security properly
+is_production = not settings.DEBUG and "localhost" not in settings.FRONTEND_URL
+app.add_middleware(
+    SessionMiddleware, 
+    secret_key=settings.SECRET_KEY,
+    same_site="none" if is_production else "lax",  # Required for cross-site OAuth
+    https_only=is_production  # Only HTTPS in production
+)
 
 
 # --- Health Endpoint ---
