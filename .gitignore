@@ -28,7 +28,10 @@ backend/temp_uploads/
 **/*.log
 logs/
 
-# OS Files
+# System Files
 .DS_Store
 Thumbs.db
+
+# Vector DB (Generated on fly now)
+**/chroma_db/
 desktop.ini
