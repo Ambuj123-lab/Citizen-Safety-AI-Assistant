@@ -11,6 +11,11 @@ import logging
 import json
 import time
 
+# --- CRITICAL FIX: Disable ChromaDB Telemetry Forcefully ---
+# Must be set BEFORE importing Chroma/LangChain
+os.environ["ANONYMIZED_TELEMETRY"] = "False"
+os.environ["CHROMA_TELEMETRY_IMPL"] = "False"
+
 from pybreaker import CircuitBreaker
 from langchain_chroma import Chroma
 from app.config import get_settings
