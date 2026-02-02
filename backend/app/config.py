@@ -22,8 +22,11 @@ class Settings(BaseSettings):
     # OpenRouter (LLM)
     OPENROUTER_API_KEY: str = ""
     
-    # Google AI (Embeddings)
+    # Google AI (Embeddings) - Optional now
     GOOGLE_API_KEY: str = ""
+    
+    # Jina AI (Embeddings)
+    JINA_API_KEY: str = ""
     
     # MongoDB
     MONGO_URI: str = ""

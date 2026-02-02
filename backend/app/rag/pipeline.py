@@ -12,13 +12,18 @@ import json
 import time
 
 from pybreaker import CircuitBreaker
-from langfuse.callback import CallbackHandler as LangfuseHandler
 from langchain_chroma import Chroma
-
 from app.config import get_settings
 
 settings = get_settings()
 logger = logging.getLogger(__name__)
+
+try:
+    from langfuse.callback import CallbackHandler as LangfuseHandler
+except (ImportError, ModuleNotFoundError) as e:
+    # Use print for now if logger isn't ready, or just pass
+    print(f"⚠️ Langfuse callback handler not available: {e}")
+    LangfuseHandler = None
 
 # --- Circuit Breaker for LLM calls ---
 llm_breaker = CircuitBreaker(fail_max=5, reset_timeout=30)
@@ -34,13 +39,18 @@ def get_embeddings():
     """Get or create embeddings model (Lazy Load - Uses API to save server RAM)"""
     global _embeddings
     if _embeddings is None:
-        from langchain_google_genai import GoogleGenerativeAIEmbeddings
-        logger.info("Initializing Google Generative AI Embeddings (API-based)...")
-        _embeddings = GoogleGenerativeAIEmbeddings(
-            model="models/gemini-embedding-001",
-            google_api_key=settings.GOOGLE_API_KEY
-        )
+        try:
+            from langchain_community.embeddings import JinaEmbeddings
+            logger.info("Initializing Jina AI Embeddings (High Performance + 1M Free Tokens)...")
+            _embeddings = JinaEmbeddings(
+                jina_api_key=settings.JINA_API_KEY,
+                model_name="jina-embeddings-v2-base-en"
+            )
+        except Exception as e:
+            logger.error(f"Failed to init Jina Embeddings: {e}")
+            raise e
     return _embeddings
+
 
 
 def get_security_engines():
@@ -188,10 +198,10 @@ def rebuild_vector_db(data_dir: str):
     )
     chunks = text_splitter.split_documents(documents)
     
-    # Batched embedding to avoid quota limits (100 RPM on free tier)
-    # 15 chunks per 10 seconds = 90 RPM (safe buffer under 100 limit)
-    BATCH_SIZE = 15
-    DELAY_SECONDS = 10
+    # Batched embedding for Jina (High Limit: 1M tokens)
+    # 50 chunks per batch is safe and fast
+    BATCH_SIZE = 50
+    DELAY_SECONDS = 0.5
     
     _vector_db = None
     for i in range(0, len(chunks), BATCH_SIZE):
@@ -365,7 +375,11 @@ Question: {question}"""
         os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
         os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
-        langfuse_handler = LangfuseHandler()
+        if LangfuseHandler:
+            langfuse_handler = LangfuseHandler()
+        else:
+            logger.warning("LangfuseHandler class is None, skipping initialization")
+
     except Exception as e:
         logger.warning(f"Langfuse init skipped: {e}")
     

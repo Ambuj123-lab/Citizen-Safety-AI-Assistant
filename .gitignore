@@ -14,7 +14,8 @@
 # backend/data/ IS ALLOWED because these are public advisories (The bot's brain)
 # chroma_db is rebuilt on first request with batched embedding (rate-limit safe)
 backend/temp_uploads/
-**/chroma_db/
+# chroma_db is NOW ALLOWED - pre-built and pushed to avoid re-indexing on restart
+# backend/chroma_db/ ← REMOVED from ignore
 **/node_modules/
 **/dist/
 **/.cache/
