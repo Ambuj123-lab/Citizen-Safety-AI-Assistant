@@ -106,7 +106,7 @@ app.include_router(rag_router, prefix="/api", tags=["RAG Chat"])
 
 
 # --- Root Endpoint ---
-@app.get("/")
+@app.api_route("/", methods=["GET", "HEAD"])
 async def root():
     return {
         "message": "🛡️ Citizen Safety & Awareness AI",
