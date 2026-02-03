@@ -47,7 +47,24 @@ def get_embeddings():
         try:
             from langchain_community.embeddings import JinaEmbeddings
             logger.info("Initializing Jina AI Embeddings (High Performance + 1M Free Tokens)...")
-            _embeddings = JinaEmbeddings(
+            
+            # Wrapper class to add retry logic for Jina API calls
+            class ResilientJinaEmbeddings(JinaEmbeddings):
+                def _embed(self, texts):
+                    """Override _embed with retry logic for network resilience"""
+                    max_retries = 3
+                    for attempt in range(max_retries):
+                        try:
+                            return super()._embed(texts)
+                        except Exception as e:
+                            if attempt == max_retries - 1:
+                                logger.error(f"Jina API failed after {max_retries} attempts: {e}")
+                                raise
+                            wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                            logger.warning(f"Jina API attempt {attempt + 1} failed, retrying in {wait_time}s...")
+                            time.sleep(wait_time)
+            
+            _embeddings = ResilientJinaEmbeddings(
                 jina_api_key=settings.JINA_API_KEY,
                 model_name="jina-embeddings-v2-base-en"
             )
@@ -362,7 +379,7 @@ Question: {question}"""
     llm = ChatOpenAI(
         base_url="https://openrouter.ai/api/v1",
         api_key=settings.OPENROUTER_API_KEY,
-        model="google/gemini-2.0-flash-exp:free",
+        model="meta-llama/llama-3.3-70b-instruct:free",
         temperature=0.3,
         streaming=False,
         max_tokens=3000,
