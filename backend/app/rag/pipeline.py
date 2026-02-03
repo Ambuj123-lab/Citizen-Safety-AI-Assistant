@@ -139,7 +139,7 @@ def get_vector_db(data_path: str = None):
     db_path = os.path.join(backend_dir, "chroma_db")
     data_dir = data_path or os.path.join(backend_dir, "data")
     
-    from langchain_chroma import Chroma
+    from langchain_community.vectorstores import Chroma
     embeddings = get_embeddings()
     
     # Try to load existing DB
