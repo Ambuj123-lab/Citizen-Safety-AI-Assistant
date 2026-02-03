@@ -17,7 +17,7 @@ os.environ["ANONYMIZED_TELEMETRY"] = "False"
 os.environ["CHROMA_TELEMETRY_IMPL"] = "False"
 
 from pybreaker import CircuitBreaker
-from langchain_chroma import Chroma
+from langchain_community.vectorstores import Chroma
 from app.config import get_settings
 
 settings = get_settings()
