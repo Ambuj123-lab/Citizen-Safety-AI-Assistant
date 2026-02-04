@@ -337,6 +337,7 @@ def generate_response(
 ) -> tuple[str, float]:
     """Generate response using LLM with circuit breaker"""
     from langchain_openai import ChatOpenAI
+    from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.output_parsers import StrOutputParser
 
@@ -378,17 +379,12 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    llm = ChatOpenAI(
-        base_url="https://openrouter.ai/api/v1",
-        api_key=settings.OPENROUTER_API_KEY,
-        model="qwen/qwen3-next-80b-a3b-instruct:free",
+    # Gemini LLM (Direct API - Free tier: 15 RPM, 1500 RPD)
+    llm = ChatGoogleGenerativeAI(
+        model="gemini-1.5-flash",
+        google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
-        streaming=False,
-        max_tokens=3000,
-        default_headers={
-            "HTTP-Referer": "https://github.com/Ambuj123-lab",
-            "X-Title": "Citizen Safety AI"
-        }
+        max_output_tokens=3000
     )
     
     # Langfuse monitoring for LLM observability
