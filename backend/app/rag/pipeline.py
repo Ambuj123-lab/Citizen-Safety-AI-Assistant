@@ -170,27 +170,23 @@ def get_vector_db(data_path: str = None):
             with open(pickle_path, 'rb') as f:
                 data = pickle.load(f)
             
-            # Create fresh Chroma instance (empty)
-            import shutil
-            if os.path.exists(db_path):
-                shutil.rmtree(db_path) # Clear old DB to avoid conflicts
-                
+            # Create IN-MEMORY Chroma instance (NO disk writes - works on Render Free Tier!)
+            # NOTE: No persist_directory = fully in-memory = no read-only disk errors
             _vector_db = Chroma(
                 embedding_function=embeddings,
-                persist_directory=db_path,
                 collection_name="citizen_safety_docs"
+                # NO persist_directory - runs 100% in RAM
             )
             
             # Add pre-computed embeddings (ZERO Jina calls!)
-            # We must pass embeddings to avoid Jina API trigger
             _vector_db.add_texts(
                 texts=data['documents'],
                 metadatas=data['metadatas'],
                 ids=data['ids'],
-                embeddings=data['embeddings'] # Critical: Add embeddings to skip computation
+                embeddings=data['embeddings']
             )
             
-            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle")
+            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle (In-Memory Mode)")
             return _vector_db
             
         except Exception as e:
