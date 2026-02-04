@@ -409,10 +409,10 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    # OpenRouter LLM (Free Tier - Llama 3.2 3B)
-    # Model: meta-llama/llama-3.2-3b-instruct:free (Reliable, Low Cost)
+    # OpenRouter LLM (Free Tier - DeepSeek R1T2 671B)
+    # Model: tngtech/deepseek-r1t2-chimera:free (High Intelligence, Free)
     llm = ChatOpenAI(
-        model="meta-llama/llama-3.2-3b-instruct:free",
+        model="tngtech/deepseek-r1t2-chimera:free",
         openai_api_key=settings.OPENROUTER_API_KEY,
         openai_api_base="https://openrouter.ai/api/v1",
         temperature=0.3,
