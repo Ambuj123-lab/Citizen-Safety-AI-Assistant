@@ -34,4 +34,5 @@ Thumbs.db
 
 # Vector DB (Generated on fly now)
 **/chroma_db/
+!backend/chroma_db.pkl
 desktop.ini
