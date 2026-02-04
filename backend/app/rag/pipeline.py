@@ -208,10 +208,12 @@ def get_vector_db(data_path: str = None):
             logger.warning(f"Could not load DB, rebuilding: {e}")
     
     # Build new DB if data exists (this should be the 8 core PDFs)
-    if os.path.exists(data_dir) and os.listdir(data_dir):
-        logger.info(f"Indexing core documents from {data_dir}")
-        return rebuild_vector_db(data_dir)
+    # --- SAFETY CHANGE: DISABLE REBUILDING to prevent Jina Quota Drain ---
+    # if os.path.exists(data_dir) and os.listdir(data_dir):
+    #     logger.info(f"Indexing core documents from {data_dir}")
+    #     return rebuild_vector_db(data_dir)
     
+    logger.error("🛑 SAFE MODE: No Vector DB loaded. Auto-rebuild disabled to save quota.")
     return None
 
 

@@ -33,11 +33,7 @@ if __name__ == "__main__":
         print("🚀 Render will load from Pickle at runtime.")
         sys.exit(0)
     
-    print("\n🔄 Starting indexing...")
-    db = rebuild_vector_db(data_dir)
-    
-    if db:
-        print("✅ Knowledge base created successfully!")
-        print(f"📍 ChromaDB saved to: {os.path.join(backend_dir, 'chroma_db')}")
-    else:
-        print("❌ Failed to create knowledge base")
+    print("\n❌ CRITICAL ERROR: Pickle file 'chroma_db.pkl' NOT FOUND!")
+    print("🛑 Creating a new DB implies Jina API Cost. Im blocking this for safety.")
+    print("👉 Please run 'python scripts/build_chroma_pickle.py' LOCALLY and push the .pkl file.")
+    sys.exit(1) # Fail the build, don't spend money.
