@@ -5,6 +5,7 @@ RAG Pipeline - Document Processing, Embeddings, and LLM
 # Standard imports
 import os
 import re
+import pickle
 from typing import List, Optional
 from datetime import datetime
 import logging
@@ -157,11 +158,45 @@ def get_vector_db(data_path: str = None):
     backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     db_path = os.path.join(backend_dir, "chroma_db")
     data_dir = data_path or os.path.join(backend_dir, "data")
+    pickle_path = os.path.join(backend_dir, "chroma_db.pkl")
     
     from langchain_community.vectorstores import Chroma
     embeddings = get_embeddings()
     
-    # Try to load existing DB
+    # 1. Try to load from PICKLE (Zero-quota fast load)
+    if os.path.exists(pickle_path):
+        try:
+            logger.info(f"Using Pickle Strategy: Loading vector DB from {pickle_path}")
+            with open(pickle_path, 'rb') as f:
+                data = pickle.load(f)
+            
+            # Create fresh Chroma instance (empty)
+            import shutil
+            if os.path.exists(db_path):
+                shutil.rmtree(db_path) # Clear old DB to avoid conflicts
+                
+            _vector_db = Chroma(
+                embedding_function=embeddings,
+                persist_directory=db_path,
+                collection_name="citizen_safety_docs"
+            )
+            
+            # Add pre-computed embeddings (ZERO Jina calls!)
+            # We must pass embeddings to avoid Jina API trigger
+            _vector_db.add_texts(
+                texts=data['documents'],
+                metadatas=data['metadatas'],
+                ids=data['ids'],
+                embeddings=data['embeddings'] # Critical: Add embeddings to skip computation
+            )
+            
+            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle")
+            return _vector_db
+            
+        except Exception as e:
+            logger.error(f"❌ Pickle load failed: {e}. Falling back to standard load/build.")
+    
+    # 2. Try to load existing persisted DB (if persistence works)
     if os.path.exists(db_path):
         try:
             _vector_db = Chroma(
