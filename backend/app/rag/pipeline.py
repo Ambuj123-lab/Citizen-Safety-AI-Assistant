@@ -409,10 +409,10 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    # OpenRouter LLM (Free Tier - Qwen 80B)
-    # Model: qwen/qwen3-next-80b-a3b-instruct:free
+    # OpenRouter LLM (Free Tier - Llama 3.2 3B)
+    # Model: meta-llama/llama-3.2-3b-instruct:free (Reliable, Low Cost)
     llm = ChatOpenAI(
-        model="qwen/qwen3-next-80b-a3b-instruct:free",
+        model="meta-llama/llama-3.2-3b-instruct:free",
         openai_api_key=settings.OPENROUTER_API_KEY,
         openai_api_base="https://openrouter.ai/api/v1",
         temperature=0.3,
