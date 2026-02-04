@@ -415,8 +415,9 @@ User Name: {user_name}
 Question: {question}"""
 
     # Gemini LLM (Direct API - Free tier: 15 RPM, 1500 RPD)
+    # Using 'gemini-pro' (stable alias) to avoid 404 version errors
     llm = ChatGoogleGenerativeAI(
-        model="gemini-1.5-flash",
+        model="gemini-pro",
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000
