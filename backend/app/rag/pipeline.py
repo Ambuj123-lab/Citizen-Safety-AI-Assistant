@@ -164,29 +164,41 @@ def get_vector_db(data_path: str = None):
     embeddings = get_embeddings()
     
     # 1. Try to load from PICKLE (Zero-quota fast load)
+    # TECHNIQUE: "Deferred Embedding Loading" - Load pre-computed vectors, embed queries only
     if os.path.exists(pickle_path):
         try:
             logger.info(f"Using Pickle Strategy: Loading vector DB from {pickle_path}")
             with open(pickle_path, 'rb') as f:
                 data = pickle.load(f)
             
-            # Create IN-MEMORY Chroma instance (NO disk writes - works on Render Free Tier!)
-            # NOTE: No persist_directory = fully in-memory = no read-only disk errors
-            _vector_db = Chroma(
-                embedding_function=embeddings,
-                collection_name="citizen_safety_docs"
-                # NO persist_directory - runs 100% in RAM
+            # --- DEFERRED EMBEDDING LOADING ---
+            # Step 1: Use RAW ChromaDB client with NO embedding function (ZERO API calls!)
+            import chromadb
+            raw_client = chromadb.Client()
+            
+            # Create collection with embedding_function=None (CRASH if embeddings missing = SAFE!)
+            raw_collection = raw_client.get_or_create_collection(
+                name="citizen_safety_docs",
+                embedding_function=None  # <-- KEY: No auto-embedding, guarantees no API calls
             )
             
-            # Add pre-computed embeddings (ZERO Jina calls!)
-            _vector_db.add_texts(
-                texts=data['documents'],
+            # Add pre-computed embeddings directly (Official API, no private members)
+            raw_collection.add(
+                documents=data['documents'],
                 metadatas=data['metadatas'],
                 ids=data['ids'],
                 embeddings=data['embeddings']
             )
             
-            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle (In-Memory Mode)")
+            # Step 2: Wrap with LangChain for QUERY embedding only
+            # embedding_function here is ONLY used when user asks a question (cheap: ~10 tokens)
+            _vector_db = Chroma(
+                client=raw_client,
+                collection_name="citizen_safety_docs",
+                embedding_function=embeddings  # Only for query-time embedding
+            )
+            
+            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle (Deferred Embedding Mode)")
             return _vector_db
             
         except Exception as e:
