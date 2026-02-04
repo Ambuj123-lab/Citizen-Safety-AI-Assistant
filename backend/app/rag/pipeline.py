@@ -31,7 +31,8 @@ except (ImportError, ModuleNotFoundError) as e:
     LangfuseHandler = None
 
 # --- Circuit Breaker for LLM calls ---
-llm_breaker = CircuitBreaker(fail_max=5, reset_timeout=30)
+# Increased tolerance for transient network issues (Render free tier)
+llm_breaker = CircuitBreaker(fail_max=10, reset_timeout=120)
 
 # --- Global instances ---
 _embeddings = None
@@ -51,8 +52,8 @@ def get_embeddings():
             # Wrapper class to add retry logic for Jina API calls
             class ResilientJinaEmbeddings(JinaEmbeddings):
                 def _embed(self, texts):
-                    """Override _embed with retry logic for network resilience"""
-                    max_retries = 3
+                    """Override _embed with enhanced retry logic for network resilience"""
+                    max_retries = 5  # Increased from 3 for better reliability on Render free tier
                     for attempt in range(max_retries):
                         try:
                             return super()._embed(texts)
@@ -60,8 +61,9 @@ def get_embeddings():
                             if attempt == max_retries - 1:
                                 logger.error(f"Jina API failed after {max_retries} attempts: {e}")
                                 raise
-                            wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
-                            logger.warning(f"Jina API attempt {attempt + 1} failed, retrying in {wait_time}s...")
+                            # Longer exponential backoff: 3s, 6s, 12s, 24s, 48s (total ~93s)
+                            wait_time = 3 * (2 ** attempt)
+                            logger.warning(f"Jina API attempt {attempt + 1}/{max_retries} failed, retrying in {wait_time}s... Error: {str(e)[:100]}")
                             time.sleep(wait_time)
             
             _embeddings = ResilientJinaEmbeddings(
@@ -467,8 +469,18 @@ def search_and_respond(
             "latency": 0
         }
     
-    # 3. Similarity search with score
-    results = vector_db.similarity_search_with_score(safe_question, k=3)
+    # 3. Similarity search with score (handles Jina API failures)
+    try:
+        results = vector_db.similarity_search_with_score(safe_question, k=3)
+    except Exception as e:
+        logger.error(f"Embedding/Search Error (Jina API): {e}")
+        return {
+            "error": "⚠️ Network traffic is high on the Embedding Service (Jina). Please retry in 5 seconds.",
+            "response": None,
+            "sources": [],
+            "confidence": 0,
+            "latency": 0
+        }
     
     if not results:
         return {
