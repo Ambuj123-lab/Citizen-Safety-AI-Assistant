@@ -409,10 +409,10 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    # OpenRouter LLM (Free Tier - LiquidAI LFM 1.2B)
-    # Model: liquid/lfm-2.5-1.2b-instruct:free (32k context, $0 cost)
+    # OpenRouter LLM (Free Tier - Qwen 80B)
+    # Model: qwen/qwen3-next-80b-a3b-instruct:free
     llm = ChatOpenAI(
-        model="liquid/lfm-2.5-1.2b-instruct:free",
+        model="qwen/qwen3-next-80b-a3b-instruct:free",
         openai_api_key=settings.OPENROUTER_API_KEY,
         openai_api_base="https://openrouter.ai/api/v1",
         temperature=0.3,
