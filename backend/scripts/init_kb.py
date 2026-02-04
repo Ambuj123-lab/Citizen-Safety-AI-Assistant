@@ -24,6 +24,14 @@ if __name__ == "__main__":
     print(f"📄 Found {len(pdf_files)} PDF files:")
     for f in pdf_files:
         print(f"   - {f}")
+        
+    # --- SMART CHECK: If pickle exists, skip rebuild to SAVE QUOTA ---
+    pickle_path = os.path.join(backend_dir, "chroma_db.pkl")
+    if os.path.exists(pickle_path):
+        print(f"\n🥒 Found Pickle File: {pickle_path}")
+        print("✅ Skipping Jina API Indexing (Zero Quota Mode)")
+        print("🚀 Render will load from Pickle at runtime.")
+        sys.exit(0)
     
     print("\n🔄 Starting indexing...")
     db = rebuild_vector_db(data_dir)
