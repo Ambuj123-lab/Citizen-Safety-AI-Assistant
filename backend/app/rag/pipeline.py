@@ -5,22 +5,18 @@ RAG Pipeline - Document Processing, Embeddings, and LLM
 # Standard imports
 import os
 import re
-import pickle
-from typing import List, Optional
-from datetime import datetime
-import logging
 import json
 import time
-
-# --- CRITICAL FIX: Disable ChromaDB Telemetry Forcefully ---
-# Must be set BEFORE importing Chroma/LangChain
-os.environ["ANONYMIZED_TELEMETRY"] = "False"
-os.environ["CHROMA_TELEMETRY_IMPL"] = "False"
+import logging
+from typing import List, Optional
+from datetime import datetime
+from dotenv import load_dotenv
 
 from pybreaker import CircuitBreaker
-from langchain_community.vectorstores import Chroma
+from langchain_pinecone import PineconeVectorStore
 from app.config import get_settings
 
+load_dotenv()
 settings = get_settings()
 logger = logging.getLogger(__name__)
 
@@ -32,7 +28,7 @@ except (ImportError, ModuleNotFoundError) as e:
     LangfuseHandler = None
 
 # --- Circuit Breaker for LLM calls ---
-# Increased tolerance for transient network issues (Render free tier)
+# Increased tolerance for transient network issues
 llm_breaker = CircuitBreaker(fail_max=10, reset_timeout=120)
 
 # --- Global instances ---
@@ -54,7 +50,7 @@ def get_embeddings():
             class ResilientJinaEmbeddings(JinaEmbeddings):
                 def _embed(self, texts):
                     """Override _embed with enhanced retry logic for network resilience"""
-                    max_retries = 5  # Increased from 3 for better reliability on Render free tier
+                    max_retries = 5
                     for attempt in range(max_retries):
                         try:
                             return super()._embed(texts)
@@ -62,7 +58,6 @@ def get_embeddings():
                             if attempt == max_retries - 1:
                                 logger.error(f"Jina API failed after {max_retries} attempts: {e}")
                                 raise
-                            # Longer exponential backoff: 3s, 6s, 12s, 24s, 48s (total ~93s)
                             wait_time = 3 * (2 ** attempt)
                             logger.warning(f"Jina API attempt {attempt + 1}/{max_retries} failed, retrying in {wait_time}s... Error: {str(e)[:100]}")
                             time.sleep(wait_time)
@@ -75,7 +70,6 @@ def get_embeddings():
             logger.error(f"Failed to init Jina Embeddings: {e}")
             raise e
     return _embeddings
-
 
 
 def get_security_engines():
@@ -151,162 +145,40 @@ def is_abusive(text: str) -> bool:
     return False
 
 
-def get_vector_db(data_path: str = None):
-    """Get or create vector database"""
+def get_vector_db():
+    """Get Pinecone vector database connection"""
     global _vector_db
     
-    backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    db_path = os.path.join(backend_dir, "chroma_db")
-    data_dir = data_path or os.path.join(backend_dir, "data")
-    pickle_path = os.path.join(backend_dir, "chroma_db.pkl")
-    
-    from langchain_community.vectorstores import Chroma
-    embeddings = get_embeddings()
-    
-    # 1. Try to load from PICKLE (Zero-quota fast load)
-    # TECHNIQUE: "Deferred Embedding Loading" - Load pre-computed vectors, embed queries only
-    if os.path.exists(pickle_path):
-        try:
-            logger.info(f"Using Pickle Strategy: Loading vector DB from {pickle_path}")
-            with open(pickle_path, 'rb') as f:
-                data = pickle.load(f)
-            
-            # --- DEFERRED EMBEDDING LOADING ---
-            # Step 1: Use RAW ChromaDB client with NO embedding function (ZERO API calls!)
-            import chromadb
-            raw_client = chromadb.Client()
-            
-            # Create collection with embedding_function=None (CRASH if embeddings missing = SAFE!)
-            raw_collection = raw_client.get_or_create_collection(
-                name="citizen_safety_docs",
-                embedding_function=None  # <-- KEY: No auto-embedding, guarantees no API calls
-            )
-            
-            # Add pre-computed embeddings directly (Official API, no private members)
-            raw_collection.add(
-                documents=data['documents'],
-                metadatas=data['metadatas'],
-                ids=data['ids'],
-                embeddings=data['embeddings']
-            )
-            
-            # Step 2: Wrap with LangChain for QUERY embedding only
-            # embedding_function here is ONLY used when user asks a question (cheap: ~10 tokens)
-            _vector_db = Chroma(
-                client=raw_client,
-                collection_name="citizen_safety_docs",
-                embedding_function=embeddings  # Only for query-time embedding
-            )
-            
-            logger.info(f"✅ Fast-Loaded {len(data['ids'])} documents from Pickle (Deferred Embedding Mode)")
-            return _vector_db
-            
-        except Exception as e:
-            logger.error(f"❌ Pickle load failed: {e}. Falling back to standard load/build.")
-    
-    # 2. Try to load existing persisted DB (if persistence works)
-    if os.path.exists(db_path):
-        try:
-            _vector_db = Chroma(
-                persist_directory=db_path,
-                embedding_function=embeddings
-            )
-            # Check if it has any data
-            count = len(_vector_db.get()['ids'])
-            if count > 0:
-                logger.info(f"Loaded existing ChromaDB with {count} documents")
-                return _vector_db
-        except Exception as e:
-            logger.warning(f"Could not load DB, rebuilding: {e}")
-    
-    # Build new DB if data exists (this should be the 8 core PDFs)
-    # --- SAFETY CHANGE: DISABLE REBUILDING to prevent Jina Quota Drain ---
-    # if os.path.exists(data_dir) and os.listdir(data_dir):
-    #     logger.info(f"Indexing core documents from {data_dir}")
-    #     return rebuild_vector_db(data_dir)
-    
-    logger.error("🛑 SAFE MODE: No Vector DB loaded. Auto-rebuild disabled to save quota.")
-    return None
+    if _vector_db is not None:
+        return _vector_db
 
-
-def rebuild_vector_db(data_dir: str):
-    """Rebuild vector database from scratch (Clears old index)"""
-    global _vector_db
-    
-    backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    db_path = os.path.join(backend_dir, "chroma_db")
-    
-    # Delete old DB if exists for fresh rebuild
-    if os.path.exists(db_path):
-        import shutil
-        try:
-            shutil.rmtree(db_path)
-            logger.info("Cleared old ChromaDB for rebuild")
-        except Exception as e:
-            logger.error(f"Error clearing DB: {e}")
-
-    embeddings = get_embeddings()
-    
-    from langchain_community.document_loaders import PyMuPDFLoader, DirectoryLoader
-    from langchain_text_splitters import RecursiveCharacterTextSplitter
-    
-    loader = DirectoryLoader(
-        data_dir,
-        glob="*.pdf",
-        loader_cls=PyMuPDFLoader
-    )
-    documents = loader.load()
-    
-    if not documents:
-        logger.warning("No documents found for rebuild")
+    try:
+        embeddings = get_embeddings()
+        
+        # Pinecone Initialization
+        # Assumes PINECONE_API_KEY is in env
+        # Index Name is mandatory
+        index_name = "citizen-safety"
+        
+        logger.info(f"Connecting to Pinecone Index: {index_name}")
+        
+        _vector_db = PineconeVectorStore(
+            index_name=index_name,
+            embedding=embeddings,
+            namespace="core-brain" # Separation from mixed usage
+        )
+        
+        return _vector_db
+            
+    except Exception as e:
+        logger.error(f"❌ Failed to connect to Pinecone: {e}")
         return None
-    
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1000,
-        chunk_overlap=150
-    )
-    chunks = text_splitter.split_documents(documents)
-    
-    # Batched embedding for Jina (High Limit: 1M tokens)
-    # 50 chunks per batch is safe and fast
-    BATCH_SIZE = 50
-    DELAY_SECONDS = 0.5
-    
-    _vector_db = None
-    for i in range(0, len(chunks), BATCH_SIZE):
-        batch = chunks[i:i + BATCH_SIZE]
-        logger.info(f"Indexing batch {i//BATCH_SIZE + 1}/{(len(chunks) + BATCH_SIZE - 1)//BATCH_SIZE} ({len(batch)} chunks)")
-        
-        if _vector_db is None:
-            # First batch - create new DB
-            _vector_db = Chroma.from_documents(
-                documents=batch,
-                embedding=embeddings,
-                persist_directory=db_path
-            )
-        else:
-            # Subsequent batches - add to existing
-            _vector_db.add_documents(batch)
-        
-        # Delay between batches to stay under rate limit
-        if i + BATCH_SIZE < len(chunks):
-            time.sleep(DELAY_SECONDS)
-
-    
-    logger.info(json.dumps({
-        "event": "vector_db_rebuilt",
-        "chunks": len(chunks),
-        "timestamp": datetime.now().isoformat()
-    }))
-    
-    return _vector_db
-
 
 
 def add_documents_incremental(file_paths: List[str]):
     """
-    Add documents incrementally without touching existing index.
-    High speed, targeted for user uploads.
+    Add temporary documents to Pinecone (for user uploads).
+    Tagged with metadata for easy deletion.
     """
     global _vector_db
     
@@ -314,15 +186,15 @@ def add_documents_incremental(file_paths: List[str]):
     from langchain_text_splitters import RecursiveCharacterTextSplitter
     
     if _vector_db is None:
-        _vector_db = get_vector_db() or rebuild_vector_db(os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), "data"))
+        _vector_db = get_vector_db()
     
     if _vector_db is None:
-        logger.error("Could not initialize vector DB for incremental add")
+        logger.error("Could not initialize Pinecone for incremental add")
         return 0
     
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=1000,
-        chunk_overlap=100  # Smaller overlap for speed on small uploads
+        chunk_overlap=100
     )
     
     new_chunks = []
@@ -332,46 +204,48 @@ def add_documents_incremental(file_paths: List[str]):
                 loader = PyMuPDFLoader(file_path)
                 docs = loader.load()
                 
-                # Tag each document as temporary for easy cleanup later
+                # Tag each document as temporary
                 for d in docs:
                     d.metadata["is_temporary"] = True
+                    d.metadata["upload_timestamp"] = datetime.now().isoformat()
                 
                 new_chunks.extend(text_splitter.split_documents(docs))
             except Exception as e:
                 logger.error(f"Error loading {file_path}: {e}")
     
     if new_chunks:
-        _vector_db.add_documents(new_chunks)
-        # ChromaDB auto-persists in newer versions
-        logger.info(json.dumps({
-            "event": "documents_added_incremental",
-            "chunks": len(new_chunks),
-            "timestamp": datetime.now().isoformat()
-        }))
+        try:
+            # Add to Pinecone (Namespace: core-brain, but with temp tag)
+            _vector_db.add_documents(new_chunks)
+            logger.info(f"Uploaded {len(new_chunks)} temporary chunks to Pinecone")
+        except Exception as e:
+            logger.error(f"Error uploading to Pinecone: {e}")
+            return 0
     
     return len(new_chunks)
 
 
 def clear_temporary_knowledge():
     """
-    Surgically remove only temporary user-uploaded documents.
-    No re-indexing of core files needed.
+    Surgically remove temporary user-uploaded documents from Pinecone.
+    Uses Metadata Filtering.
     """
-    global _vector_db
-    if _vector_db is None:
-        _vector_db = get_vector_db()
+    try:
+        # Pinecone Client needed for direct delete operation (LangChain wrapper might be limited)
+        from pinecone import Pinecone
+        pc = Pinecone(api_key=settings.PINECONE_API_KEY)
+        index = pc.Index("citizen-safety")
         
-    if _vector_db:
-        try:
-            # Delete by metadata tag
-            # Note: ChromaDB supports 'where' filter for delete
-            _vector_db.delete(where={"is_temporary": True})
-            logger.info("Surgically cleared temporary documents from ChromaDB")
-            return True
-        except Exception as e:
-            logger.error(f"Error clearing temp knowledge: {e}")
-            return False
-    return False
+        # Delete vectors directly by metadata filter
+        index.delete(
+            filter={"is_temporary": True},
+            namespace="core-brain"
+        )
+        logger.info("✅ Surgically cleared temporary documents from Pinecone (core-brain namespace)")
+        return True
+    except Exception as e:
+        logger.error(f"Error clearing Pinecone temp data: {e}")
+        return False
 
 
 def generate_response(
@@ -458,7 +332,6 @@ User Name: {user_name}
 Question: {question}"""
 
     # OpenRouter LLM (Free Tier - DeepSeek R1T2 671B)
-    # Model: tngtech/deepseek-r1t2-chimera:free (High Intelligence, Free)
     llm = ChatOpenAI(
         model="tngtech/deepseek-r1t2-chimera:free",
         openai_api_key=settings.OPENROUTER_API_KEY,
@@ -467,10 +340,8 @@ Question: {question}"""
         max_tokens=3000
     )
     
-    # Langfuse monitoring for LLM observability
     langfuse_handler = None
     try:
-        # Set env vars for Langfuse (reads from settings)
         import os
         os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
@@ -485,14 +356,9 @@ Question: {question}"""
     
     chain = ChatPromptTemplate.from_template(system_prompt) | llm | StrOutputParser()
     
-    start_time = time.time()
-    
-    # Invoke with Langfuse callback if available
     invoke_config = {"callbacks": [langfuse_handler]} if langfuse_handler else {}
     
     try:
-        # CIRCUIT BREAKER: Prevent cascading failures if LLM is down
-        # Wrap in lambda to correctly pass config kwarg through pybreaker
         def invoke_llm():
             return chain.invoke(
                 {
@@ -507,7 +373,6 @@ Question: {question}"""
         
         response = llm_breaker.call(invoke_llm)
         
-        # Handle None response from LLM
         if response is None:
             logger.warning("LLM returned None response, using fallback")
             response = "I apologize, but I'm temporarily unable to process your request. Please try again in a moment."
@@ -517,7 +382,6 @@ Question: {question}"""
         raise e
     
     latency = time.time() - start_time
-    
     return response, latency
 
 
@@ -544,20 +408,21 @@ def search_and_respond(
     vector_db = get_vector_db()
     if vector_db is None:
         return {
-            "error": "Knowledge base not initialized. Please upload documents.",
+            "error": "Knowledge base not initialized. Please check Pinecone configuration.",
             "response": None,
             "sources": [],
             "confidence": 0,
             "latency": 0
         }
     
-    # 3. Similarity search with score (handles Jina API failures)
+    # 3. Similarity search with score
     try:
+        # Pinecone namespace is handled by the vector_db instance initialized in get_vector_db
         results = vector_db.similarity_search_with_score(safe_question, k=3)
     except Exception as e:
-        logger.error(f"Embedding/Search Error (Jina API): {e}")
+        logger.error(f"Embedding/Search Error (Pinecone/Jina): {e}")
         return {
-            "error": "⚠️ Network traffic is high on the Embedding Service (Jina). Please retry in 5 seconds.",
+            "error": "⚠️ Network traffic is high on the Embedding Service. Please retry in 5 seconds.",
             "response": None,
             "sources": [],
             "confidence": 0,
@@ -576,15 +441,23 @@ def search_and_respond(
     # 4. Calculate confidence
     relevant_docs = [doc for doc, score in results]
     best_doc, score_distance = results[0]
-    confidence = max(0, min(100, (2.0 - score_distance) / 2.0 * 100))
+    # Cosine Similarity (Pinecone default for cosine index) returns score 0-1 (higher is better) IF normalized?
+    # Wait, Jina output is normalized. Pinecone cosine metric:
+    # If metric='cosine', identical vectors have score 1.0. Opposite -1.0.
+    # So confidence is just score * 100.
+    # BUT, LangChain interface might return distance (1-similarity) depending on config.
+    # PineconeVectorStore usually returns SIMILARITY score for cosine index.
+    # Let's assume similarity score (0 to 1). If > 1 (L2), formula differs.
+    # Since we set metric='cosine', it returns similarity.
+    confidence = score_distance * 100
     
     # 5. Prepare context
     context = "\n\n".join([d.page_content for d in relevant_docs])
     
-    # 6. Format chat history (sliding window - last 3)
+    # 6. Format chat history
     history_text = "No previous history."
     if chat_history:
-        history_msgs = chat_history[-6:]  # Last 3 pairs
+        history_msgs = chat_history[-6:]
         formatted = []
         for msg in history_msgs:
             role_prefix = "User: " if msg.get("role") == "user" else "Assistant: "
@@ -601,17 +474,14 @@ def search_and_respond(
             "response": None,
             "sources": [],
             "confidence": 0,
-            "latency": 0,
-            "pii_masked": pii_found,
-            "pii_entities": pii_entities,
-            "masked_question": safe_question if pii_found else None
+            "latency": 0
         }
     
     # 8. Format sources with page numbers
     sources = []
     for i, doc in enumerate(relevant_docs):
         source_path = doc.metadata.get('source', 'Unknown')
-        source_file = source_path.split('\\')[-1].split('/')[-1].replace('.pdf', '')
+        source_file = source_path.replace('\\', '/').split('/')[-1].replace('.pdf', '')
         page_num = doc.metadata.get('page', 0) + 1  # PyMuPDF uses 0-indexed pages
         sources.append({
             "source_id": i + 1,
