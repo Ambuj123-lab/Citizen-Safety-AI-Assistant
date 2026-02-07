@@ -90,6 +90,19 @@ async def get_current_user_info(request: Request):
 @router.post("/logout")
 async def logout():
     """
-    Logout endpoint (client should clear token)
+    Logout endpoint: Clears client token and removes temporary vectors from Pinecone.
     """
-    return {"message": "Logged out successfully"}
+    try:
+        from app.rag.pipeline import clear_temporary_knowledge
+        success = clear_temporary_knowledge()
+        
+        if success:
+            logger.info("✅ Cleared temporary Pinecone knowledge on logout.")
+            return {"message": "Logged out and temporary data cleared successfully"}
+        else:
+            logger.warning("⚠️ Logout successful but Pinecone cleanup failed.")
+            return {"message": "Logged out successfully (Cleanup warning)"}
+            
+    except Exception as e:
+        logger.error(f"Logout Error: {e}")
+        return {"message": "Logged out successfully"}

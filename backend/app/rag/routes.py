@@ -19,7 +19,7 @@ from app.db.database import save_message, get_chat_history, save_feedback
 from app.rag.pipeline import (
     search_and_respond,
     add_documents_incremental,
-    rebuild_vector_db,
+    clear_temporary_knowledge,
     get_vector_db
 )
 from upstash_redis import Redis
@@ -287,20 +287,15 @@ async def rebuild_kb(
 ):
     """
     Reset or Rebuild the Knowledge Base.
-    - force=False (default): Surgical clear of temporary files (fast).
-    - force=True: Deep rebuild of core data folder (slow, syncs file changes).
+    - force=False (default): Surgical clear of temporary files.
+    - force=True: Not supported in Pinecone (requires full migration).
     """
-    from app.rag.pipeline import clear_temporary_knowledge, rebuild_vector_db
+    from app.rag.pipeline import clear_temporary_knowledge
     
-    backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    data_dir = os.path.join(backend_dir, "data")
-
     try:
         if force:
-            logger.info("Deep rebuild triggered by user")
-            # Clear everything and re-read 'data/' folder
-            vector_db = rebuild_vector_db(data_dir)
-            return {"message": "Core Brain fully synced with data folder."}
+            logger.warning("Deep rebuild not supported in Pinecone mode via API.")
+            return {"message": "Deep rebuild is disabled. Use migration script for full reset."}
         else:
             # Default: Just remove session-based temporary tags
             clear_temporary_knowledge()
