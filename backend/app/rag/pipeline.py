@@ -376,26 +376,21 @@ Question: {question}"""
         max_tokens=3000
     )
     
-    # Langfuse Integration (Robust Method using SDK Client)
+    # Langfuse Integration (Standard CallbackHandler Method)
     langfuse_handler = None
     try:
         import os
-        from langfuse import Langfuse
+        from langfuse.callback import CallbackHandler
         
         # Ensure env vars are set
         os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
         os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
         
-        # Initialize Main Client
-        langfuse = Langfuse()
-        
-        # Create a Trace manually (Guarantees User/Session tracking)
-        trace_name = f"Chat: {question[:40]}..."
+        # Initialize Handler with User/Session details directly
+        # This is the standard way to pass session/user context in Langfuse CallbackHandler
         session_id = f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
-        
-        trace = langfuse.trace(
-            name=trace_name,
+        langfuse_handler = CallbackHandler(
             user_id=user_id,
             session_id=session_id,
             metadata={
@@ -403,9 +398,6 @@ Question: {question}"""
                 "environment": "production"
             }
         )
-        
-        # Get Langchain Callback from the Trace
-        langfuse_handler = trace.get_langchain_callback()
         
     except Exception as e:
         logger.warning(f"Langfuse init skipped: {e}")
