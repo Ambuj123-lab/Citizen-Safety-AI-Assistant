@@ -21,7 +21,7 @@ settings = get_settings()
 logger = logging.getLogger(__name__)
 
 try:
-    from langfuse.callback import CallbackHandler as LangfuseHandler
+    from langfuse.langchain import CallbackHandler as LangfuseHandler
 except (ImportError, ModuleNotFoundError) as e:
     # Use print for now if logger isn't ready, or just pass
     print(f"⚠️ Langfuse callback handler not available: {e}")
