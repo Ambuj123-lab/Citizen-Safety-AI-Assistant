@@ -376,27 +376,41 @@ Question: {question}"""
         max_tokens=3000
     )
     
+    # Langfuse Integration (Robust Method using SDK Client)
     langfuse_handler = None
     try:
         import os
+        from langfuse import Langfuse
+        
+        # Ensure env vars are set
         os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
         os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
-        if LangfuseHandler:
-            # Pass user_id and session_id directly to handler
-            session_id = f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
-            langfuse_handler = LangfuseHandler(
-                user_id=user_id,
-                session_id=session_id
-            )
-        else:
-            logger.warning("LangfuseHandler class is None, skipping initialization")
-
+        
+        # Initialize Main Client
+        langfuse = Langfuse()
+        
+        # Create a Trace manually (Guarantees User/Session tracking)
+        trace_name = f"Chat: {question[:40]}..."
+        session_id = f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
+        
+        trace = langfuse.trace(
+            name=trace_name,
+            user_id=user_id,
+            session_id=session_id,
+            metadata={
+                "user_name": user_name,
+                "environment": "production"
+            }
+        )
+        
+        # Get Langchain Callback from the Trace
+        langfuse_handler = trace.get_langchain_callback()
+        
     except Exception as e:
         logger.warning(f"Langfuse init skipped: {e}")
     
     chain = ChatPromptTemplate.from_template(system_prompt) | llm | StrOutputParser()
-    
     
     invoke_config = {}
     if langfuse_handler:
