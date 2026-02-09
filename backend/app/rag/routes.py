@@ -228,6 +228,14 @@ async def upload_documents(
     if saved_files:
         chunks_added = add_documents_incremental(saved_files)
         
+        # CRITICAL: Clean up temp files to prevent Render disk fill
+        for file_path in saved_files:
+            try:
+                os.remove(file_path)
+                logger.info(f"🧹 Cleaned up temp file: {file_path}")
+            except Exception as e:
+                logger.warning(f"Failed to clean temp file {file_path}: {e}")
+        
         return {
             "message": f"Uploaded {len(saved_files)} files, added {chunks_added} chunks",
             "files": [os.path.basename(f) for f in saved_files]
@@ -297,13 +305,8 @@ async def get_stats():
     Get visitor stats from Redis
     """
     try:
-        if settings.UPSTASH_REDIS_REST_URL:
-            redis_client = Redis(
-                url=settings.UPSTASH_REDIS_REST_URL,
-                token=settings.UPSTASH_REDIS_REST_TOKEN
-            )
-            count = redis_client.get("citizen_safety_visits")
-            return {"visitors": int(count) if count else 0}
+        count = redis.get("citizen_safety_visits")
+        return {"visitors": int(count) if count else 0}
     except Exception:
         pass
     
@@ -316,13 +319,8 @@ async def increment_stats():
     Increment visitor counter
     """
     try:
-        if settings.UPSTASH_REDIS_REST_URL:
-            redis_client = Redis(
-                url=settings.UPSTASH_REDIS_REST_URL,
-                token=settings.UPSTASH_REDIS_REST_TOKEN
-            )
-            redis_client.incr("citizen_safety_visits")
-            return {"message": "Incremented"}
+        redis.incr("citizen_safety_visits")
+        return {"message": "Incremented"}
     except Exception:
         pass
     

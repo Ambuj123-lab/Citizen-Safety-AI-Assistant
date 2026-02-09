@@ -199,6 +199,9 @@ def add_documents_incremental(file_paths: List[str]):
     
     new_chunks = []
     for file_path in file_paths:
+        # Normalize to absolute path (PyMuPDFLoader stores absolute paths in metadata)
+        file_path = os.path.abspath(file_path)
+        
         if os.path.exists(file_path):
             try:
                 loader = PyMuPDFLoader(file_path)
@@ -376,28 +379,24 @@ Question: {question}"""
         max_tokens=3000
     )
     
-    # Langfuse Integration (Standard CallbackHandler Method)
+    # Langfuse Integration (Safe Mode - No user tracking to prevent crashes)
     langfuse_handler = None
     try:
         import os
-        from langfuse.callback import CallbackHandler
+        # Fallback import: try both possible locations
+        try:
+            from langfuse.callback import CallbackHandler
+        except ImportError:
+            from langfuse.langchain import CallbackHandler
         
         # Ensure env vars are set
         os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
         os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
         
-        # Initialize Handler with User/Session details directly
-        # This is the standard way to pass session/user context in Langfuse CallbackHandler
-        session_id = f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
-        langfuse_handler = CallbackHandler(
-            user_id=user_id,
-            session_id=session_id,
-            metadata={
-                "user_name": user_name,
-                "environment": "production"
-            }
-        )
+        # Initialize without user_id/session_id (Safe Mode)
+        # Traces will still work, just without user attribution
+        langfuse_handler = CallbackHandler()
         
     except Exception as e:
         logger.warning(f"Langfuse init skipped: {e}")

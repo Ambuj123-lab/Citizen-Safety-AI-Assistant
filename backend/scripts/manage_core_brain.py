@@ -3,8 +3,7 @@ Script to Manage Core Brain (Permanent Knowledge Base) in Pinecone.
 Allows adding new files or updating existing ones without full re-indexing.
 
 Usage:
-    python manage_core_brain.py --add "path/to/new_file.pdf"
-    python manage_core_brain.py --update "path/to/existing_file.pdf"
+    python manage_core_brain.py --file "path/to/file.pdf"
 """
 import os
 import sys
@@ -32,12 +31,18 @@ def manage_core_file(file_path: str, is_update: bool = False):
     2. Deletes OLD vectors for this file from Pinecone (to prevent duplicates).
     3. Uploads NEW vectors to Pinecone.
     """
+    # CRITICAL: Convert to absolute path FIRST
+    # PyMuPDFLoader stores absolute path in 'source' metadata
+    # Delete must use the same absolute path to find existing vectors
+    file_path = os.path.abspath(file_path)
+    
     if not os.path.exists(file_path):
         print(f"❌ File not found: {file_path}")
         return
 
     filename = os.path.basename(file_path)
     print(f"🚀 Processing Core Brain File: {filename}")
+    print(f"   📁 Resolved Path: {file_path}")
     
     # 1. Initialize Pinecone Client (for deletion)
     try:
@@ -53,16 +58,10 @@ def manage_core_file(file_path: str, is_update: bool = False):
     print(f"🧹 Cleaning existing knowledge for: {filename}...")
     try:
         # Note: We do NOT use 'is_temporary' filter here because these are Core files.
-        # We delete by 'source' metadata.
+        # We delete by 'source' metadata to ensure no duplicates.
         index.delete(
-            filter={"source": file_path, "is_temporary": {"$ne": True}}, # Safety check to only delete core files if possible, or just by source
-            # Pinecone metadata filter for "Not Exists" is tricky. 
-            # Safest is to delete by Source. Our core files don't have is_temporary usually.
-            # But wait, local path might differ from what's in Pinecone if uploaded from different OS/Folder.
-            # Ideally source metadata is the absolute path.
-            # Let's assume consistent paths or filename. 
-            # Better strategy: Filter by "source" ending with filename if possible? No, Pinecone filter is exact match.
-            # We will rely on exact 'source' match. 
+            filter={"source": file_path, "is_temporary": {"$ne": True}}, 
+            namespace="core-brain"
         )
         # Actually, let's just delete by source.
         # But wait! If we upload from Windows vs Linux, paths change.
