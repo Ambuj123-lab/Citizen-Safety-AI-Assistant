@@ -12,6 +12,7 @@ from slowapi import Limiter
 from slowapi.util import get_remote_address
 import logging
 import json
+import hashlib
 
 from app.config import get_settings
 from app.auth.jwt import get_current_user
@@ -60,6 +61,7 @@ class ChatResponse(BaseModel):
     pii_entities: List[dict] = []
     masked_question: Optional[str] = None
     active_users: int = 0
+    is_cached: bool = False
     error: Optional[str] = None
 
 
@@ -92,9 +94,61 @@ async def chat(
     # Get chat history for context
     history = get_chat_history(user_email, limit=6)
     
+    # --- Redis Caching Logic ---
+    cache_key = None
+    is_cached = False
+    bypass_cache = request.headers.get("X-Bypass-Cache", "").lower() == "true"
+
+    if settings.UPSTASH_REDIS_REST_URL and not bypass_cache:
+        try:
+            # Create a unique hash for the question (Namespace + Question)
+            hash_input = f"core-brain:{question.strip().lower()}"
+            cache_key = f"rag_cache:{hashlib.sha256(hash_input.encode()).hexdigest()}"
+            
+            cached_data = redis.get(cache_key)
+            if cached_data:
+                logger.info(f"🚀 Cache Hit for: {question[:30]}...")
+                # Return cached response immediately
+                cached_json = json.loads(cached_data)
+                
+                # Still track active user count even on cache hit
+                try:
+                    now = int(datetime.now().timestamp())
+                    redis.zadd("active_users_live", {user_email: now})
+                    active_count = redis.zcard("active_users_live") or 1
+                except:
+                    active_count = 1
+                
+                return ChatResponse(
+                    active_users=active_count,
+                    is_cached=True,
+                    **cached_json
+                )
+        except Exception as e:
+            logger.warning(f"Redis Cache Read Error: {e}")
+
+    # --- Live RAG Pipeline (If not in cache) ---
     # Get RAG response (contains PII analysis)
-    result = search_and_respond(question, history, current_user.get("name", "User"))
+    result = search_and_respond(question, history, current_user.get("name", "User"), user_id=user_email)
     
+    # Save to Cache if result is valid
+    if cache_key and result.get("response"):
+        try:
+            # Save relevant parts to cache (1 hour TTL = 3600s)
+            cache_payload = {
+                "response": result["response"],
+                "sources": result.get("sources", []),
+                "confidence": result.get("confidence", 0),
+                "latency": result.get("latency", 0),
+                "pii_masked": result.get("pii_masked", False),
+                "pii_entities": result.get("pii_entities", []),
+                "masked_question": result.get("masked_question")
+            }
+            redis.setex(cache_key, 3600, json.dumps(cache_payload))
+            logger.info(f"💾 Cached new response for: {question[:30]}...")
+        except Exception as e:
+            logger.warning(f"Redis Cache Write Error: {e}")
+
     # Save user message (with PII metadata)
     save_message(
         user_email, 
@@ -115,23 +169,18 @@ async def chat(
             pii_entities=result.get("pii_entities", [])
         )
     
-    # 3. Track Active User in Redis (15 min sliding window)
+    # Track Active User in Redis (15 min sliding window)
     try:
         now = int(datetime.now().timestamp())
         fifteen_mins_ago = now - (15 * 60)
-        
-        # Add current user with timestamp
         redis.zadd("active_users_live", {user_email: now})
-        
-        # Prune users older than 15 minutes
         redis.zremrangebyscore("active_users_live", "-inf", fifteen_mins_ago)
-        
         active_count = redis.zcard("active_users_live") or 1
     except Exception as e:
         logger.warning(f"Redis Metrics Error: {e}")
         active_count = 1
 
-    return ChatResponse(active_users=active_count, **result)
+    return ChatResponse(active_users=active_count, is_cached=False, **result)
 
 
 @router.get("/stats/active")

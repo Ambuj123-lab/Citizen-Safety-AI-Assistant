@@ -215,7 +215,29 @@ def add_documents_incremental(file_paths: List[str]):
     
     if new_chunks:
         try:
-            # Add to Pinecone (Namespace: core-brain, but with temp tag)
+            # 1. Identify unique source files being uploaded
+            unique_sources = set()
+            for chunk in new_chunks:
+                source = chunk.metadata.get("source")
+                if source:
+                    # Normalize path separators just in case
+                    unique_sources.add(source)
+            
+            # 2. Safety Delete: Remove ANY existing vectors for these files
+            # This prevents "Zombie Chunks" when a file is updated/shrunk
+            if unique_sources:
+                from pinecone import Pinecone
+                pc = Pinecone(api_key=settings.PINECONE_API_KEY)
+                index = pc.Index("citizen-safety")
+                
+                for source in unique_sources:
+                    logger.info(f"🧹 Clearing existing vectors for: {source}")
+                    index.delete(
+                        filter={"source": source, "is_temporary": True},
+                        namespace="core-brain"
+                    )
+
+            # 3. Add to Pinecone (Namespace: core-brain, but with temp tag)
             _vector_db.add_documents(new_chunks)
             logger.info(f"Uploaded {len(new_chunks)} temporary chunks to Pinecone")
         except Exception as e:
@@ -252,7 +274,8 @@ def generate_response(
     question: str,
     context: str,
     history: str,
-    user_name: str = "User"
+    user_name: str = "User",
+    user_id: str = "anonymous"
 ) -> tuple[str, float]:
     """Generate response using LLM with circuit breaker"""
     from langchain_openai import ChatOpenAI
@@ -369,7 +392,15 @@ Question: {question}"""
     
     chain = ChatPromptTemplate.from_template(system_prompt) | llm | StrOutputParser()
     
-    invoke_config = {"callbacks": [langfuse_handler]} if langfuse_handler else {}
+    
+    invoke_config = {}
+    if langfuse_handler:
+        # Inject User ID and Session ID into Langfuse (Clean & Simple)
+        invoke_config["callbacks"] = [langfuse_handler]
+        invoke_config["metadata"] = {
+            "user_id": user_id,
+            "session_id": f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
+        }
     
     try:
         def invoke_llm():
@@ -401,7 +432,8 @@ Question: {question}"""
 def search_and_respond(
     question: str,
     chat_history: List[dict] = None,
-    user_name: str = "User"
+    user_name: str = "User",
+    user_id: str = "anonymous"
 ) -> dict:
     """Main RAG function - search context and generate response"""
     
@@ -479,7 +511,7 @@ def search_and_respond(
     
     # 7. Generate response
     try:
-        response, latency = generate_response(safe_question, context, history_text, user_name)
+        response, latency = generate_response(safe_question, context, history_text, user_name, user_id)
     except Exception as e:
         logger.error(f"LLM Error: {e}")
         return {
