@@ -112,7 +112,7 @@ def mask_pii(text: str) -> tuple[str, bool]:
         analyzer, anonymizer = get_security_engines()
         results = analyzer.analyze(
             text=text,
-            entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "GPE"],
+            entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION"],
             language='en'
         )
         # Filter for high confidence
