@@ -383,7 +383,12 @@ Question: {question}"""
         os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
         os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
         if LangfuseHandler:
-            langfuse_handler = LangfuseHandler()
+            # Pass user_id and session_id directly to handler
+            session_id = f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
+            langfuse_handler = LangfuseHandler(
+                user_id=user_id,
+                session_id=session_id
+            )
         else:
             logger.warning("LangfuseHandler class is None, skipping initialization")
 
@@ -395,12 +400,7 @@ Question: {question}"""
     
     invoke_config = {}
     if langfuse_handler:
-        # Inject User ID and Session ID into Langfuse (Clean & Simple)
         invoke_config["callbacks"] = [langfuse_handler]
-        invoke_config["metadata"] = {
-            "user_id": user_id,
-            "session_id": f"session_{user_id}_{datetime.now().strftime('%Y%m%d')}"
-        }
     
     try:
         def invoke_llm():
