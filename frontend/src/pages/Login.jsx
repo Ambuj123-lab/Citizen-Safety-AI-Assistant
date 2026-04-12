@@ -141,43 +141,43 @@ const Login = () => {
                     </h1>
 
                     {/* Subtitle */}
-                    <p className="hero-animate hero-d2 text-base sm:text-lg text-neutral-400 font-normal max-w-xl mx-auto leading-relaxed mb-16">
+                    <p className="hero-animate hero-d2 text-base sm:text-lg text-neutral-400 font-normal max-w-xl mx-auto leading-relaxed mb-20">
                         AI-powered legal intelligence for India. Enterprise-grade retrieval with real-time PII protection.
                     </p>
 
                     {/* ═══ Feature Cards (3 cards like reference) ═══ */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10 max-w-3xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12 max-w-4xl mx-auto">
 
                         {/* Card 1 — Agentic RAG */}
-                        <div className="card-animate card-d1 group bg-[#141414] rounded-2xl p-6 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
-                            <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
-                            <h3 className="text-[17px] font-bold text-white mb-3 mt-2">Agentic RAG</h3>
-                            <p className="text-[13px] text-neutral-400 leading-relaxed">
+                        <div className="card-animate card-d1 group bg-[#141414] rounded-2xl p-8 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
+                            <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full" />
+                            <h3 className="text-[18px] font-bold text-white mb-4 mt-3">Agentic RAG</h3>
+                            <p className="text-[14px] text-neutral-400 leading-[1.7]">
                                 Multi-turn retrieval pipeline built on LangChain with Pinecone vector search and deterministic source citations across 20+ legal frameworks.
                             </p>
                         </div>
 
                         {/* Card 2 — PII Shield */}
-                        <div className="card-animate card-d2 group bg-[#141414] rounded-2xl p-6 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
-                            <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full" />
-                            <h3 className="text-[17px] font-bold text-white mb-3 mt-2">PII Shield</h3>
-                            <p className="text-[13px] text-neutral-400 leading-relaxed">
+                        <div className="card-animate card-d2 group bg-[#141414] rounded-2xl p-8 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
+                            <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-cyan-400 to-teal-400 rounded-full" />
+                            <h3 className="text-[18px] font-bold text-white mb-4 mt-3">PII Shield</h3>
+                            <p className="text-[14px] text-neutral-400 leading-[1.7]">
                                 Microsoft Presidio masks personal identifiers before they reach the LLM. 7-layer security with GDPR-compliant 30-day auto-delete.
                             </p>
                         </div>
 
                         {/* Card 3 — Production Scale */}
-                        <div className="card-animate card-d3 group bg-[#141414] rounded-2xl p-6 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
-                            <div className="absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r from-emerald-400 to-green-400 rounded-full" />
-                            <h3 className="text-[17px] font-bold text-white mb-3 mt-2">Production Scale</h3>
-                            <p className="text-[13px] text-neutral-400 leading-relaxed">
+                        <div className="card-animate card-d3 group bg-[#141414] rounded-2xl p-8 text-left border border-white/[0.06] hover:border-white/[0.1] transition-all relative overflow-hidden">
+                            <div className="absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r from-emerald-400 to-green-400 rounded-full" />
+                            <h3 className="text-[18px] font-bold text-white mb-4 mt-3">Production Scale</h3>
+                            <p className="text-[14px] text-neutral-400 leading-[1.7]">
                                 Optimized for 512MB RAM constraints with Redis semantic caching, circuit breakers, and Jina MRL embeddings achieving 75% storage savings.
                             </p>
                         </div>
                     </div>
 
                     {/* ═══ Tag Pills (like reference) ═══ */}
-                    <div className="flex flex-wrap items-center justify-center gap-3 mb-20">
+                    <div className="flex flex-wrap items-center justify-center gap-3 mb-24">
                         <span className="tag-animate tag-d1 px-4 py-2 rounded-full text-[12px] font-medium border border-amber-500/40 text-amber-400 bg-amber-500/[0.04]">
                             Qwen3 235B
                         </span>
@@ -193,7 +193,7 @@ const Login = () => {
                     </div>
 
                     {/* ═══ Stats Grid (Flying in) ═══ */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto mb-16">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-5 max-w-4xl mx-auto mb-20">
                         <StatCard value={31500} suffix="+" label="Total Chunks" sub="Parent-child indexed" delay="stat-d1" borderColor="from-blue-500 to-cyan-500" />
                         <StatCard value={28000} suffix="+" label="Child Vectors" sub="Dense Jina embeddings" delay="stat-d2" borderColor="from-cyan-500 to-teal-500" />
                         <StatCard value={75} suffix="%" label="Storage Saved" sub="MRL compression" delay="stat-d3" borderColor="from-emerald-500 to-green-500" />
@@ -242,13 +242,13 @@ const StatCard = ({ value, suffix, label, sub, delay, borderColor }) => {
     const { count, ref } = useCountUp(value, 2200);
 
     return (
-        <div ref={ref} className={`stat-animate ${delay} bg-[#141414] rounded-2xl p-5 text-left border border-white/[0.06] relative overflow-hidden group hover:border-white/[0.1] transition-all`}>
-            <div className={`absolute top-0 left-4 right-4 h-[2px] bg-gradient-to-r ${borderColor} rounded-full opacity-60`} />
-            <p className="text-3xl font-black text-white tracking-tight mt-1 tabular-nums">
+        <div ref={ref} className={`stat-animate ${delay} bg-[#141414] rounded-2xl p-7 text-left border border-white/[0.06] relative overflow-hidden group hover:border-white/[0.1] transition-all`}>
+            <div className={`absolute top-0 left-6 right-6 h-[2px] bg-gradient-to-r ${borderColor} rounded-full opacity-60`} />
+            <p className="text-4xl font-black text-white tracking-tight mt-2 tabular-nums">
                 {count.toLocaleString()}{suffix}
             </p>
-            <p className="text-[13px] font-semibold text-neutral-300 mt-1.5">{label}</p>
-            <p className="text-[11px] text-neutral-600 mt-0.5">{sub}</p>
+            <p className="text-[14px] font-semibold text-neutral-300 mt-2">{label}</p>
+            <p className="text-[12px] text-neutral-500 mt-1">{sub}</p>
         </div>
     );
 };
