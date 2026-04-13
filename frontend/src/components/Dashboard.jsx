@@ -23,6 +23,7 @@ const Dashboard = () => {
     const [uploading, setUploading] = useState(false);
     const [isIndexing, setIsIndexing] = useState(false);
     const [auditModal, setAuditModal] = useState(null);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     // Refs
     const messagesEndRef = useRef(null);
@@ -230,7 +231,7 @@ const Dashboard = () => {
         root: { display: 'flex', height: '100vh', background: '#0D1117', fontFamily: "'Inter', system-ui, sans-serif", color: '#E5E7EB', overflow: 'hidden' },
 
         // Sidebar
-        sidebar: { width: '240px', background: '#0D1117', borderRight: '1px solid #1B1F2A', display: 'flex', flexDirection: 'column', flexShrink: 0 },
+        sidebar: { width: '240px', background: '#0D1117', borderRight: '1px solid #1B1F2A', flexDirection: 'column', flexShrink: 0 },
         sidebarHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #1B1F2A' },
         sidebarLogo: { width: '24px', height: '24px', objectFit: 'contain' },
         sidebarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.01em' },
@@ -272,7 +273,7 @@ const Dashboard = () => {
         welcomeIcon: { width: '48px', height: '48px', borderRadius: '14px', background: '#111827', border: '1px solid #1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' },
         welcomeTitle: { fontSize: '22px', fontWeight: 600, color: '#F3F4F6', marginBottom: '8px' },
         welcomeDesc: { fontSize: '14px', color: '#6B7280', maxWidth: '400px', margin: '0 auto 40px' },
-        quickGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', maxWidth: '480px', margin: '0 auto' },
+        quickGrid: { gap: '8px', maxWidth: '480px', margin: '0 auto' },
         quickBtn: { padding: '14px', borderRadius: '12px', background: '#111827', border: '1px solid #1B1F2A', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s' },
         quickIcon: { fontSize: '16px', display: 'block', marginBottom: '8px' },
         quickText: { fontSize: '12px', color: '#9CA3AF', lineHeight: '1.4' },
@@ -326,8 +327,16 @@ const Dashboard = () => {
                 ))}
             </div>
 
+            {/* Mobile Sidebar Overlay */}
+            {isMobileMenuOpen && (
+                <div 
+                    className="fixed inset-0 bg-black/60 z-40 md:hidden" 
+                    onClick={() => setIsMobileMenuOpen(false)}
+                />
+            )}
+
             {/* ═══ SIDEBAR ═══ */}
-            <aside style={S.sidebar}>
+            <aside style={S.sidebar} className={`md:flex ${isMobileMenuOpen ? 'flex absolute z-50 h-full' : 'hidden'}`}>
 
                 {/* Logo */}
                 <div style={S.sidebarHeader}>
@@ -464,7 +473,12 @@ const Dashboard = () => {
                 {/* Top Bar */}
                 <div style={S.topBar}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                        <h2 style={S.topBarTitle}>Citizen Safety AI</h2>
+                        <button className="md:hidden flex items-center justify-center text-[#9CA3AF]" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}>
+                            <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <h2 style={S.topBarTitle} className="hidden sm:block">Citizen Safety AI</h2>
                         <a 
                             href="https://stats.uptimerobot.com/4tYmSQnuBE" 
                             target="_blank" 
@@ -496,7 +510,7 @@ const Dashboard = () => {
                                 <p style={S.welcomeDesc}>
                                     Ask about digital safety, legal rights, POSH, POCSO, or financial fraud prevention.
                                 </p>
-                                <div style={S.quickGrid}>
+                                <div style={S.quickGrid} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                                     {quickActions.map((qa, i) => (
                                         <button key={i} onClick={() => setInput(qa.text)} style={S.quickBtn}
                                             onMouseOver={e => e.currentTarget.style.borderColor = '#2D3348'}

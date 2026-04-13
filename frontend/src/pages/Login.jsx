@@ -158,9 +158,7 @@ const Login = () => {
                     </div>
 
                     {/* ── CARDS GRID ── */}
-                    <div style={{
-                        display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px'
-                    }}>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         {features.map((f, i) => (
                             <div key={i} style={{
                                 background: '#0D1117',
@@ -211,7 +209,7 @@ const Login = () => {
             {/* ══════════════════ STATS SECTION ══════════════════ */}
             <section style={{ padding: '0 40px 100px', position: 'relative', zIndex: 10 }}>
                 <div style={{ maxWidth: '960px', margin: '0 auto', borderTop: '1px solid #1B1F2A', paddingTop: '80px' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '24px', textAlign: 'center' }}>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {stats.map((s, i) => {
                             const StatItem = () => {
                                 const { count, ref } = useCountUp(s.val);
