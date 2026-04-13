@@ -228,10 +228,74 @@ const Login = () => {
                 </div>
             </section>
 
+            {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
+            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid #1B1F2A', background: '#0A0D14', overflow: 'hidden' }}>
+                {/* Accent Gradients */}
+                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '1000px', height: '100%', background: 'radial-gradient(circle at 30% 0%, rgba(245, 158, 11, 0.04) 0%, transparent 50%), radial-gradient(circle at 70% 100%, rgba(220, 38, 38, 0.03) 0%, transparent 50%)', pointerEvents: 'none' }} />
+                
+                <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
+                    
+                    {/* Badge */}
+                    <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '6px 16px', borderRadius: '100px', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.15)', marginBottom: '32px' }}>
+                        <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', color: '#F59E0B', textTransform: 'uppercase' }}>Engineered By</span>
+                    </div>
+
+                    {/* Name */}
+                    <h2 style={{ fontSize: '42px', fontWeight: 700, letterSpacing: '-0.02em', color: '#F3F4F6', marginBottom: '16px' }}>
+                        Ambuj Kumar Tripathi
+                    </h2>
+
+                    {/* Subtitle */}
+                    <p style={{ fontSize: '16px', fontWeight: 500, color: '#F59E0B', marginBottom: '36px', letterSpacing: '-0.01em' }}>
+                        AI Engineer <span style={{ color: '#4B5563', margin: '0 8px' }}>•</span> RAG Systems Architect <span style={{ color: '#4B5563', margin: '0 8px' }}>•</span> Production ML
+                    </p>
+
+                    {/* Description Paragraphs */}
+                    <p style={{ fontSize: '15px', color: '#9CA3AF', lineHeight: 1.7, maxWidth: '720px', margin: '0 auto 20px' }}>
+                        B.Tech in Electrical & Electronics Engineering. Specialist in production-grade RAG pipelines, LangGraph orchestration, and serverless vector architectures under hard resource constraints.
+                    </p>
+                    <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.7, maxWidth: '720px', margin: '0 auto 48px' }}>
+                        Built enterprise-grade systems across <span style={{ color: '#D1D5DB', fontWeight: 500 }}>Global Telecom</span> and <span style={{ color: '#D1D5DB', fontWeight: 500 }}>International AdTech</span> — hands-on experience shipping production systems that handle real-world scale.
+                    </p>
+
+                    {/* Badges Grid */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', maxWidth: '640px', margin: '0 auto 48px' }}>
+                        {['NVIDIA RAG Agents', 'Google Cloud (6 Badges)', 'IBM AI Engineering', 'Anthropic MCP', 'Linux Foundation', 'BCG X GenAI'].map(badge => (
+                            <span key={badge} style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '100px', fontSize: '12px', color: '#9CA3AF', fontFamily: 'monospace' }}>
+                                {badge}
+                            </span>
+                        ))}
+                    </div>
+
+                    {/* Links Grid */}
+                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '16px' }}>
+                        {[
+                            { label: 'Portfolio', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>, link: 'https://ambuj-portfolio-v2.netlify.app' },
+                            { label: 'GitHub', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>, link: 'https://github.com/Ambuj123-lab' },
+                            { label: 'Engineering Docs', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>, link: '#' },
+                            { label: 'LinkedIn', icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>, link: 'https://linkedin.com/in/ambujkumartripathi' }
+                        ].map(btn => (
+                            <a key={btn.label} href={btn.link} target="_blank" rel="noreferrer" style={{ 
+                                display: 'flex', alignItems: 'center', gap: '8px', padding: '12px 24px', 
+                                background: 'transparent', border: '1px solid #1B1F2A', borderRadius: '12px', 
+                                color: '#F59E0B', fontSize: '14px', fontWeight: 500, textDecoration: 'none',
+                                transition: 'all 0.2s', cursor: 'pointer'
+                            }}
+                            onMouseOver={e => { e.currentTarget.style.borderColor = '#F59E0B'; e.currentTarget.style.background = 'rgba(245, 158, 11, 0.05)'; }}
+                            onMouseOut={e => { e.currentTarget.style.borderColor = '#1B1F2A'; e.currentTarget.style.background = 'transparent'; }}
+                            >
+                                <span style={{ display: 'flex', alignItems: 'center' }}>{btn.icon}</span>
+                                {btn.label}
+                            </a>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* ══════════════════ FOOTER ══════════════════ */}
-            <footer style={{ padding: '32px 40px', borderTop: '1px solid #1B1F2A', textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: '#374151', fontWeight: 500 }}>
-                    &copy; 2026 Ambuj Kumar Tripathi. All rights reserved.
+            <footer style={{ padding: '32px 40px', background: '#07090F', textAlign: 'center' }}>
+                <p style={{ fontSize: '12px', color: '#4B5563', fontWeight: 500 }}>
+                    &copy; 2026 Citizen Safety AI — Engineered by <span style={{ color: '#F59E0B' }}>Ambuj Kumar Tripathi</span>. Production RAG, engineered for reality.
                 </p>
             </footer>
         </div>
