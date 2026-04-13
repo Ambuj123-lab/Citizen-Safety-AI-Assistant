@@ -159,17 +159,23 @@ const Login = () => {
                     <span style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.01em' }}>Citizen Safety AI</span>
                 </div>
                 
-                {/* Tech Stack Center */}
-                <div className="hidden lg:flex items-center gap-6" style={{ fontSize: '12px', fontWeight: 500, color: '#6B7280' }}>
-                    <span>LangChain</span>
-                    <span style={{ color: '#1B1F2A' }}>•</span>
-                    <span>Pinecone</span>
-                    <span style={{ color: '#1B1F2A' }}>•</span>
-                    <span>MongoDB</span>
-                    <span style={{ color: '#1B1F2A' }}>•</span>
-                    <span>Gemini</span>
-                    <span style={{ color: '#1B1F2A' }}>•</span>
-                    <span>Presidio PII</span>
+                {/* Interactive Navbar Center */}
+                <div className="hidden lg:flex items-center gap-7" style={{ fontSize: '13px', fontWeight: 500, color: '#9CA3AF' }}>
+                    <button onClick={() => document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', transition: 'color 0.2s', padding: 0 }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>Pipeline Structure</button>
+                    
+                    <button onClick={() => document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', transition: 'color 0.2s', padding: 0 }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>My Fine-Tuned Models</button>
+                    
+                    <div className="group relative" style={{ cursor: 'pointer', paddingBottom: '10px', marginBottom: '-10px' }}>
+                        <span style={{ transition: 'color 0.2s' }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>Live Systems <span style={{fontSize:'10px', marginLeft:'2px'}}>▼</span></span>
+                        <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 hidden group-hover:block" style={{ width: '260px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '12px', padding: '8px', zIndex: 100, boxShadow: '0 10px 40px rgba(0,0,0,0.8)' }}>
+                            <a href="https://agentic-rag-financial-parser.onrender.com/" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems:'center', gap:'10px', padding: '12px 14px', color: '#D1D5DB', textDecoration: 'none', borderRadius: '8px', transition: 'all 0.2s', marginBottom: '4px' }} onMouseOver={e => { e.currentTarget.style.background = 'rgba(245, 158, 11, 0.05)'; e.currentTarget.style.color = '#F59E0B'; }} onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#D1D5DB'; }}>
+                                <span style={{fontSize:'16px'}}>💰</span> Agentic Financial Parser
+                            </a>
+                            <a href="https://indian-legal-ai-expert.onrender.com/login" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems:'center', gap:'10px', padding: '12px 14px', color: '#D1D5DB', textDecoration: 'none', borderRadius: '8px', transition: 'all 0.2s' }} onMouseOver={e => { e.currentTarget.style.background = 'rgba(245, 158, 11, 0.05)'; e.currentTarget.style.color = '#F59E0B'; }} onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#D1D5DB'; }}>
+                                <span style={{fontSize:'16px'}}>⚖️</span> Indian Legal AI Expert
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -235,7 +241,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ FEATURES SECTION ══════════════════ */}
-            <section style={{ padding: '80px 40px 100px', position: 'relative', zIndex: 10 }}>
+            <section id="pipeline" style={{ padding: '80px 40px 100px', position: 'relative', zIndex: 10 }}>
                 <div style={{ maxWidth: '960px', margin: '0 auto' }}>
 
                     {/* Section Header */}
