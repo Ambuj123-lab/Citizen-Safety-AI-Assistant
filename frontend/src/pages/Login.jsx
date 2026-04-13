@@ -42,7 +42,7 @@ const Login = () => {
                 </svg>
             ),
             title: 'Agentic RAG Engine',
-            desc: 'Multi-turn retrieval on LangChain with Pinecone vector search and deterministic source citations across 20+ legal frameworks.'
+            desc: 'Multi-turn retrieval on LangChain with Pinecone vector search and deterministic source citations across legal frameworks.'
         },
         {
             icon: (
@@ -51,7 +51,7 @@ const Login = () => {
                 </svg>
             ),
             title: 'Zero-Trust PII Shield',
-            desc: 'Microsoft Presidio masks all personal identifiers before the LLM. 7-layer security with GDPR-compliant 30-day auto-delete.'
+            desc: 'Microsoft Presidio masks all personal identifiers before the LLM. 7-layer security with GDPR-compliant auto-delete.'
         },
         {
             icon: (
@@ -61,6 +61,37 @@ const Login = () => {
             ),
             title: 'Optimized Runtime',
             desc: '512MB RAM optimized with Redis semantic caching and Jina MRL embeddings, cutting storage overhead by 75%.'
+        },
+        {
+            icon: (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+                </svg>
+            ),
+            title: 'Persistent Storage',
+            desc: 'MongoDB Atlas securely stores sanitized user sessions, conversation metadata, and interaction history.'
+        },
+        {
+            icon: (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                </svg>
+            ),
+            title: 'Full Observability',
+            desc: 'Langfuse tracing monitors LLM latency, token usage, and RAG retrieval stages with strict zero-user tracking.'
+        },
+        {
+            icon: (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+            ),
+            title: 'Dual-LLM Engine',
+            desc: 'Highly resilient pipeline utilizing Google Gemini 3.1 with seamless auto-fallback to Gemma 4 for 99.9% uptime.'
         }
     ];
 
@@ -84,16 +115,37 @@ const Login = () => {
                     <img src={logo} alt="Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
                     <span style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(255,255,255,0.9)', letterSpacing: '-0.01em' }}>Citizen Safety AI</span>
                 </div>
-                <button onClick={handleGoogleLogin} style={{
-                    padding: '8px 18px', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.7)',
-                    background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', cursor: 'pointer',
-                    transition: 'all 0.2s'
-                }}
-                onMouseOver={e => { e.target.style.borderColor = 'rgba(255,255,255,0.25)'; e.target.style.color = '#fff'; }}
-                onMouseOut={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.color = 'rgba(255,255,255,0.7)'; }}
-                >
-                    Sign In →
-                </button>
+                
+                {/* Tech Stack Center */}
+                <div className="hidden lg:flex items-center gap-6" style={{ fontSize: '12px', fontWeight: 500, color: '#6B7280' }}>
+                    <span>LangChain</span>
+                    <span style={{ color: '#1B1F2A' }}>•</span>
+                    <span>Pinecone</span>
+                    <span style={{ color: '#1B1F2A' }}>•</span>
+                    <span>MongoDB</span>
+                    <span style={{ color: '#1B1F2A' }}>•</span>
+                    <span>Gemini</span>
+                    <span style={{ color: '#1B1F2A' }}>•</span>
+                    <span>Presidio PII</span>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+                    <a href="https://ambuj-rag-docs.netlify.app/" target="_blank" rel="noreferrer" style={{
+                        fontSize: '13px', fontWeight: 500, color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s'
+                    }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>
+                        Documentation
+                    </a>
+                    <button onClick={handleGoogleLogin} style={{
+                        padding: '8px 18px', fontSize: '13px', fontWeight: 500, color: 'rgba(255,255,255,0.7)',
+                        background: 'transparent', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', cursor: 'pointer',
+                        transition: 'all 0.2s'
+                    }}
+                    onMouseOver={e => { e.target.style.borderColor = 'rgba(255,255,255,0.25)'; e.target.style.color = '#fff'; }}
+                    onMouseOut={e => { e.target.style.borderColor = 'rgba(255,255,255,0.1)'; e.target.style.color = 'rgba(255,255,255,0.7)'; }}
+                    >
+                        Sign In →
+                    </button>
+                </div>
             </nav>
 
             {/* ── AMBIENT GLOW ── */}
@@ -153,7 +205,7 @@ const Login = () => {
                             Capabilities
                         </span>
                         <h2 style={{ fontSize: '32px', fontWeight: 600, letterSpacing: '-0.02em', color: '#fff' }}>
-                            Built for production.
+                            End-to-End Pipeline.
                         </h2>
                     </div>
 
