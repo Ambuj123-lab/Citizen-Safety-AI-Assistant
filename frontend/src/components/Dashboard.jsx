@@ -124,17 +124,26 @@ const Dashboard = () => {
             const reader = response.body.getReader();
             const decoder = new TextDecoder();
             
+            let buffer = '';
+
             while (true) {
                 const { value, done } = await reader.read();
                 if (done) break;
                 
-                const chunkStr = decoder.decode(value, { stream: true });
-                const lines = chunkStr.split('\\n');
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\\n');
+                
+                // Keep the last partial line in the buffer
+                buffer = lines.pop();
                 
                 for (const line of lines) {
+                    if (line.trim() === '') continue;
                     if (line.startsWith('data: ')) {
+                        const dataStr = line.slice(6).trim();
+                        if (dataStr === '[DONE]') continue;
+                        
                         try {
-                            const data = JSON.parse(line.slice(6));
+                            const data = JSON.parse(dataStr);
                             if (data.type === 'error') {
                                 setMessages(prev => {
                                     const newMsgs = [...prev];
