@@ -370,9 +370,8 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    # === DUAL-MODEL AUTO-FALLBACK CONFIG (Gemma 4 -> Gemini 3.1) ===
     primary_llm = ChatGoogleGenerativeAI(
-        model="gemma-4-31b-it",
+        model="gemini-3.1-flash-lite-preview",
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
@@ -380,7 +379,7 @@ Question: {question}"""
     )
     
     fallback_llm = ChatGoogleGenerativeAI(
-        model="gemini-3.1-flash-lite-preview",
+        model="gemma-4-31b-it",
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
@@ -661,14 +660,14 @@ User Name: {user_name}
 Question: {question}"""
 
     primary_llm = ChatGoogleGenerativeAI(
-        model="gemma-4-31b-it",
+        model="gemini-3.1-flash-lite-preview",
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
         timeout=60
     )
     fallback_llm = ChatGoogleGenerativeAI(
-        model="gemini-3.1-flash-lite-preview",
+        model="gemma-4-31b-it",
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
