@@ -118,7 +118,8 @@ const Dashboard = () => {
                 confidence: null,
                 latency: null,
                 pii_masked: false,
-                pii_entities: []
+                pii_entities: [],
+                isStreaming: true
             }]);
 
             const reader = response.body.getReader();
@@ -128,7 +129,16 @@ const Dashboard = () => {
 
             while (true) {
                 const { value, done } = await reader.read();
-                if (done) break;
+                if (done) {
+                    setMessages(prev => {
+                        const newMsgs = [...prev];
+                        if (newMsgs.length > 0) {
+                            newMsgs[newMsgs.length - 1].isStreaming = false;
+                        }
+                        return newMsgs;
+                    });
+                    break;
+                }
                 
                 buffer += decoder.decode(value, { stream: true });
                 const lines = buffer.split('\n');
@@ -584,7 +594,7 @@ const Dashboard = () => {
                                         </div>
 
                                         {/* Sources Accordion Mode */}
-                                        {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
+                                        {msg.role === 'assistant' && !msg.isStreaming && msg.sources && msg.sources.length > 0 && (
                                             <details style={S.sourceDetails}>
                                                 <summary style={S.sourceSummary}>
                                                     📄 {msg.sources.length} SOURCES CITED
@@ -603,7 +613,7 @@ const Dashboard = () => {
 
                                         {/* Confidence + PII */}
                                         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px', marginTop: '12px', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
-                                            {msg.role === 'assistant' && msg.confidence && (
+                                            {msg.role === 'assistant' && !msg.isStreaming && msg.confidence && (
                                                 <span style={{ fontSize: '11px', color: 'rgba(16,185,129,0.9)', fontWeight: 600 }}>✨ {msg.confidence}% Confidence</span>
                                             )}
                                             {msg.pii_masked && msg.pii_entities?.length > 0 && (
