@@ -34,7 +34,7 @@ const StatCard = ({ value, suffix, label, delay }) => {
     const { count, ref } = useCountUp(value, 2000);
 
     return (
-        <div ref={ref} className={`fade-up ${delay} relative flex flex-col items-center justify-center p-6 bg-white/[0.02] hover:bg-white/[0.04] border border-white/[0.05] rounded-2xl backdrop-blur-xl transition-colors`}>
+        <div ref={ref} className={`fade-up ${delay} relative flex flex-col items-center justify-center p-4 transition-colors`}>
             <p className="text-3xl md:text-4xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/70 tracking-tight tabular-nums relative z-10">
                 {count.toLocaleString()}{suffix}
             </p>
@@ -47,10 +47,6 @@ const StatCard = ({ value, suffix, label, delay }) => {
 const Login = () => {
     const handleGoogleLogin = () => {
         window.location.href = authAPI.getLoginUrl();
-    };
-
-    const handleGitHubLogin = () => {
-        window.location.href = `${authAPI.getLoginUrl().replace('google', 'github')}`;
     };
 
     return (
@@ -138,63 +134,63 @@ const Login = () => {
                     An advanced retrieval-augmented generation pipeline tailored for Indian legal frameworks. Real-time PII redaction ensures absolute privacy.
                 </p>
 
-                {/* Main Feature Cards - Clean Glassmorphism */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-12 fade-up d-4">
+                {/* Main Feature Cards - Ultra Clean */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 w-full max-w-5xl mb-16 fade-up d-4">
                     
                     {/* Card 1 */}
-                    <div className="relative p-8 text-left bg-[#0A0A0A] border border-white/[0.08] hover:border-white/[0.15] rounded-3xl transition-colors group">
-                        <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
-                            <svg className="w-10 h-10 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <div className="text-left relative">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.03] border border-white/[0.08] mb-6">
+                            <svg className="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                             </svg>
                         </div>
-                        <h3 className="text-[20px] font-semibold text-white mb-3 tracking-tight">Agentic RAG</h3>
-                        <p className="text-[14px] text-neutral-400 leading-[1.6]">
+                        <h3 className="text-[18px] font-medium text-white mb-3 tracking-tight">Agentic RAG</h3>
+                        <p className="text-[14px] text-neutral-500 leading-relaxed font-light">
                             Multi-turn retrieval pipeline built on LangChain with Pinecone vector search and deterministic source citations across 20+ legal frameworks.
                         </p>
                     </div>
 
                     {/* Card 2 */}
-                    <div className="relative p-8 text-left bg-[#0A0A0A] border border-white/[0.08] hover:border-white/[0.15] rounded-3xl transition-colors group">
-                        <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
-                            <svg className="w-10 h-10 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <div className="text-left relative">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.03] border border-white/[0.08] mb-6">
+                            <svg className="w-5 h-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                         </div>
-                        <h3 className="text-[20px] font-semibold text-white mb-3 tracking-tight">PII Shield</h3>
-                        <p className="text-[14px] text-neutral-400 leading-[1.6]">
+                        <h3 className="text-[18px] font-medium text-white mb-3 tracking-tight">PII Shield</h3>
+                        <p className="text-[14px] text-neutral-500 leading-relaxed font-light">
                             Microsoft Presidio masks personal identifiers before they reach the LLM. 7-layer security with GDPR-compliant 30-day auto-delete.
                         </p>
                     </div>
 
                     {/* Card 3 */}
-                    <div className="relative p-8 text-left bg-[#0A0A0A] border border-white/[0.08] hover:border-white/[0.15] rounded-3xl transition-colors group">
-                        <div className="absolute top-0 right-0 p-6 opacity-20 group-hover:opacity-40 transition-opacity">
-                            <svg className="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1}>
+                    <div className="text-left relative">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-white/[0.03] border border-white/[0.08] mb-6">
+                            <svg className="w-5 h-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
                             </svg>
                         </div>
-                        <h3 className="text-[20px] font-semibold text-white mb-3 tracking-tight">Rapid Scale</h3>
-                        <p className="text-[14px] text-neutral-400 leading-[1.6]">
+                        <h3 className="text-[18px] font-medium text-white mb-3 tracking-tight">Rapid Scale</h3>
+                        <p className="text-[14px] text-neutral-500 leading-relaxed font-light">
                             Optimized for 512MB RAM constraints with Redis semantic caching, circuit breakers, and Jina MRL embeddings achieving 75% savings.
                         </p>
                     </div>
 
                 </div>
 
-                {/* Stats Grid - Integrated organically */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-5xl mb-16 fade-up d-4">
+                {/* Stats Grid - Ultra Minimalist */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full max-w-5xl mb-20 fade-up d-4 border-t border-white/[0.05] pt-12">
                     <StatCard delay="d-1" value={31500} suffix="+" label="Total Chunks Indexed" />
                     <StatCard delay="d-2" value={28000} suffix="+" label="Child Vectors" />
                     <StatCard delay="d-3" value={75} suffix="%" label="Storage Saved" />
                     <StatCard delay="d-4" value={7} suffix=" Layers" label="Security Compliance" />
                 </div>
 
-                {/* Login Buttons - Premium Polish */}
-                <div className="fade-up d-5 flex flex-col sm:flex-row items-center justify-center gap-4">
+                {/* Login Button - Single & Focused */}
+                <div className="fade-up d-5 flex items-center justify-center">
                     <button
                         onClick={handleGoogleLogin}
-                        className="group relative flex items-center justify-center gap-3 h-12 w-64 bg-white hover:bg-neutral-100 text-black text-[14px] font-semibold rounded-full transition-all active:scale-[0.98]"
+                        className="group relative flex items-center justify-center gap-3 h-12 w-72 bg-white hover:bg-neutral-100 text-black text-[14px] font-semibold rounded-full transition-all active:scale-[0.98] shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                     >
                         {/* Shimmer effect inside button */}
                         <div className="absolute inset-0 overflow-hidden rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
@@ -207,16 +203,6 @@ const Login = () => {
                             <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" />
                         </svg>
                         <span className="relative z-10">Continue with Google</span>
-                    </button>
-                    
-                    <button
-                        onClick={handleGitHubLogin}
-                        className="flex items-center justify-center gap-3 h-12 w-64 bg-white/[0.03] hover:bg-white/[0.08] text-white text-[14px] font-medium rounded-full border border-white/[0.1] transition-all active:scale-[0.98]"
-                    >
-                        <svg className="w-5 h-5 opacity-90" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
-                        Continue with GitHub
                     </button>
                 </div>
                 
