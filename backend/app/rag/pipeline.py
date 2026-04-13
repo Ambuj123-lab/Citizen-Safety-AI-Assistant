@@ -674,28 +674,31 @@ Question: {question}"""
         max_output_tokens=3000,
         timeout=60
     )
-    llm = primary_llm.with_fallbacks([fallback_llm])
     
-    chain = ChatPromptTemplate.from_template(system_prompt) | llm | StrOutputParser()
+    prompt_template = ChatPromptTemplate.from_template(system_prompt)
+    parser = StrOutputParser()
+    
+    invoke_args = {
+        "context": context, 
+        "question": question, 
+        "history": history, 
+        "user_name": user_name,
+        "current_date": datetime.now().strftime("%d %B %Y")
+    }
     
     try:
-        def invoke_llm():
-            return chain.stream(
-                {
-                    "context": context, 
-                    "question": question, 
-                    "history": history, 
-                    "user_name": user_name,
-                    "current_date": datetime.now().strftime("%d %B %Y")
-                }
-            )
-        
-        response_stream = llm_breaker.call(invoke_llm)
-        return response_stream, time.time() - start_time
-            
-    except Exception as e:
-        logger.error(f"Circuit Breaker/LLM Error: {e}")
-        raise e
+        # Try primary model first
+        chain = prompt_template | primary_llm | parser
+        return chain.stream(invoke_args), time.time() - start_time
+    except Exception as primary_err:
+        logger.warning(f"Primary LLM failed, falling back: {primary_err}")
+        try:
+            # Fallback to secondary model
+            chain = prompt_template | fallback_llm | parser
+            return chain.stream(invoke_args), time.time() - start_time
+        except Exception as fallback_err:
+            logger.error(f"Both LLMs failed: {fallback_err}")
+            raise fallback_err
 
 def search_and_respond_stream(
     question: str,
