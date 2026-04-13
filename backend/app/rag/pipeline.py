@@ -281,7 +281,7 @@ def generate_response(
     user_id: str = "anonymous"
 ) -> tuple[str, float]:
     """Generate response using LLM with circuit breaker"""
-    from langchain_openai import ChatOpenAI
+    from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.output_parsers import StrOutputParser
 
@@ -370,14 +370,24 @@ Chat History: {history}
 User Name: {user_name}
 Question: {question}"""
 
-    # OpenRouter LLM (Free Tier - DeepSeek R1T2 671B)
-    llm = ChatOpenAI(
-        model="qwen/qwen3-235b-a22b-thinking-2507",
-        openai_api_key=settings.OPENROUTER_API_KEY,
-        openai_api_base="https://openrouter.ai/api/v1",
+    # === DUAL-MODEL AUTO-FALLBACK CONFIG (Gemma 4 -> Gemini 3.1) ===
+    primary_llm = ChatGoogleGenerativeAI(
+        model="gemma-4-31b-it",
+        google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
-        max_tokens=3000
+        max_output_tokens=3000,
+        timeout=60
     )
+    
+    fallback_llm = ChatGoogleGenerativeAI(
+        model="gemini-3.1-flash-lite-preview",
+        google_api_key=settings.GOOGLE_API_KEY,
+        temperature=0.3,
+        max_output_tokens=3000,
+        timeout=60
+    )
+    
+    llm = primary_llm.with_fallbacks([fallback_llm])
     
     # Langfuse Integration (Safe Mode - No user tracking to prevent crashes)
     langfuse_handler = None
