@@ -260,7 +260,7 @@ const Dashboard = () => {
 
         topBar: { height: '52px', borderBottom: '1px solid #1B1F2A', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#0D1117' },
         topBarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6' },
-        statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)' },
+        statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.2s' },
         statusDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' },
         topBarMeta: { display: 'flex', alignItems: 'center', gap: '16px', fontSize: '11px', color: '#4B5563' },
 
@@ -294,7 +294,7 @@ const Dashboard = () => {
         inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '8px 12px 8px 18px', transition: 'border-color 0.2s' },
         inputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#E5E7EB', fontSize: '14px', padding: '6px 0' },
         sendBtn: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s' },
-        disclaimer: { textAlign: 'center', fontSize: '10px', color: '#374151', marginTop: '10px', userSelect: 'none' },
+        disclaimer: { textAlign: 'center', fontSize: '11.5px', color: '#6B7280', marginTop: '12px', userSelect: 'none', fontWeight: 500 },
 
         // Feedback
         feedbackBar: { borderTop: '1px solid #1B1F2A', padding: '10px 24px', background: '#0D1117' },
@@ -465,10 +465,17 @@ const Dashboard = () => {
                 <div style={S.topBar}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
                         <h2 style={S.topBarTitle}>Citizen Safety AI</h2>
-                        <span style={S.statusBadge}>
+                        <a 
+                            href="https://stats.uptimerobot.com/4tYmSQnuBE" 
+                            target="_blank" 
+                            rel="noopener noreferrer"
+                            style={S.statusBadge}
+                            onMouseOver={e => e.currentTarget.style.background = 'rgba(16,185,129,0.18)'}
+                            onMouseOut={e => e.currentTarget.style.background = 'rgba(16,185,129,0.1)'}
+                        >
                             <span style={S.statusDot} />
                             System: Active
-                        </span>
+                        </a>
                     </div>
                     <div style={S.topBarMeta}>
                         <span>{stats.active} online</span>
