@@ -220,120 +220,163 @@ const Dashboard = () => {
         'Agent Developer Resume',
     ];
 
+    /* ═══════════════════════════════════════════════════════════════
+       STYLES — Using inline styles for pixel-perfect control
+       Color Palette: #07090F (page), #0D1117 (sidebar), #161B26 (cards)
+       Accent: #3B82F6 (blue), #10B981 (green status)
+    ═══════════════════════════════════════════════════════════════ */
+
+    const S = {
+        root: { display: 'flex', height: '100vh', background: '#0D1117', fontFamily: "'Inter', system-ui, sans-serif", color: '#E5E7EB', overflow: 'hidden' },
+
+        // Sidebar
+        sidebar: { width: '240px', background: '#0D1117', borderRight: '1px solid #1B1F2A', display: 'flex', flexDirection: 'column', flexShrink: 0 },
+        sidebarHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #1B1F2A' },
+        sidebarLogo: { width: '24px', height: '24px', objectFit: 'contain' },
+        sidebarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.01em' },
+
+        userSection: { padding: '12px 16px', borderBottom: '1px solid #1B1F2A' },
+        userRow: { display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 8px', borderRadius: '8px' },
+        userAvatar: { width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' },
+        userAvatarFallback: { width: '32px', height: '32px', borderRadius: '50%', background: '#1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '13px', fontWeight: 600 },
+        userName: { fontSize: '13px', color: '#E5E7EB', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 },
+        userEmail: { fontSize: '11px', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
+
+        navSection: { flex: 1, overflowY: 'auto', padding: '8px 12px', scrollbarWidth: 'none' },
+        navBtn: { width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px', border: 'none', background: 'transparent', color: '#9CA3AF', fontSize: '13px', cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left' },
+        navIcon: { width: '16px', height: '16px', flexShrink: 0 },
+        navDivider: { height: '1px', background: '#1B1F2A', margin: '8px 4px' },
+
+        kbItem: { display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 8px', marginLeft: '16px', borderRadius: '6px', fontSize: '12px', color: '#6B7280', cursor: 'default', transition: 'background 0.15s' },
+        kbIcon: { width: '12px', height: '12px', color: '#4B5563', flexShrink: 0 },
+
+        indexBtn: { width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '7px 12px', borderRadius: '8px', border: 'none', fontSize: '12px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: '#10B981', color: '#fff' },
+
+        logoutSection: { padding: '12px 12px', borderTop: '1px solid #1B1F2A' },
+        logoutBtn: { width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px', border: 'none', background: 'transparent', color: '#6B7280', fontSize: '13px', cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left' },
+
+        // Main
+        main: { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#07090F' },
+
+        topBar: { height: '52px', borderBottom: '1px solid #1B1F2A', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#0D1117' },
+        topBarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6' },
+        statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)' },
+        statusDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' },
+        topBarMeta: { display: 'flex', alignItems: 'center', gap: '16px', fontSize: '11px', color: '#4B5563' },
+
+        chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#1B1F2A transparent' },
+        chatInner: { maxWidth: '760px', margin: '0 auto', padding: '24px' },
+
+        // Welcome
+        welcomeWrap: { padding: '60px 0', textAlign: 'center' },
+        welcomeIcon: { width: '48px', height: '48px', borderRadius: '14px', background: '#111827', border: '1px solid #1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' },
+        welcomeTitle: { fontSize: '22px', fontWeight: 600, color: '#F3F4F6', marginBottom: '8px' },
+        welcomeDesc: { fontSize: '14px', color: '#6B7280', maxWidth: '400px', margin: '0 auto 40px' },
+        quickGrid: { display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', maxWidth: '480px', margin: '0 auto' },
+        quickBtn: { padding: '14px', borderRadius: '12px', background: '#111827', border: '1px solid #1B1F2A', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s' },
+        quickIcon: { fontSize: '16px', display: 'block', marginBottom: '8px' },
+        quickText: { fontSize: '12px', color: '#9CA3AF', lineHeight: '1.4' },
+
+        // Messages
+        msgWrap: { display: 'flex', gap: '12px', marginBottom: '20px' },
+        msgAvatar: { width: '28px', height: '28px', borderRadius: '8px', objectFit: 'contain', flexShrink: 0, marginTop: '2px' },
+        userMsgAvatar: { width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, marginTop: '2px' },
+        userMsgAvatarFallback: { width: '28px', height: '28px', borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 600, flexShrink: 0, marginTop: '2px' },
+
+        botBubble: { padding: '14px 18px', borderRadius: '14px 14px 14px 4px', background: '#111827', border: '1px solid #1B1F2A', maxWidth: '85%', fontSize: '14px', lineHeight: '1.65', color: '#D1D5DB' },
+        userBubble: { padding: '12px 18px', borderRadius: '14px 14px 4px 14px', background: '#3B82F6', color: '#fff', maxWidth: '80%', fontSize: '14px', lineHeight: '1.5', marginLeft: 'auto' },
+
+        sourceTag: { display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '6px', fontSize: '10px', color: '#9CA3AF', background: '#111827', border: '1px solid #1B1F2A', marginRight: '4px', marginTop: '8px' },
+
+        // Input
+        inputWrap: { borderTop: '1px solid #1B1F2A', padding: '16px 24px', background: '#0D1117' },
+        inputInner: { maxWidth: '760px', margin: '0 auto' },
+        inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '8px 12px 8px 18px', transition: 'border-color 0.2s' },
+        inputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#E5E7EB', fontSize: '14px', padding: '6px 0' },
+        sendBtn: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s' },
+        disclaimer: { textAlign: 'center', fontSize: '10px', color: '#374151', marginTop: '10px', userSelect: 'none' },
+
+        // Feedback
+        feedbackBar: { borderTop: '1px solid #1B1F2A', padding: '10px 24px', background: '#0D1117' },
+        feedbackInner: { maxWidth: '760px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+
+        // Audit Modal
+        modalOverlay: { position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' },
+        modalCard: { width: '100%', maxWidth: '440px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '16px', overflow: 'hidden' },
+        modalHeader: { padding: '16px 20px', borderBottom: '1px solid #1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+        modalBody: { padding: '16px 20px', maxHeight: '50vh', overflowY: 'auto' },
+        modalFooter: { padding: '12px 20px', borderTop: '1px solid #1B1F2A' },
+    };
+
     return (
-        <div className="flex h-screen bg-[#0d1117]" style={{ fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+        <div style={S.root}>
+            <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
             {/* Toast Notifications */}
-            <div className="fixed top-4 right-4 z-50 space-y-2">
+            <div style={{ position: 'fixed', top: '16px', right: '16px', zIndex: 60, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {toasts.map(toast => (
-                    <div
-                        key={toast.id}
-                        className={`px-4 py-2.5 rounded-lg text-[13px] font-medium max-w-xs animate-slide-up
-                            ${toast.type === 'success' ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/20' :
-                                toast.type === 'error' ? 'bg-red-500/15 text-red-400 border border-red-500/20' :
-                                    toast.type === 'warning' ? 'bg-amber-500/15 text-amber-400 border border-amber-500/20' :
-                                        'bg-blue-500/15 text-blue-400 border border-blue-500/20'}`}
-                    >
+                    <div key={toast.id} style={{
+                        padding: '10px 16px', borderRadius: '10px', fontSize: '13px', fontWeight: 500, maxWidth: '320px',
+                        background: toast.type === 'success' ? 'rgba(16,185,129,0.12)' : toast.type === 'error' ? 'rgba(239,68,68,0.12)' : toast.type === 'warning' ? 'rgba(245,158,11,0.12)' : 'rgba(59,130,246,0.12)',
+                        color: toast.type === 'success' ? '#10B981' : toast.type === 'error' ? '#EF4444' : toast.type === 'warning' ? '#F59E0B' : '#3B82F6',
+                        border: `1px solid ${toast.type === 'success' ? 'rgba(16,185,129,0.2)' : toast.type === 'error' ? 'rgba(239,68,68,0.2)' : toast.type === 'warning' ? 'rgba(245,158,11,0.2)' : 'rgba(59,130,246,0.2)'}`,
+                    }}>
                         {toast.message}
                     </div>
                 ))}
             </div>
 
             {/* ═══ SIDEBAR ═══ */}
-            <aside className="w-[220px] bg-[#161b22] flex flex-col h-screen shrink-0 border-r border-[#21262d]">
+            <aside style={S.sidebar}>
 
                 {/* Logo */}
-                <div className="h-[52px] px-4 flex items-center gap-2.5 border-b border-[#21262d]">
-                    <img src={logo} alt="Logo" className="w-6 h-6 object-contain" />
-                    <span className="text-[14px] font-semibold text-[#e6edf3]">Citizen Safety AI</span>
+                <div style={S.sidebarHeader}>
+                    <img src={logo} alt="Logo" style={S.sidebarLogo} />
+                    <span style={S.sidebarTitle}>Citizen Safety AI</span>
                 </div>
 
                 {/* User */}
-                <div className="px-3 py-3 border-b border-[#21262d]">
-                    <div className="flex items-center gap-2.5 px-2 py-2 rounded-lg hover:bg-[#1c2128] transition-colors">
+                <div style={S.userSection}>
+                    <div style={S.userRow}>
                         {user?.picture ? (
-                            <img src={user.picture} className="w-7 h-7 rounded-full object-cover" alt="User" />
+                            <img src={user.picture} style={S.userAvatar} alt="User" />
                         ) : (
-                            <div className="w-7 h-7 rounded-full bg-[#21262d] flex items-center justify-center text-[#e6edf3] text-xs font-semibold">
-                                {user?.name?.charAt(0)}
-                            </div>
+                            <div style={S.userAvatarFallback}>{user?.name?.charAt(0)}</div>
                         )}
-                        <span className="text-[13px] text-[#e6edf3] font-medium truncate flex-1">{user?.name}</span>
+                        <div style={{ overflow: 'hidden', flex: 1 }}>
+                            <div style={S.userName}>{user?.name}</div>
+                            <div style={S.userEmail}>{user?.email}</div>
+                        </div>
                     </div>
                 </div>
 
                 {/* Nav Items */}
-                <div className="flex-1 overflow-y-auto px-3 py-2 space-y-0.5" style={{ scrollbarWidth: 'none' }}>
+                <div style={S.navSection}>
 
-                    {/* New Session */}
-                    <button
-                        onClick={handleNewSession}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#1c2128] transition-colors"
-                    >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                        </svg>
-                        New Session
-                    </button>
-
-                    {/* Upload */}
-                    <input ref={fileInputRef} type="file" multiple accept=".pdf" hidden onChange={handleFileUpload} />
-                    <button
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#1c2128] transition-colors"
-                    >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        {stagedFiles.length > 0 ? stagedFiles.map(f => f.name).join(', ') : 'Upload PDFs'}
-                    </button>
-
-                    {stagedFiles.length > 0 && (
-                        <button
-                            onClick={handleIndex}
-                            disabled={isIndexing}
-                            className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-[12px] font-medium text-[#0d1117] bg-[#238636] hover:bg-[#2ea043] transition-colors"
-                        >
-                            {isIndexing ? 'Indexing...' : '⚡ Index to Brain'}
-                        </button>
-                    )}
-
-                    {uploadedFiles.length > 0 && (
-                        <div className="px-2 pt-1 space-y-1">
-                            {uploadedFiles.map((name, i) => (
-                                <div key={i} className="flex items-center gap-2 text-[11px] text-emerald-400/70 truncate">
-                                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
-                                    {name}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    {/* Divider */}
-                    <div className="h-px bg-[#21262d] my-2" />
-
-                    {/* Knowledge Base */}
+                    {/* Knowledge Base (Expandable) */}
                     <button
                         onClick={() => setTechExpanded(!techExpanded)}
-                        className="w-full flex items-center justify-between px-3 py-2 rounded-lg text-[13px] text-[#8b949e] hover:text-[#e6edf3] hover:bg-[#1c2128] transition-colors"
+                        style={S.navBtn}
+                        onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF'; }}
                     >
-                        <span className="flex items-center gap-2.5">
-                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
-                            </svg>
-                            Knowledge Base
-                        </span>
-                        <svg className={`w-3 h-3 transition-transform ${techExpanded ? 'rotate-90' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                        </svg>
+                        <span style={{ flex: 1 }}>Knowledge Base</span>
+                        <svg style={{ width: '12px', height: '12px', transition: 'transform 0.2s', transform: techExpanded ? 'rotate(90deg)' : 'rotate(0)' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                         </svg>
                     </button>
 
                     {techExpanded && (
-                        <div className="pl-4 space-y-0.5 pt-0.5">
+                        <div style={{ paddingTop: '4px' }}>
                             {kbDocs.map((doc, idx) => (
-                                <div key={idx} className="flex items-center gap-2 px-2 py-1.5 text-[12px] text-[#8b949e] rounded-md hover:bg-[#1c2128] cursor-default transition-colors">
-                                    <svg className="w-3 h-3 text-[#484f58] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                <div key={idx} style={S.kbItem}
+                                    onMouseOver={e => e.currentTarget.style.background = '#111827'}
+                                    onMouseOut={e => e.currentTarget.style.background = 'transparent'}
+                                >
+                                    <svg style={S.kbIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m2.25 0H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                                     </svg>
                                     {doc}
@@ -341,61 +384,119 @@ const Dashboard = () => {
                             ))}
                         </div>
                     )}
+
+                    <div style={S.navDivider} />
+
+                    {/* Upload PDFs */}
+                    <input ref={fileInputRef} type="file" multiple accept=".pdf" hidden onChange={handleFileUpload} />
+                    <button
+                        onClick={() => fileInputRef.current?.click()}
+                        disabled={uploading}
+                        style={S.navBtn}
+                        onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF'; }}
+                    >
+                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                        </svg>
+                        {stagedFiles.length > 0 ? stagedFiles.map(f => f.name).join(', ') : 'Upload PDF'}
+                    </button>
+
+                    {stagedFiles.length > 0 && (
+                        <button onClick={handleIndex} disabled={isIndexing} style={S.indexBtn}>
+                            {isIndexing ? 'Indexing...' : '⚡ Index to Brain'}
+                        </button>
+                    )}
+
+                    {uploadedFiles.length > 0 && (
+                        <div style={{ padding: '4px 0 0 8px' }}>
+                            {uploadedFiles.map((name, i) => (
+                                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: 'rgba(16,185,129,0.7)', padding: '2px 0' }}>
+                                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981', flexShrink: 0 }} />
+                                    {name}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+
+                    <div style={S.navDivider} />
+
+                    {/* New Session */}
+                    <button onClick={handleNewSession} style={S.navBtn}
+                        onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF'; }}
+                    >
+                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        New Session
+                    </button>
+
+                    {/* Clear History */}
+                    <button onClick={handleNewSession} style={S.navBtn}
+                        onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
+                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF'; }}
+                    >
+                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                        </svg>
+                        Clear History
+                    </button>
                 </div>
 
-                {/* Bottom: Logout */}
-                <div className="px-3 py-3 border-t border-[#21262d]">
-                    <button
-                        onClick={logout}
-                        className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-[#8b949e] hover:text-[#f85149] hover:bg-[#f851491a] transition-colors"
+                {/* Logout */}
+                <div style={S.logoutSection}>
+                    <button onClick={logout} style={S.logoutBtn}
+                        onMouseOver={e => { e.currentTarget.style.color = '#EF4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.08)'; }}
+                        onMouseOut={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'transparent'; }}
                     >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
                         </svg>
-                        Log out
+                        Logout
                     </button>
                 </div>
             </aside>
 
             {/* ═══ MAIN CHAT ═══ */}
-            <main className="flex-1 flex flex-col bg-[#0d1117] min-w-0">
+            <main style={S.main}>
 
                 {/* Top Bar */}
-                <div className="h-[52px] border-b border-[#21262d] px-6 flex items-center justify-between shrink-0">
-                    <h2 className="text-[14px] font-semibold text-[#e6edf3]">Citizen Safety AI</h2>
-                    <div className="flex items-center gap-4 text-[11px] text-[#484f58]">
-                        <span className="flex items-center gap-1.5">
-                            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                            {stats.active} online
+                <div style={S.topBar}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <h2 style={S.topBarTitle}>Citizen Safety AI</h2>
+                        <span style={S.statusBadge}>
+                            <span style={S.statusDot} />
+                            System: Active
                         </span>
+                    </div>
+                    <div style={S.topBarMeta}>
+                        <span>{stats.active} online</span>
+                        <span>·</span>
                         <span>{stats.visitors} visits</span>
                     </div>
                 </div>
 
                 {/* Chat Area */}
-                <div className="flex-1 overflow-y-auto" style={{ scrollbarWidth: 'thin', scrollbarColor: '#21262d transparent' }}>
-                    <div className="max-w-[760px] mx-auto px-6 py-6">
+                <div style={S.chatArea}>
+                    <div style={S.chatInner}>
 
                         {/* Welcome */}
                         {messages.length === 0 && !loading && (
-                            <div className="py-16 text-center">
-                                <div className="w-12 h-12 rounded-xl bg-[#161b22] border border-[#21262d] flex items-center justify-center mx-auto mb-5">
-                                    <span className="text-2xl">🛡️</span>
-                                </div>
-                                <h1 className="text-[22px] font-semibold text-[#e6edf3] mb-2">Citizen Safety & Awareness AI</h1>
-                                <p className="text-[14px] text-[#8b949e] mb-10 max-w-md mx-auto">
+                            <div style={S.welcomeWrap}>
+                                <div style={S.welcomeIcon}>🛡️</div>
+                                <h1 style={S.welcomeTitle}>Citizen Safety & Awareness AI</h1>
+                                <p style={S.welcomeDesc}>
                                     Ask about digital safety, legal rights, POSH, POCSO, or financial fraud prevention.
                                 </p>
-
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-2 max-w-lg mx-auto">
+                                <div style={S.quickGrid}>
                                     {quickActions.map((qa, i) => (
-                                        <button
-                                            key={i}
-                                            onClick={() => setInput(qa.text)}
-                                            className="p-3 rounded-xl bg-[#161b22] border border-[#21262d] hover:border-[#30363d] text-left transition-colors"
+                                        <button key={i} onClick={() => setInput(qa.text)} style={S.quickBtn}
+                                            onMouseOver={e => e.currentTarget.style.borderColor = '#2D3348'}
+                                            onMouseOut={e => e.currentTarget.style.borderColor = '#1B1F2A'}
                                         >
-                                            <span className="text-base block mb-1.5">{qa.icon}</span>
-                                            <p className="text-[12px] text-[#8b949e] leading-snug">{qa.text}</p>
+                                            <span style={S.quickIcon}>{qa.icon}</span>
+                                            <p style={S.quickText}>{qa.text}</p>
                                         </button>
                                     ))}
                                 </div>
@@ -403,42 +504,30 @@ const Dashboard = () => {
                         )}
 
                         {/* Messages */}
-                        <div className="space-y-5">
+                        <div>
                             {messages.map((msg, i) => (
-                                <div key={i} className={`flex gap-3 ${msg.role === 'user' ? 'justify-end' : ''}`}>
+                                <div key={i} style={{ ...S.msgWrap, justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
 
-                                    {/* Bot Avatar */}
                                     {msg.role === 'assistant' && (
-                                        <img src={logo} alt="AI" className="w-7 h-7 rounded-lg object-contain shrink-0 mt-0.5" />
+                                        <img src={logo} alt="AI" style={S.msgAvatar} />
                                     )}
 
-                                    <div className={`max-w-[85%] ${msg.role === 'user' ? 'order-first' : ''}`}>
-                                        {/* Bubble */}
-                                        <div className={`px-4 py-3 rounded-xl text-[14px] leading-relaxed ${msg.role === 'user'
-                                            ? 'bg-[#1f6feb] text-white rounded-br-sm ml-auto'
-                                            : 'bg-[#161b22] text-[#e6edf3] border border-[#21262d] rounded-bl-sm'
-                                            }`}>
+                                    <div style={{ maxWidth: '85%' }}>
+                                        <div style={msg.role === 'user' ? S.userBubble : S.botBubble}>
                                             {msg.role === 'assistant' ? (
-                                                <div className="prose prose-sm prose-invert max-w-none
-                                                    prose-headings:text-[#e6edf3] prose-headings:font-semibold prose-headings:text-sm
-                                                    prose-strong:text-[#e6edf3]
-                                                    prose-p:text-[#c9d1d9] prose-p:text-[13px] prose-p:leading-relaxed
-                                                    prose-li:text-[#c9d1d9] prose-li:text-[13px]
-                                                    prose-a:text-[#58a6ff]
-                                                    prose-code:text-[#79c0ff] prose-code:bg-[#0d1117] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs
-                                                    prose-blockquote:border-l-[#30363d] prose-blockquote:text-[#8b949e]">
+                                                <div className="prose prose-sm prose-invert max-w-none prose-headings:text-[#E5E7EB] prose-headings:font-semibold prose-headings:text-sm prose-strong:text-[#E5E7EB] prose-p:text-[#D1D5DB] prose-p:text-[13px] prose-p:leading-relaxed prose-li:text-[#D1D5DB] prose-li:text-[13px] prose-a:text-[#3B82F6] prose-code:text-[#93C5FD] prose-code:bg-[#0D1117] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-blockquote:border-l-[#1B1F2A] prose-blockquote:text-[#6B7280]">
                                                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                                                 </div>
                                             ) : (
-                                                <p>{msg.content}</p>
+                                                <p style={{ margin: 0 }}>{msg.content}</p>
                                             )}
                                         </div>
 
                                         {/* Sources */}
                                         {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
-                                            <div className="mt-2 flex flex-wrap gap-1.5">
+                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
                                                 {msg.sources.map((src, j) => (
-                                                    <span key={j} className="text-[10px] text-[#8b949e] bg-[#161b22] border border-[#21262d] px-2 py-1 rounded-md">
+                                                    <span key={j} style={S.sourceTag}>
                                                         📄 {src.file || src} · p.{src.page || '?'}
                                                     </span>
                                                 ))}
@@ -446,20 +535,14 @@ const Dashboard = () => {
                                         )}
 
                                         {/* Confidence + PII */}
-                                        <div className="mt-1.5 flex flex-wrap items-center gap-2">
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
                                             {msg.role === 'assistant' && msg.confidence && (
-                                                <span className="text-[10px] text-emerald-400/70">{msg.confidence}% match</span>
+                                                <span style={{ fontSize: '10px', color: 'rgba(16,185,129,0.7)' }}>{msg.confidence}% match</span>
                                             )}
                                             {msg.pii_masked && msg.pii_entities?.length > 0 && (
-                                                <button
-                                                    type="button"
-                                                    onClick={(e) => {
-                                                        e.preventDefault();
-                                                        e.stopPropagation();
-                                                        setAuditModal(msg.pii_entities);
-                                                        showToast('Generating security report...', 'info');
-                                                    }}
-                                                    className="text-[10px] text-[#58a6ff] hover:underline cursor-pointer"
+                                                <button type="button"
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAuditModal(msg.pii_entities); showToast('Generating security report...', 'info'); }}
+                                                    style={{ fontSize: '10px', color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
                                                 >
                                                     🛡️ Identity Shielded · View Audit
                                                 </button>
@@ -467,15 +550,12 @@ const Dashboard = () => {
                                         </div>
                                     </div>
 
-                                    {/* User Avatar */}
                                     {msg.role === 'user' && (
-                                        <div className="shrink-0 mt-0.5">
+                                        <div>
                                             {user?.picture?.length > 10 ? (
-                                                <img src={user.picture} alt="You" className="w-7 h-7 rounded-full object-cover" />
+                                                <img src={user.picture} alt="You" style={S.userMsgAvatar} />
                                             ) : (
-                                                <div className="w-7 h-7 rounded-full bg-[#1f6feb] flex items-center justify-center text-white text-xs font-semibold">
-                                                    {user?.name?.charAt(0) || 'U'}
-                                                </div>
+                                                <div style={S.userMsgAvatarFallback}>{user?.name?.charAt(0) || 'U'}</div>
                                             )}
                                         </div>
                                     )}
@@ -484,15 +564,14 @@ const Dashboard = () => {
 
                             {/* Loading */}
                             {loading && (
-                                <div className="flex gap-3">
-                                    <img src={logo} alt="AI" className="w-7 h-7 rounded-lg object-contain shrink-0 mt-0.5 opacity-50" />
-                                    <div className="bg-[#161b22] border border-[#21262d] px-4 py-3 rounded-xl rounded-bl-sm">
-                                        <div className="flex items-center gap-1.5">
-                                            <div className="w-1.5 h-1.5 bg-[#484f58] rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                                            <div className="w-1.5 h-1.5 bg-[#484f58] rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                                            <div className="w-1.5 h-1.5 bg-[#484f58] rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                                        </div>
+                                <div style={S.msgWrap}>
+                                    <img src={logo} alt="AI" style={{ ...S.msgAvatar, opacity: 0.5 }} />
+                                    <div style={{ ...S.botBubble, display: 'flex', alignItems: 'center', gap: '6px', padding: '14px 20px' }}>
+                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite' }} />
+                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite 0.15s' }} />
+                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite 0.3s' }} />
                                     </div>
+                                    <style>{`@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }`}</style>
                                 </div>
                             )}
 
@@ -503,51 +582,46 @@ const Dashboard = () => {
 
                 {/* Feedback */}
                 {lastResponse && (
-                    <div className="border-t border-[#21262d] px-6 py-2.5">
-                        <div className="max-w-[760px] mx-auto flex items-center justify-between">
-                            <span className="text-[12px] text-[#8b949e]">Was this response helpful?</span>
-                            <div className="flex items-center gap-2">
-                                <button onClick={() => handleFeedback('👍')} className="text-[12px] text-[#8b949e] hover:text-emerald-400 px-2 py-1 rounded hover:bg-emerald-500/10 transition-colors">👍</button>
-                                <button onClick={() => handleFeedback('👎')} className="text-[12px] text-[#8b949e] hover:text-red-400 px-2 py-1 rounded hover:bg-red-500/10 transition-colors">👎</button>
-                                <button onClick={() => setLastResponse(null)} className="text-[11px] text-[#484f58] hover:text-[#8b949e] ml-2 transition-colors">Dismiss</button>
+                    <div style={S.feedbackBar}>
+                        <div style={S.feedbackInner}>
+                            <span style={{ fontSize: '12px', color: '#6B7280' }}>Was this response helpful?</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <button onClick={() => handleFeedback('👍')} style={{ fontSize: '12px', background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', padding: '4px 8px', borderRadius: '6px', transition: 'all 0.15s' }}
+                                    onMouseOver={e => { e.currentTarget.style.color = '#10B981'; e.currentTarget.style.background = 'rgba(16,185,129,0.1)'; }}
+                                    onMouseOut={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'none'; }}
+                                >👍 Helpful</button>
+                                <button onClick={() => handleFeedback('👎')} style={{ fontSize: '12px', background: 'none', border: 'none', color: '#6B7280', cursor: 'pointer', padding: '4px 8px', borderRadius: '6px', transition: 'all 0.15s' }}
+                                    onMouseOver={e => { e.currentTarget.style.color = '#EF4444'; e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; }}
+                                    onMouseOut={e => { e.currentTarget.style.color = '#6B7280'; e.currentTarget.style.background = 'none'; }}
+                                >👎 Not helpful</button>
+                                <button onClick={() => setLastResponse(null)} style={{ fontSize: '11px', background: 'none', border: 'none', color: '#374151', cursor: 'pointer', marginLeft: '8px' }}>Dismiss</button>
                             </div>
                         </div>
                     </div>
                 )}
 
                 {/* Input */}
-                <div className="border-t border-[#21262d] px-6 py-4">
-                    <form
-                        onSubmit={handleSubmit}
-                        className="max-w-[760px] mx-auto"
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter' && !e.shiftKey) {
-                                e.preventDefault();
-                                handleSubmit(e);
-                            }
-                        }}
+                <div style={S.inputWrap}>
+                    <form onSubmit={handleSubmit} style={S.inputInner}
+                        onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSubmit(e); } }}
                     >
-                        <div className="flex items-center gap-2 bg-[#161b22] border border-[#30363d] focus-within:border-[#58a6ff] rounded-xl px-4 py-2 transition-colors">
-                            <input
-                                ref={inputRef}
-                                type="text"
-                                value={input}
-                                onChange={(e) => setInput(e.target.value)}
-                                placeholder="Ask me something..."
-                                className="flex-1 bg-transparent text-[#e6edf3] placeholder:text-[#484f58] outline-none text-[14px] py-1.5"
-                                disabled={loading}
+                        <div style={S.inputBox} id="chat-input-box"
+                            onFocus={() => document.getElementById('chat-input-box').style.borderColor = '#3B82F6'}
+                            onBlur={() => document.getElementById('chat-input-box').style.borderColor = '#1B1F2A'}
+                        >
+                            <input ref={inputRef} type="text" value={input} onChange={(e) => setInput(e.target.value)}
+                                placeholder="Ask about Acts, Rules, Budgets, or compare old vs new laws..."
+                                style={S.inputField} disabled={loading}
                             />
-                            <button
-                                type="submit"
-                                disabled={loading || !input.trim()}
-                                className="w-8 h-8 rounded-lg bg-[#238636] hover:bg-[#2ea043] disabled:opacity-20 flex items-center justify-center transition-colors shrink-0"
+                            <button type="submit" disabled={loading || !input.trim()}
+                                style={{ ...S.sendBtn, background: loading || !input.trim() ? '#1B1F2A' : '#3B82F6', color: '#fff' }}
                             >
-                                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                                 </svg>
                             </button>
                         </div>
-                        <p className="text-center text-[10px] text-[#30363d] mt-2.5 select-none">
+                        <p style={S.disclaimer}>
                             Responses are AI-generated from indexed documents. Always verify critical information independently. © 2026 Ambuj Kumar Tripathi
                         </p>
                     </form>
@@ -556,39 +630,32 @@ const Dashboard = () => {
 
             {/* ═══ Audit Modal ═══ */}
             {auditModal && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm" onClick={() => setAuditModal(null)}>
-                    <div className="w-full max-w-md bg-[#161b22] border border-[#30363d] rounded-xl overflow-hidden" onClick={e => e.stopPropagation()}>
-
-                        <div className="px-5 py-4 border-b border-[#21262d] flex items-center justify-between">
+                <div style={S.modalOverlay} onClick={() => setAuditModal(null)}>
+                    <div style={S.modalCard} onClick={e => e.stopPropagation()}>
+                        <div style={S.modalHeader}>
                             <div>
-                                <h2 className="text-[15px] font-semibold text-[#e6edf3]">🛡️ Security Audit</h2>
-                                <p className="text-[11px] text-[#8b949e]">Microsoft Presidio Analysis</p>
+                                <h2 style={{ fontSize: '15px', fontWeight: 600, color: '#F3F4F6', margin: 0 }}>🛡️ Security Audit</h2>
+                                <p style={{ fontSize: '11px', color: '#6B7280', margin: '2px 0 0' }}>Microsoft Presidio Analysis</p>
                             </div>
-                            <button onClick={() => setAuditModal(null)} className="text-[#8b949e] hover:text-[#e6edf3] text-lg transition-colors">✕</button>
+                            <button onClick={() => setAuditModal(null)} style={{ background: 'none', border: 'none', color: '#6B7280', fontSize: '18px', cursor: 'pointer' }}>✕</button>
                         </div>
-
-                        <div className="px-5 py-4 max-h-[50vh] overflow-y-auto space-y-2">
+                        <div style={S.modalBody}>
                             {auditModal.map((ent, i) => (
-                                <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-[#0d1117] border border-[#21262d]">
-                                    <span className="text-[13px] text-[#c9d1d9]">{(ent?.type || ent).replace('_', ' ')}</span>
-                                    <span className="text-[11px] text-[#58a6ff] bg-[#58a6ff1a] px-2 py-0.5 rounded">
+                                <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px', borderRadius: '10px', background: '#0D1117', border: '1px solid #1B1F2A', marginBottom: '8px' }}>
+                                    <span style={{ fontSize: '13px', color: '#D1D5DB' }}>{(ent?.type || ent).replace('_', ' ')}</span>
+                                    <span style={{ fontSize: '11px', color: '#3B82F6', background: 'rgba(59,130,246,0.1)', padding: '2px 8px', borderRadius: '4px' }}>
                                         {ent?.score ? (ent.score * 100).toFixed(0) : '100'}%
                                     </span>
                                 </div>
                             ))}
-
-                            <div className="p-3 rounded-lg bg-amber-500/5 border border-amber-500/10 mt-3">
-                                <p className="text-[11px] text-[#8b949e]">
+                            <div style={{ padding: '12px', borderRadius: '10px', background: 'rgba(245,158,11,0.05)', border: '1px solid rgba(245,158,11,0.1)', marginTop: '12px' }}>
+                                <p style={{ fontSize: '11px', color: '#6B7280', margin: 0 }}>
                                     ⚠️ Each entity is redacted from the LLM prompt in real-time. No personal data reaches the cloud model.
                                 </p>
                             </div>
                         </div>
-
-                        <div className="px-5 py-3 border-t border-[#21262d]">
-                            <button
-                                onClick={() => setAuditModal(null)}
-                                className="w-full py-2.5 rounded-lg bg-[#21262d] hover:bg-[#30363d] text-[#e6edf3] text-[13px] font-medium transition-colors"
-                            >
+                        <div style={S.modalFooter}>
+                            <button onClick={() => setAuditModal(null)} style={{ width: '100%', padding: '10px', borderRadius: '10px', background: '#1B1F2A', border: 'none', color: '#E5E7EB', fontSize: '13px', fontWeight: 500, cursor: 'pointer' }}>
                                 Close
                             </button>
                         </div>
