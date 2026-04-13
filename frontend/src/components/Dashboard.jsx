@@ -319,7 +319,7 @@ const Dashboard = () => {
         builtByBadge: { background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '4px', color: '#F59E0B', fontFamily: 'monospace', letterSpacing: '0.02em', fontSize: '10px' },
 
         chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#1B1F2A transparent', display: 'flex', flexDirection: 'column' },
-        chatInner: { width: '100%', maxWidth: '900px', margin: '0 auto', padding: '24px', flex: 1 },
+        chatInner: { width: '100%', padding: '24px 40px', flex: 1 },
 
         // Welcome
         welcomeWrap: { padding: '60px 0', textAlign: 'center' },
@@ -347,7 +347,7 @@ const Dashboard = () => {
 
         // Input
         inputWrap: { borderTop: '1px solid #1B1F2A', padding: '16px 24px', background: '#0D1117' },
-        inputInner: { maxWidth: '900px', margin: '0 auto' },
+        inputInner: { width: '100%', padding: '0 16px' },
         inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '10px 14px 10px 20px', transition: 'border-color 0.2s', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' },
         inputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#E5E7EB', fontSize: '14px', padding: '6px 0' },
         sendBtn: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s' },
@@ -355,7 +355,7 @@ const Dashboard = () => {
 
         // Feedback
         feedbackBar: { borderTop: '1px solid #1B1F2A', padding: '10px 24px', background: '#0D1117' },
-        feedbackInner: { maxWidth: '900px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+        feedbackInner: { width: '100%', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
 
         // Audit Modal
         modalOverlay: { position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' },
