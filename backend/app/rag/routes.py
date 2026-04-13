@@ -369,3 +369,34 @@ async def kb_status():
         "status": "ready",
         "message": "Knowledge base is active"
     }
+
+from fastapi.responses import StreamingResponse
+from app.rag.pipeline import search_and_respond_stream
+
+@router.post("/chat/stream")
+@limiter.limit(f"{settings.RATE_LIMIT_PER_MINUTE}/minute")
+async def chat_stream(
+    request: Request,
+    chat_request: ChatRequest,
+    current_user: dict = Depends(get_current_user)
+):
+    """
+    Streaming chat endpoint with Server-Sent Events (SSE)
+    """
+    user_email = current_user["email"]
+    question = chat_request.message
+    
+    # Log request
+    logger.info(json.dumps({
+        "event": "chat_stream_request",
+        "user": user_email,
+        "question_length": len(question),
+        "timestamp": datetime.now().isoformat()
+    }))
+    
+    history = get_chat_history(user_email, limit=6)
+    
+    return StreamingResponse(
+        search_and_respond_stream(question, history, current_user.get("name", "User"), user_id=user_email),
+        media_type="text/event-stream"
+    )

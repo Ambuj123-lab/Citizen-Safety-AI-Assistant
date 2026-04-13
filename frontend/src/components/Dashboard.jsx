@@ -95,42 +95,94 @@ const Dashboard = () => {
         setLoading(true);
 
         try {
-            const response = await chatAPI.sendMessage(userMessage);
+            const token = localStorage.getItem('token');
+            const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/chat/stream`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    ...(token && { 'Authorization': `Bearer ${token}` }),
+                },
+                body: JSON.stringify({ message: userMessage })
+            });
 
-            if (response.error) {
-                setMessages(prev => [...prev, { role: 'assistant', content: `⚠️ ${response.error}` }]);
-                showToast(response.error, 'warning');
-            } else {
-                if (response.pii_masked) {
-                    showToast('Identity protected using Microsoft Presidio AI', 'info');
-                }
+            if (!response.ok) {
+                // Check if it's fallback standard response
+                const text = await response.text();
+                throw new Error('Stream failed');
+            }
 
-                setMessages(prev => {
-                    const newMsgs = [...prev];
-                    if (newMsgs.length >= 1 && newMsgs[newMsgs.length - 1].role === 'user') {
-                        newMsgs[newMsgs.length - 1].pii_masked = response.pii_masked;
-                        newMsgs[newMsgs.length - 1].pii_entities = response.pii_entities || [];
+            setMessages(prev => [...prev, {
+                role: 'assistant',
+                content: '',
+                sources: [],
+                confidence: null,
+                latency: null,
+                pii_masked: false,
+                pii_entities: []
+            }]);
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                
+                const chunkStr = decoder.decode(value, { stream: true });
+                const lines = chunkStr.split('\\n');
+                
+                for (const line of lines) {
+                    if (line.startsWith('data: ')) {
+                        try {
+                            const data = JSON.parse(line.slice(6));
+                            if (data.type === 'error') {
+                                setMessages(prev => {
+                                    const newMsgs = [...prev];
+                                    newMsgs[newMsgs.length - 1].content = `⚠️ ${data.message}`;
+                                    return newMsgs;
+                                });
+                                showToast(data.message, 'warning');
+                            } else if (data.type === 'meta') {
+                                setMessages(prev => {
+                                    const newMsgs = [...prev];
+                                    const last = newMsgs[newMsgs.length - 1];
+                                    last.sources = data.sources;
+                                    last.confidence = data.confidence;
+                                    last.pii_masked = data.pii_detected;
+                                    last.pii_entities = data.pii_entities;
+                                    return newMsgs;
+                                });
+                                if (data.pii_detected) {
+                                    showToast('Identity protected using Microsoft Presidio AI', 'info');
+                                }
+                            } else if (data.type === 'token') {
+                                setMessages(prev => {
+                                    const newMsgs = [...prev];
+                                    newMsgs[newMsgs.length - 1].content += data.content;
+                                    return newMsgs;
+                                });
+                            }
+                        } catch (e) {}
                     }
-                    newMsgs.push({
-                        role: 'assistant',
-                        content: response.response,
-                        sources: response.sources,
-                        confidence: response.confidence,
-                        latency: response.latency,
-                        pii_masked: response.pii_masked,
-                        pii_entities: response.pii_entities || []
-                    });
-                    return newMsgs;
-                });
-                setLastResponse({ question: userMessage, response: response.response });
-
-                if (response.active_users) {
-                    setStats(prev => ({ ...prev, active: response.active_users }));
                 }
             }
+            // Fetch stats update after response complete
+            try {
+                const activeData = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/stats/active`).then(res => res.json());
+                if (activeData.active_users) setStats(prev => ({ ...prev, active: activeData.active_users }));
+            } catch (e) {}
+
         } catch (e) {
             console.error('Submit Error:', e);
-            setMessages(prev => [...prev, { role: 'assistant', content: "⚠️ System busy. Try again." }]);
+            setMessages(prev => {
+                const newMsgs = [...prev];
+                if (newMsgs[newMsgs.length-1].role === 'assistant') {
+                    newMsgs[newMsgs.length-1].content = "⚠️ System busy. Please try again.";
+                } else {
+                    newMsgs.push({ role: 'assistant', content: "⚠️ System busy. Please try again." });
+                }
+                return newMsgs;
+            });
             showToast('Service temporarily unavailable', 'error');
         } finally {
             setLoading(false);
@@ -263,10 +315,11 @@ const Dashboard = () => {
         topBarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6' },
         statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.2s' },
         statusDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' },
-        topBarMeta: { display: 'flex', alignItems: 'center', gap: '16px', fontSize: '11px', color: '#4B5563' },
+        topBarMeta: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#4B5563' },
+        builtByBadge: { background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '4px', color: '#F59E0B', fontFamily: 'monospace', letterSpacing: '0.02em', fontSize: '10px' },
 
-        chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#1B1F2A transparent' },
-        chatInner: { maxWidth: '760px', margin: '0 auto', padding: '24px' },
+        chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#1B1F2A transparent', display: 'flex', flexDirection: 'column' },
+        chatInner: { width: '100%', maxWidth: '900px', margin: '0 auto', padding: '24px', flex: 1 },
 
         // Welcome
         welcomeWrap: { padding: '60px 0', textAlign: 'center' },
@@ -279,27 +332,30 @@ const Dashboard = () => {
         quickText: { fontSize: '12px', color: '#9CA3AF', lineHeight: '1.4' },
 
         // Messages
-        msgWrap: { display: 'flex', gap: '12px', marginBottom: '20px' },
-        msgAvatar: { width: '28px', height: '28px', borderRadius: '8px', objectFit: 'contain', flexShrink: 0, marginTop: '2px' },
-        userMsgAvatar: { width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, marginTop: '2px' },
-        userMsgAvatarFallback: { width: '28px', height: '28px', borderRadius: '50%', background: '#3B82F6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '12px', fontWeight: 600, flexShrink: 0, marginTop: '2px' },
+        msgWrap: { display: 'flex', gap: '16px', marginBottom: '32px', wFull: '100%' },
+        msgAvatar: { width: '30px', height: '30px', borderRadius: '8px', objectFit: 'contain', flexShrink: 0, marginTop: '2px', padding: '2px', border: '1px solid #1B1F2A', background: '#0D1117' },
+        userMsgAvatar: { width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, marginTop: '2px' },
+        userMsgAvatarFallback: { width: '30px', height: '30px', borderRadius: '50%', background: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontSize: '13px', fontWeight: 600, flexShrink: 0, marginTop: '2px' },
 
-        botBubble: { padding: '14px 18px', borderRadius: '14px 14px 14px 4px', background: '#111827', border: '1px solid #1B1F2A', maxWidth: '85%', fontSize: '14px', lineHeight: '1.65', color: '#D1D5DB' },
-        userBubble: { padding: '12px 18px', borderRadius: '14px 14px 4px 14px', background: '#3B82F6', color: '#fff', maxWidth: '80%', fontSize: '14px', lineHeight: '1.5', marginLeft: 'auto' },
+        botBubble: { width: '100%', fontSize: '14.5px', lineHeight: '1.7', color: '#D1D5DB' },
+        userBubble: { padding: '14px 20px', borderRadius: '24px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', color: '#fff', fontSize: '14.5px', lineHeight: '1.5', marginLeft: 'auto' },
 
-        sourceTag: { display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '3px 8px', borderRadius: '6px', fontSize: '10px', color: '#9CA3AF', background: '#111827', border: '1px solid #1B1F2A', marginRight: '4px', marginTop: '8px' },
+        sourceDetails: { marginTop: '16px', background: '#0D1117', border: '1px solid #1B1F2A', borderRadius: '8px', overflow: 'hidden' },
+        sourceSummary: { padding: '10px 16px', fontSize: '12px', fontWeight: 600, color: '#9CA3AF', cursor: 'pointer', userSelect: 'none', display: 'flex', alignItems: 'center', gap: '8px' },
+        sourceContainer: { padding: '12px 16px', borderTop: '1px solid #1B1F2A', background: '#07090F', display: 'flex', flexDirection: 'column', gap: '10px' },
+        sourceTag: { padding: '8px 12px', borderRadius: '6px', fontSize: '11px', color: '#D1D5DB', background: '#111827', border: '1px solid #1B1F2A', lineHeight: '1.5' },
 
         // Input
         inputWrap: { borderTop: '1px solid #1B1F2A', padding: '16px 24px', background: '#0D1117' },
-        inputInner: { maxWidth: '760px', margin: '0 auto' },
-        inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '8px 12px 8px 18px', transition: 'border-color 0.2s' },
+        inputInner: { maxWidth: '900px', margin: '0 auto' },
+        inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '10px 14px 10px 20px', transition: 'border-color 0.2s', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' },
         inputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#E5E7EB', fontSize: '14px', padding: '6px 0' },
         sendBtn: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s' },
         disclaimer: { textAlign: 'center', fontSize: '11.5px', color: '#6B7280', marginTop: '12px', userSelect: 'none', fontWeight: 500 },
 
         // Feedback
         feedbackBar: { borderTop: '1px solid #1B1F2A', padding: '10px 24px', background: '#0D1117' },
-        feedbackInner: { maxWidth: '760px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+        feedbackInner: { maxWidth: '900px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
 
         // Audit Modal
         modalOverlay: { position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' },
@@ -396,40 +452,6 @@ const Dashboard = () => {
 
                     <div style={S.navDivider} />
 
-                    {/* Upload PDFs */}
-                    <input ref={fileInputRef} type="file" multiple accept=".pdf" hidden onChange={handleFileUpload} />
-                    <button
-                        onClick={() => fileInputRef.current?.click()}
-                        disabled={uploading}
-                        style={S.navBtn}
-                        onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
-                        onMouseOut={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#9CA3AF'; }}
-                    >
-                        <svg style={S.navIcon} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-                        </svg>
-                        {stagedFiles.length > 0 ? stagedFiles.map(f => f.name).join(', ') : 'Upload PDF'}
-                    </button>
-
-                    {stagedFiles.length > 0 && (
-                        <button onClick={handleIndex} disabled={isIndexing} style={S.indexBtn}>
-                            {isIndexing ? 'Indexing...' : '⚡ Index to Brain'}
-                        </button>
-                    )}
-
-                    {uploadedFiles.length > 0 && (
-                        <div style={{ padding: '4px 0 0 8px' }}>
-                            {uploadedFiles.map((name, i) => (
-                                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11px', color: 'rgba(16,185,129,0.7)', padding: '2px 0' }}>
-                                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#10B981', flexShrink: 0 }} />
-                                    {name}
-                                </div>
-                            ))}
-                        </div>
-                    )}
-
-                    <div style={S.navDivider} />
-
                     {/* New Session */}
                     <button onClick={handleNewSession} style={S.navBtn}
                         onMouseOver={e => { e.currentTarget.style.background = '#111827'; e.currentTarget.style.color = '#E5E7EB'; }}
@@ -478,7 +500,7 @@ const Dashboard = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                             </svg>
                         </button>
-                        <h2 style={S.topBarTitle} className="hidden sm:block">Citizen Safety AI</h2>
+                        <h2 style={S.topBarTitle} className="hidden sm:block">Citizen Safety AI {user?.name ? <span style={{color: '#6B7280', fontWeight: 400}}> / {user.name}</span> : ''}</h2>
                         <a 
                             href="https://stats.uptimerobot.com/4tYmSQnuBE" 
                             target="_blank" 
@@ -492,6 +514,7 @@ const Dashboard = () => {
                         </a>
                     </div>
                     <div style={S.topBarMeta}>
+                        <span className="hidden md:block" style={S.builtByBadge}>RAG Engine × Dual LLM · Built by Ambuj</span>
                         <span>{stats.active} online</span>
                         <span>·</span>
                         <span>{stats.visitors} visits</span>
@@ -525,18 +548,25 @@ const Dashboard = () => {
                         )}
 
                         {/* Messages */}
-                        <div>
+                        <div style={{ paddingBottom: '40px' }}>
                             {messages.map((msg, i) => (
-                                <div key={i} style={{ ...S.msgWrap, justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
+                                <div key={i} style={{ ...S.msgWrap, flexDirection: msg.role === 'user' ? 'row-reverse' : 'row' }}>
 
-                                    {msg.role === 'assistant' && (
+                                    {/* Avatar */}
+                                    {msg.role === 'assistant' ? (
                                         <img src={logo} alt="AI" style={S.msgAvatar} />
+                                    ) : (
+                                        user?.picture ? (
+                                            <img src={user.picture} alt="You" style={S.userMsgAvatar} />
+                                        ) : (
+                                            <div style={S.userMsgAvatarFallback}>{user?.name?.charAt(0) || 'U'}</div>
+                                        )
                                     )}
 
-                                    <div style={{ maxWidth: '85%' }}>
+                                    <div style={{ flex: 1, maxWidth: msg.role === 'user' ? '80%' : '100%', minWidth: 0 }}>
                                         <div style={msg.role === 'user' ? S.userBubble : S.botBubble}>
                                             {msg.role === 'assistant' ? (
-                                                <div className="prose prose-sm prose-invert max-w-none prose-headings:text-[#E5E7EB] prose-headings:font-semibold prose-headings:text-sm prose-strong:text-[#E5E7EB] prose-p:text-[#D1D5DB] prose-p:text-[13px] prose-p:leading-relaxed prose-li:text-[#D1D5DB] prose-li:text-[13px] prose-a:text-[#3B82F6] prose-code:text-[#93C5FD] prose-code:bg-[#0D1117] prose-code:px-1 prose-code:py-0.5 prose-code:rounded prose-code:text-xs prose-blockquote:border-l-[#1B1F2A] prose-blockquote:text-[#6B7280]">
+                                                <div className="prose-chat prose-sm max-w-none w-full break-words">
                                                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
                                                 </div>
                                             ) : (
@@ -544,42 +574,39 @@ const Dashboard = () => {
                                             )}
                                         </div>
 
-                                        {/* Sources */}
+                                        {/* Sources Accordion Mode */}
                                         {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
-                                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginTop: '8px' }}>
-                                                {msg.sources.map((src, j) => (
-                                                    <span key={j} style={S.sourceTag}>
-                                                        📄 {src.file || src} · p.{src.page || '?'}
-                                                    </span>
-                                                ))}
-                                            </div>
+                                            <details style={S.sourceDetails}>
+                                                <summary style={S.sourceSummary}>
+                                                    📄 {msg.sources.length} SOURCES CITED
+                                                    <svg style={{ marginLeft: 'auto', width: '14px' }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                                                </summary>
+                                                <div style={S.sourceContainer}>
+                                                    {msg.sources.map((src, j) => (
+                                                        <div key={j} style={S.sourceTag}>
+                                                            <strong style={{ color: '#F59E0B' }}>• {src.file || src.source_id}</strong> (Page {src.page || '1'})
+                                                            {src.preview && <div style={{ marginTop: '6px', color: '#9CA3AF', fontSize: '10px' }}>"{src.preview}..."</div>}
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </details>
                                         )}
 
                                         {/* Confidence + PII */}
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '8px', marginTop: '6px' }}>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '12px', marginTop: '12px', justifyContent: msg.role === 'user' ? 'flex-end' : 'flex-start' }}>
                                             {msg.role === 'assistant' && msg.confidence && (
-                                                <span style={{ fontSize: '10px', color: 'rgba(16,185,129,0.7)' }}>{msg.confidence}% match</span>
+                                                <span style={{ fontSize: '11px', color: 'rgba(16,185,129,0.9)', fontWeight: 600 }}>✨ {msg.confidence}% Confidence</span>
                                             )}
                                             {msg.pii_masked && msg.pii_entities?.length > 0 && (
                                                 <button type="button"
-                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAuditModal(msg.pii_entities); showToast('Generating security report...', 'info'); }}
-                                                    style={{ fontSize: '10px', color: '#3B82F6', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
+                                                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); setAuditModal(msg.pii_entities); }}
+                                                    style={{ fontSize: '11px', color: '#FCD34D', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', padding: 0 }}
                                                 >
-                                                    🛡️ Identity Shielded · View Audit
+                                                    🛡️ Identity Shielded
                                                 </button>
                                             )}
                                         </div>
                                     </div>
-
-                                    {msg.role === 'user' && (
-                                        <div>
-                                            {user?.picture?.length > 10 ? (
-                                                <img src={user.picture} alt="You" style={S.userMsgAvatar} />
-                                            ) : (
-                                                <div style={S.userMsgAvatarFallback}>{user?.name?.charAt(0) || 'U'}</div>
-                                            )}
-                                        </div>
-                                    )}
                                 </div>
                             ))}
 
@@ -635,7 +662,7 @@ const Dashboard = () => {
                                 style={S.inputField} disabled={loading}
                             />
                             <button type="submit" disabled={loading || !input.trim()}
-                                style={{ ...S.sendBtn, background: loading || !input.trim() ? '#1B1F2A' : '#3B82F6', color: '#fff' }}
+                                style={{ ...S.sendBtn, background: loading || !input.trim() ? '#1B1F2A' : '#F59E0B', color: '#fff' }}
                             >
                                 <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />

@@ -149,10 +149,17 @@ const Login = () => {
         <div style={{ background: '#07090F', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh' }}>
             <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
+            {/* ── TOP DISCLAIMER BANNER ── */}
+            <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '8px 16px', textAlign: 'center', fontSize: '10px', fontWeight: 500, color: '#FCD34D', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px', lineHeight: '1.5' }}>
+                <span style={{ fontSize: '13px' }}>⚠️</span> 
+                <span><strong>Disclaimer:</strong> This is an experimental AI platform by Ambuj Kumar Tripathi. It does NOT substitute professional legal counsel.</span>
+            </div>
+
             {/* ── NAVBAR ── */}
             <nav style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '20px 40px', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 50
+                padding: '16px 16px', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 50,
+                flexWrap: 'wrap', gap: '12px'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img src={logo} alt="Logo" style={{ width: '28px', height: '28px', objectFit: 'contain' }} />
@@ -203,8 +210,8 @@ const Login = () => {
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                textAlign: 'center', padding: '100px 40px 140px', maxWidth: '800px', margin: '0 auto',
-                position: 'relative', zIndex: 10, minHeight: '80vh'
+                textAlign: 'center', padding: '60px 20px 100px', maxWidth: '800px', margin: '0 auto',
+                position: 'relative', zIndex: 10, minHeight: '70vh'
             }}>
                 <h1 style={{
                     fontSize: 'clamp(42px, 6vw, 72px)', fontWeight: 600, letterSpacing: '-0.03em',
@@ -241,7 +248,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ FEATURES SECTION ══════════════════ */}
-            <section id="pipeline" style={{ padding: '80px 40px 100px', position: 'relative', zIndex: 10 }}>
+            <section id="pipeline" style={{ padding: '60px 16px 80px', position: 'relative', zIndex: 10 }}>
                 <div style={{ maxWidth: '960px', margin: '0 auto' }}>
 
                     {/* Section Header */}
@@ -308,7 +315,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ STATS SECTION ══════════════════ */}
-            <section style={{ padding: '0 40px 100px', position: 'relative', zIndex: 10 }}>
+            <section style={{ padding: '0 20px 80px', position: 'relative', zIndex: 10 }}>
                 <div style={{ maxWidth: '960px', margin: '0 auto', borderTop: '1px solid #1B1F2A', paddingTop: '80px' }}>
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                         {stats.map((s, i) => {
@@ -316,7 +323,7 @@ const Login = () => {
                                 const { count, ref } = useCountUp(s.val);
                                 return (
                                     <div ref={ref}>
-                                        <p style={{ fontSize: '42px', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '10px', fontVariantNumeric: 'tabular-nums' }}>
+                                        <p style={{ fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '10px', fontVariantNumeric: 'tabular-nums' }}>
                                             {count.toLocaleString()}{s.suf}
                                         </p>
                                         <p style={{ fontSize: '13px', color: '#6B7280', fontWeight: 500 }}>{s.lbl}</p>
@@ -330,7 +337,7 @@ const Login = () => {
             </section>
 
             {/* ===== OPEN SOURCE MODEL ===== */}
-            <section id="opensource" className="opensource-section" style={{ padding: '80px 40px', background: '#0a0a0a', borderTop: '1px solid #1B1F2A', borderBottom: '1px solid #1B1F2A' }}>
+            <section id="opensource" className="opensource-section" style={{ padding: '60px 16px', background: '#0a0a0a', borderTop: '1px solid #1B1F2A', borderBottom: '1px solid #1B1F2A' }}>
                 <div style={{ maxWidth: '900px', margin: '0 auto' }}>
                 
                 <p style={{ color: '#c9a84c', fontSize: '12px', letterSpacing: '3px', textTransform: 'uppercase', marginBottom: '12px' }}>qLoRA Fine-Tuned By Ambuj Kumar Tripathi</p>
