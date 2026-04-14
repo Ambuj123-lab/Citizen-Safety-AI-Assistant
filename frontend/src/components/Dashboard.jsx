@@ -330,7 +330,7 @@ const Dashboard = () => {
         // Main
         main: { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#07090F' },
 
-        topBar: { height: '52px', borderBottom: '1px solid #1B1F2A', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#0D1117' },
+        topBar: { position: 'sticky', top: 0, zIndex: 50, height: '52px', borderBottom: '1px solid #1B1F2A', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#0D1117' },
         topBarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6' },
         statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.2s' },
         statusDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' },

@@ -73,6 +73,8 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))`;
 
 /* ═══════════════════ LOGIN PAGE ═══════════════════ */
 const Login = () => {
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
     const handleGoogleLogin = () => {
         window.location.href = authAPI.getLoginUrl();
     };
@@ -185,8 +187,8 @@ const Login = () => {
                     </div>
                 </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-                    <a href="https://ambuj-rag-docs.netlify.app/" target="_blank" rel="noreferrer" style={{
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                    <a href="https://ambuj-rag-docs.netlify.app/" target="_blank" rel="noreferrer" className="hidden sm:block" style={{
                         fontSize: '13px', fontWeight: 500, color: '#9CA3AF', textDecoration: 'none', transition: 'color 0.2s'
                     }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>
                         Documentation
@@ -201,8 +203,31 @@ const Login = () => {
                     >
                         Sign In →
                     </button>
+
+                    {/* Mobile Hamburger Button */}
+                    <button className="lg:hidden" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} style={{ background: 'transparent', border: 'none', color: '#9CA3AF', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center', transition: 'color 0.2s' }} onMouseOver={e => e.currentTarget.style.color = '#fff'} onMouseOut={e => e.currentTarget.style.color = '#9CA3AF'}>
+                        <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                            {mobileMenuOpen ? <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /> : <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />}
+                        </svg>
+                    </button>
                 </div>
             </nav>
+
+            {/* ── MOBILE MENU OVERLAY ── */}
+            {mobileMenuOpen && (
+                <div className="lg:hidden" style={{ position: 'absolute', top: '130px', left: '16px', right: '16px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 100, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    <button onClick={() => { document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Pipeline Structure</button>
+                    <button onClick={() => { document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>My Fine-Tuned Models</button>
+                    
+                    <div style={{ height: '1px', background: '#1B1F2A' }} />
+                    
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                        <span style={{ fontSize: '13px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Live Systems</span>
+                        <a href="https://agentic-rag-financial-parser.onrender.com/" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>💰</span> Agentic Financial Parser</a>
+                        <a href="https://indian-legal-ai-expert.onrender.com/login" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>⚖️</span> Indian Legal AI Expert</a>
+                    </div>
+                </div>
+            )}
 
             {/* ── AMBIENT GLOW ── */}
             <div style={{ position: 'fixed', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '500px', background: 'radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
