@@ -459,9 +459,9 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
-            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid #1B1F2A', background: '#0A0D14', overflow: 'hidden' }}>
-                {/* Accent Gradients */}
-                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '1000px', height: '100%', background: 'radial-gradient(circle at 30% 0%, rgba(245, 158, 11, 0.04) 0%, transparent 50%), radial-gradient(circle at 70% 100%, rgba(220, 38, 38, 0.03) 0%, transparent 50%)', pointerEvents: 'none' }} />
+            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(220, 38, 38, 0.1)', background: '#07090F', overflow: 'hidden' }}>
+                {/* Accent Gradients (Matched to Hero Crimson/Amber) */}
+                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '100%', background: 'radial-gradient(circle at 20% 0%, rgba(245, 158, 11, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 100%, rgba(220, 38, 38, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
                 
                 <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
                     
@@ -491,7 +491,7 @@ const Login = () => {
                     {/* Badges Grid */}
                     <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px', maxWidth: '640px', margin: '0 auto 48px' }}>
                         {['NVIDIA RAG Agents', 'Google Cloud (6 Badges)', 'IBM AI Engineering', 'Anthropic MCP', 'Linux Foundation', 'BCG X GenAI'].map(badge => (
-                            <span key={badge} style={{ padding: '8px 16px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '100px', fontSize: '12px', color: '#9CA3AF', fontFamily: 'monospace' }}>
+                            <span key={badge} style={{ padding: '8px 16px', background: 'rgba(245, 158, 11, 0.05)', border: '1px solid rgba(245, 158, 11, 0.15)', borderRadius: '100px', fontSize: '12px', color: '#F3F4F6', fontFamily: 'monospace' }}>
                                 {badge}
                             </span>
                         ))}
