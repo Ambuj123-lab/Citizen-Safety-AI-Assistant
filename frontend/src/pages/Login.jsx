@@ -230,8 +230,10 @@ const Login = () => {
             )}
 
             {/* ── SUPER DYNAMIC AMBIENT GLOW (LUXURY WEBFLOW SPOTLIGHT) ── */}
-            <div style={{ position: 'fixed', top: '-300px', left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '900px', background: 'radial-gradient(ellipse at 50% 10%, rgba(245, 158, 11, 0.3) 0%, rgba(234, 88, 12, 0.15) 40%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'fixed', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '500px', background: 'radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, transparent 60%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* Large Wide Amber Base */}
+            <div style={{ position: 'fixed', top: '-300px', left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '900px', background: 'radial-gradient(ellipse at 50% 10%, rgba(245, 158, 11, 0.25) 0%, rgba(234, 88, 12, 0.15) 40%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* Deep Crimson Core */}
+            <div style={{ position: 'fixed', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '700px', height: '500px', background: 'radial-gradient(circle at center, rgba(220, 38, 38, 0.45) 0%, rgba(153, 27, 27, 0.25) 40%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
