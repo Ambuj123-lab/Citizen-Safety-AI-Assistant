@@ -301,7 +301,7 @@ const Login = () => {
                             ];
 
                             return (
-                            <div key={i} style={{
+                            <div key={i} className="animate-border-pulse" style={{
                                 background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.4) 0%, rgba(10, 13, 18, 0.8) 100%)',
                                 border: '1px solid rgba(255,255,255,0.06)',
                                 borderRadius: '24px',
@@ -313,14 +313,17 @@ const Login = () => {
                                 transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                                 cursor: 'pointer',
                                 position: 'relative',
-                                overflow: 'hidden'
+                                overflow: 'hidden',
+                                animationDelay: `${i * -1.2}s`
                             }}
                             onMouseOver={e => {
+                                e.currentTarget.style.animation = 'none';
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
                                 e.currentTarget.style.boxShadow = '0 0 24px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02)';
                                 e.currentTarget.style.transform = 'translateY(-4px)';
                             }}
                             onMouseOut={e => {
+                                e.currentTarget.style.animation = ''; // restores class animation
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
                                 e.currentTarget.style.boxShadow = 'none';
                                 e.currentTarget.style.transform = 'translateY(0)';
