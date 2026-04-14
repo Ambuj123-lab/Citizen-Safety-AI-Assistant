@@ -145,10 +145,9 @@ body {
 }
 
 @keyframes border-pulse-colors {
-  0% { border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 0 12px rgba(6, 182, 212, 0.15), inset 0 0 10px rgba(6, 182, 212, 0.05); } /* Cyan */
-  33% { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 0 12px rgba(59, 130, 246, 0.15), inset 0 0 10px rgba(59, 130, 246, 0.05); } /* Blue */
-  66% { border-color: rgba(245, 158, 11, 0.4); box-shadow: 0 0 12px rgba(245, 158, 11, 0.15), inset 0 0 10px rgba(245, 158, 11, 0.05); } /* Amber */
-  100% { border-color: rgba(6, 182, 212, 0.4); box-shadow: 0 0 12px rgba(6, 182, 212, 0.15), inset 0 0 10px rgba(6, 182, 212, 0.05); }
+  0% { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 0 20px rgba(239, 68, 68, 0.25), inset 0 0 15px rgba(239, 68, 68, 0.1); } /* Red */
+  50% { border-color: rgba(139, 92, 246, 0.7); box-shadow: 0 0 20px rgba(139, 92, 246, 0.25), inset 0 0 15px rgba(139, 92, 246, 0.1); } /* Deep Purple */
+  100% { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 0 20px rgba(239, 68, 68, 0.25), inset 0 0 15px rgba(239, 68, 68, 0.1); } /* Red */
 }
 
 /* --- Animation Utility Classes --- */
