@@ -547,9 +547,20 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ FOOTER ══════════════════ */}
-            <footer style={{ padding: '32px 40px', background: '#07090F', textAlign: 'center' }}>
-                <p style={{ fontSize: '12px', color: '#4B5563', fontWeight: 500 }}>
-                    &copy; 2026 Citizen Safety AI — Engineered by <span style={{ color: '#F59E0B' }}>Ambuj Kumar Tripathi</span>. Production RAG, engineered for reality.
+            <footer style={{ 
+                padding: '40px 40px', 
+                background: '#05070A', 
+                textAlign: 'center',
+                position: 'relative',
+                borderTop: '1px solid rgba(255,255,255,0.02)'
+            }}>
+                {/* Glowing Gradient Top Border */}
+                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(220,38,38,0.5), rgba(245,158,11,0.5), transparent)' }} />
+                
+                <p style={{ fontSize: '12px', color: '#6B7280', fontWeight: 500, letterSpacing: '0.02em' }}>
+                    &copy; 2026 Citizen Safety AI — Engineered by <span style={{ color: '#Ef4444', fontWeight: 600 }}>Ambuj Kumar Tripathi</span>.
+                    <br />
+                    <span style={{ color: '#4B5563', fontSize: '11px', marginTop: '4px', display: 'inline-block' }}>Production RAG, engineered for scale.</span>
                 </p>
             </footer>
         </div>
