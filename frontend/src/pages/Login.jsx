@@ -229,8 +229,9 @@ const Login = () => {
                 </div>
             )}
 
-            {/* ── AMBIENT GLOW (AMBER SPOTLIGHT) ── */}
-            <div style={{ position: 'fixed', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '1200px', height: '600px', background: 'radial-gradient(ellipse at top, rgba(245, 158, 11, 0.15) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* ── SUPER DYNAMIC AMBIENT GLOW (LUXURY WEBFLOW SPOTLIGHT) ── */}
+            <div style={{ position: 'fixed', top: '-300px', left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '900px', background: 'radial-gradient(ellipse at 50% 10%, rgba(245, 158, 11, 0.3) 0%, rgba(234, 88, 12, 0.15) 40%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+            <div style={{ position: 'fixed', top: '-100px', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '500px', background: 'radial-gradient(circle at center, rgba(239, 68, 68, 0.25) 0%, transparent 60%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
