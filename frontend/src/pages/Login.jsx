@@ -291,50 +291,80 @@ const Login = () => {
                     </div>
 
                     {/* ── CARDS GRID ── */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        {features.map((f, i) => (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        {features.map((f, i) => {
+                            // High-end glowing gradients for the interior orbs
+                            const glowColors = [
+                                'radial-gradient(circle at top right, rgba(239, 68, 68, 0.6) 0%, transparent 70%)', // Redish
+                                'radial-gradient(circle at bottom left, rgba(59, 130, 246, 0.6) 0%, transparent 70%)', // Blueish
+                                'radial-gradient(circle at center, rgba(245, 158, 11, 0.5) 0%, transparent 70%)' // Amber
+                            ];
+
+                            return (
                             <div key={i} style={{
-                                background: '#0D1117',
-                                border: '1px solid #1B1F2A',
-                                borderRadius: '20px',
-                                padding: '32px 28px',
+                                background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.4) 0%, rgba(10, 13, 18, 0.8) 100%)',
+                                border: '1px solid rgba(255,255,255,0.06)',
+                                borderRadius: '24px',
+                                padding: '40px 32px',
                                 display: 'flex',
                                 flexDirection: 'column',
-                                gap: '0',
-                                transition: 'border-color 0.3s, background 0.3s',
-                                cursor: 'default',
+                                alignItems: 'center',
+                                textAlign: 'center',
+                                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                overflow: 'hidden'
                             }}
                             onMouseOver={e => {
-                                e.currentTarget.style.borderColor = '#2D3348';
-                                e.currentTarget.style.background = '#111827';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
+                                e.currentTarget.style.boxShadow = '0 0 24px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02)';
+                                e.currentTarget.style.transform = 'translateY(-4px)';
                             }}
                             onMouseOut={e => {
-                                e.currentTarget.style.borderColor = '#1B1F2A';
-                                e.currentTarget.style.background = '#0D1117';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
+                                e.currentTarget.style.boxShadow = 'none';
+                                e.currentTarget.style.transform = 'translateY(0)';
                             }}
+                            onMouseDown={e => e.currentTarget.style.transform = 'scale(0.96)'}
+                            onMouseUp={e => e.currentTarget.style.transform = 'translateY(-4px)'} // reset to hovered state
                             >
-                                {/* Icon Container */}
+                                {/* Top Edge inner highlight line */}
+                                <div style={{ position: 'absolute', top: 0, left: '20%', right: '20%', height: '1px', background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 100%)' }} />
+
+                                {/* Glowing Orb Icon Container */}
                                 <div style={{
-                                    width: '40px', height: '40px', borderRadius: '12px',
-                                    background: '#161B26', border: '1px solid #252B3B',
+                                    width: '64px', height: '64px', borderRadius: '50%',
+                                    background: '#05070A',
+                                    border: '1px solid rgba(255,255,255,0.1)',
                                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: '#9CA3AF', marginBottom: '20px', flexShrink: 0
+                                    color: '#fff', marginBottom: '24px', flexShrink: 0,
+                                    position: 'relative',
+                                    boxShadow: 'inset 0 4px 10px rgba(0,0,0,0.5)'
                                 }}>
-                                    {f.icon}
+                                    {/* Inner Color Glow */}
+                                    <div style={{
+                                        position: 'absolute', inset: 0, borderRadius: '50%',
+                                        background: glowColors[i % 3], opacity: 0.9, mixBlendMode: 'screen',
+                                        filter: 'blur(4px)'
+                                    }} />
+                                    <div style={{ position: 'relative', zIndex: 2 }}>
+                                        {/* Inject larger size to standard icon */}
+                                        <div style={{ transform: 'scale(1.2)' }}>{f.icon}</div>
+                                    </div>
                                 </div>
 
                                 {/* Title */}
                                 <h3 style={{
-                                    fontSize: '16px', fontWeight: 600, color: '#F3F4F6',
-                                    marginBottom: '10px', letterSpacing: '-0.01em'
+                                    fontSize: '20px', fontWeight: 600, color: '#fff',
+                                    marginBottom: '12px', letterSpacing: '-0.01em'
                                 }}>{f.title}</h3>
 
                                 {/* Description */}
                                 <p style={{
-                                    fontSize: '14px', color: '#6B7280', lineHeight: 1.65, margin: 0
+                                    fontSize: '14px', color: '#9CA3AF', lineHeight: 1.6, margin: 0
                                 }}>{f.desc}</p>
                             </div>
-                        ))}
+                        )})}
                     </div>
                 </div>
             </section>
