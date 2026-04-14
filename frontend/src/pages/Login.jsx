@@ -229,8 +229,8 @@ const Login = () => {
                 </div>
             )}
 
-            {/* ── AMBIENT GLOW ── */}
-            <div style={{ position: 'fixed', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '800px', height: '500px', background: 'radial-gradient(ellipse at top, rgba(56, 189, 248, 0.06) 0%, transparent 70%)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* ── AMBIENT GLOW (AMBER SPOTLIGHT) ── */}
+            <div style={{ position: 'fixed', top: '-200px', left: '50%', transform: 'translateX(-50%)', width: '1200px', height: '600px', background: 'radial-gradient(ellipse at top, rgba(245, 158, 11, 0.15) 0%, transparent 60%)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
@@ -244,7 +244,7 @@ const Login = () => {
                 }}>
                     <span style={{ color: '#fff' }}>Legal Intelligence.</span>
                     <br />
-                    <span style={{ color: '#4B5563' }}>Enterprise Scale.</span>
+                    <span style={{ color: '#4B5563' }}>Citizen Empowerment.</span>
                 </h1>
 
                 <p style={{
@@ -318,18 +318,18 @@ const Login = () => {
                             }}
                             onMouseOver={e => {
                                 e.currentTarget.style.animation = 'none';
-                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.6)';
-                                e.currentTarget.style.boxShadow = '0 0 24px rgba(255,255,255,0.05), inset 0 0 20px rgba(255,255,255,0.02)';
-                                e.currentTarget.style.transform = 'translateY(-4px)';
+                                e.currentTarget.style.borderColor = 'rgba(255,255,255,0.8)';
+                                e.currentTarget.style.boxShadow = '0 0 30px rgba(255,255,255,0.1), inset 0 0 20px rgba(255,255,255,0.05)';
+                                e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)';
                             }}
                             onMouseOut={e => {
                                 e.currentTarget.style.animation = ''; // restores class animation
                                 e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)';
                                 e.currentTarget.style.boxShadow = 'none';
-                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.transform = 'translateY(0) scale(1)';
                             }}
-                            onMouseDown={e => e.currentTarget.style.transform = 'scale(0.96)'}
-                            onMouseUp={e => e.currentTarget.style.transform = 'translateY(-4px)'} // reset to hovered state
+                            onMouseDown={e => e.currentTarget.style.transform = 'scale(0.90)'}
+                            onMouseUp={e => e.currentTarget.style.transform = 'translateY(-8px) scale(1.02)'} // reset to hovered state
                             >
                                 {/* Top Edge inner highlight line */}
                                 <div style={{ position: 'absolute', top: 0, left: '20%', right: '20%', height: '1px', background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 100%)' }} />
