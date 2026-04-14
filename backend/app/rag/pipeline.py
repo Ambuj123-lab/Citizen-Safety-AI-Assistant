@@ -560,21 +560,18 @@ def search_and_respond(
     }
 
 
-def generate_response_stream(
+async def generate_response_stream(
     question: str,
     context: str,
     history: str,
     user_name: str = "User",
     user_id: str = "anonymous"
 ):
-    """Generate response using LLM with streaming"""
+    """Generate response using LLM with streaming — async + .with_fallbacks()"""
     from langchain_google_genai import ChatGoogleGenerativeAI
     from langchain_core.prompts import ChatPromptTemplate
     from langchain_core.output_parsers import StrOutputParser
-    import json
 
-    start_time = time.time()
-    
     # Re-use the exact same system prompt from the file
     system_prompt = """You are **Citizen Safety AI Assistant** created by Ambuj Kumar Tripathi.
 You are currently helping **{user_name}**.
@@ -664,6 +661,7 @@ Question: {question}"""
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
+        streaming=True,
         timeout=60
     )
     fallback_llm = ChatGoogleGenerativeAI(
@@ -671,12 +669,15 @@ Question: {question}"""
         google_api_key=settings.GOOGLE_API_KEY,
         temperature=0.3,
         max_output_tokens=3000,
+        streaming=True,
         timeout=60
     )
     
-    prompt_template = ChatPromptTemplate.from_template(system_prompt)
-    parser = StrOutputParser()
-    
+    # LangChain handles fallback internally during streaming iteration
+    llm = primary_llm.with_fallbacks([fallback_llm])
+
+    chain = ChatPromptTemplate.from_template(system_prompt) | llm | StrOutputParser()
+
     invoke_args = {
         "context": context, 
         "question": question, 
@@ -684,22 +685,33 @@ Question: {question}"""
         "user_name": user_name,
         "current_date": datetime.now().strftime("%d %B %Y")
     }
-    
-    try:
-        # Try primary model first
-        chain = prompt_template | primary_llm | parser
-        return chain.stream(invoke_args), time.time() - start_time
-    except Exception as primary_err:
-        logger.warning(f"Primary LLM failed, falling back: {primary_err}")
-        try:
-            # Fallback to secondary model
-            chain = prompt_template | fallback_llm | parser
-            return chain.stream(invoke_args), time.time() - start_time
-        except Exception as fallback_err:
-            logger.error(f"Both LLMs failed: {fallback_err}")
-            raise fallback_err
 
-def search_and_respond_stream(
+    # Langfuse callback (safe mode)
+    invoke_config = {}
+    langfuse_handler = None
+    try:
+        import os
+        try:
+            from langfuse.callback import CallbackHandler
+        except ImportError:
+            from langfuse.langchain import CallbackHandler
+        os.environ["LANGFUSE_SECRET_KEY"] = settings.LANGFUSE_SECRET_KEY
+        os.environ["LANGFUSE_PUBLIC_KEY"] = settings.LANGFUSE_PUBLIC_KEY
+        os.environ["LANGFUSE_HOST"] = settings.LANGFUSE_HOST
+        langfuse_handler = CallbackHandler()
+    except Exception as e:
+        logger.warning(f"Langfuse init skipped: {e}")
+    
+    if langfuse_handler:
+        invoke_config["callbacks"] = [langfuse_handler]
+
+    # astream() with .with_fallbacks() — LangChain catches errors during 
+    # iteration and auto-switches to fallback model
+    async for chunk in chain.astream(invoke_args, config=invoke_config):
+        yield chunk
+
+
+async def search_and_respond_stream(
     question: str,
     chat_history: List[dict] = None,
     user_name: str = "User",
@@ -758,15 +770,14 @@ def search_and_respond_stream(
         history_text = "\n".join(formatted)
         
     try:
-        response_stream, latency = generate_response_stream(safe_question, context, history_text, user_name, user_id)
-        
         full_response = ""
-        for chunk in response_stream:
+        async for chunk in generate_response_stream(safe_question, context, history_text, user_name, user_id):
             full_response += chunk
             yield f"data: {json.dumps({'type': 'token', 'content': chunk})}\n\n"
             
         yield f"data: {json.dumps({'type': 'node', 'id': 'llm', 'label': 'Generating Answer', 'icon': '🧠', 'status': 'done'})}\n\n"
         yield f"data: {json.dumps({'type': 'done'})}\n\n"
     except Exception as e:
+        logger.error(f"Streaming LLM Error: {e}")
         yield f"data: {json.dumps({'type': 'error', 'message': 'AI temporarily unavailable.'})}\n\n"
-        
+
