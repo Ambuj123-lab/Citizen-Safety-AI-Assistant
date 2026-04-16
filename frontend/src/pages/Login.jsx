@@ -167,29 +167,28 @@ const Login = () => {
                     100% { stroke-dashoffset: -60; }
                 }
                 @keyframes border-glow-pulse {
-                    0%   { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
-                    25%  { box-shadow: 0 0 8px rgba(56, 189, 248, 0.5), inset 0 0 4px rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.4); }
-                    50%  { box-shadow: 0 0 8px rgba(168, 85, 247, 0.5), inset 0 0 4px rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.4); }
-                    75%  { box-shadow: 0 0 8px rgba(245, 158, 11, 0.5), inset 0 0 4px rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.4); }
-                    100% { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
+                    0%   { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
+                    25%  { box-shadow: 0 0 8px rgba(56, 189, 248, 0.5), inset 0 0 4px rgba(56, 189, 248, 0.1) !important; border-color: rgba(56, 189, 248, 0.4) !important; }
+                    50%  { box-shadow: 0 0 8px rgba(168, 85, 247, 0.5), inset 0 0 4px rgba(168, 85, 247, 0.1) !important; border-color: rgba(168, 85, 247, 0.4) !important; }
+                    75%  { box-shadow: 0 0 8px rgba(245, 158, 11, 0.5), inset 0 0 4px rgba(245, 158, 11, 0.1) !important; border-color: rgba(245, 158, 11, 0.4) !important; }
+                    100% { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
+                }
+                .status-badge {
+                    display: inline-flex; align-items: center; gap: 6px;
+                    margin-left: 12px; padding: 3px 12px;
+                    background: linear-gradient(90deg, rgba(34,197,94,0.08) 0%, rgba(34,197,94,0.15) 50%, rgba(34,197,94,0.08) 100%);
+                    background-size: 200% 100%;
+                    animation: shimmer-sweep 3s ease-in-out infinite, border-glow-pulse 4s ease-in-out infinite;
+                    border: 1px solid rgba(74, 222, 128, 0.3);
+                    border-radius: 100px; text-decoration: none; color: #4ade80;
+                    font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+                    cursor: pointer; white-space: nowrap;
                 }
             `}</style>
             <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '8px 16px', textAlign: 'center', fontSize: '10px', fontWeight: 500, color: '#FCD34D', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px', lineHeight: '1.5' }}>
                 <span style={{ fontSize: '13px' }}>⚠️</span> 
                 <span><strong>Disclaimer:</strong> This is an experimental AI platform by Ambuj Kumar Tripathi. It does NOT substitute professional legal counsel.</span>
-                <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" style={{
-                    display: 'inline-flex', alignItems: 'center', gap: '6px',
-                    marginLeft: '12px', padding: '3px 12px',
-                    background: 'linear-gradient(90deg, rgba(34,197,94,0.08) 0%, rgba(34,197,94,0.15) 50%, rgba(34,197,94,0.08) 100%)',
-                    backgroundSize: '200% 100%',
-                    animation: 'shimmer-sweep 3s ease-in-out infinite, border-glow-pulse 4s ease-in-out infinite',
-                    borderWidth: '1px', borderStyle: 'solid',
-                    borderColor: 'rgba(74, 222, 128, 0.3)', /* Keyframe will override this */
-                    borderRadius: '100px', textDecoration: 'none', color: '#4ade80',
-                    fontSize: '10px', fontWeight: 600, letterSpacing: '0.04em',
-                    cursor: 'pointer', whiteSpace: 'nowrap'
-                }}
-                >
+                <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" className="status-badge">
                     <span style={{ position: 'relative', width: '8px', height: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span style={{ position: 'absolute', width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(74, 222, 128, 0.4)', animation: 'sonar-ping 2s ease-out infinite' }} />
                         <span style={{ position: 'relative', width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 6px rgba(74, 222, 128, 0.6)' }} />
