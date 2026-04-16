@@ -148,7 +148,7 @@ const Login = () => {
     ];
 
     return (
-        <div style={{ background: '#07090F', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh' }}>
+        <div style={{ background: '#07090F', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
             <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
             {/* ── TOP DISCLAIMER BANNER ── */}
@@ -486,8 +486,6 @@ const Login = () => {
 
                         <iframe
                             src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=bot_response_k79sbj"
-                            width="640"
-                            height="360"
                             style={{
                                 height: 'auto',
                                 width: '100%',
@@ -606,8 +604,6 @@ const Login = () => {
 
                         <iframe
                             src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=qlora_training_nsjd7g"
-                            width="640"
-                            height="360"
                             style={{
                                 height: 'auto',
                                 width: '100%',
