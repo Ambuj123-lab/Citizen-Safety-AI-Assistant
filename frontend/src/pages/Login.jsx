@@ -1,6 +1,6 @@
 import { authAPI } from '../api';
 import logo from '../assets/logo.png';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 
 /* ── Animated Counter ── */
 const useCountUp = (target, duration = 2200) => {
@@ -152,9 +152,61 @@ const Login = () => {
             <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
             {/* ── TOP DISCLAIMER BANNER ── */}
+            <style>{`
+                @keyframes sonar-ping {
+                    0% { transform: scale(1); opacity: 0.8; }
+                    70% { transform: scale(3.5); opacity: 0; }
+                    100% { transform: scale(3.5); opacity: 0; }
+                }
+                @keyframes shimmer-sweep {
+                    0% { background-position: -200% center; }
+                    100% { background-position: 200% center; }
+                }
+                @keyframes ecg-draw {
+                    0% { stroke-dashoffset: 60; }
+                    100% { stroke-dashoffset: -60; }
+                }
+                @keyframes border-glow-pulse {
+                    0%   { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
+                    25%  { box-shadow: 0 0 8px rgba(56, 189, 248, 0.5), inset 0 0 4px rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.4); }
+                    50%  { box-shadow: 0 0 8px rgba(168, 85, 247, 0.5), inset 0 0 4px rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.4); }
+                    75%  { box-shadow: 0 0 8px rgba(245, 158, 11, 0.5), inset 0 0 4px rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.4); }
+                    100% { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
+                }
+            `}</style>
             <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '8px 16px', textAlign: 'center', fontSize: '10px', fontWeight: 500, color: '#FCD34D', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px', lineHeight: '1.5' }}>
                 <span style={{ fontSize: '13px' }}>⚠️</span> 
                 <span><strong>Disclaimer:</strong> This is an experimental AI platform by Ambuj Kumar Tripathi. It does NOT substitute professional legal counsel.</span>
+                <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" style={{
+                    display: 'inline-flex', alignItems: 'center', gap: '6px',
+                    marginLeft: '12px', padding: '3px 12px',
+                    background: 'linear-gradient(90deg, rgba(34,197,94,0.08) 0%, rgba(34,197,94,0.15) 50%, rgba(34,197,94,0.08) 100%)',
+                    backgroundSize: '200% 100%',
+                    animation: 'shimmer-sweep 3s ease-in-out infinite, border-glow-pulse 4s ease-in-out infinite',
+                    borderWidth: '1px', borderStyle: 'solid',
+                    borderColor: 'rgba(74, 222, 128, 0.3)', /* Keyframe will override this */
+                    borderRadius: '100px', textDecoration: 'none', color: '#4ade80',
+                    fontSize: '10px', fontWeight: 600, letterSpacing: '0.04em',
+                    cursor: 'pointer', whiteSpace: 'nowrap'
+                }}
+                >
+                    <span style={{ position: 'relative', width: '8px', height: '8px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        <span style={{ position: 'absolute', width: '8px', height: '8px', borderRadius: '50%', background: 'rgba(74, 222, 128, 0.4)', animation: 'sonar-ping 2s ease-out infinite' }} />
+                        <span style={{ position: 'relative', width: '6px', height: '6px', borderRadius: '50%', background: '#4ade80', boxShadow: '0 0 6px rgba(74, 222, 128, 0.6)' }} />
+                    </span>
+                    <svg width="28" height="12" viewBox="0 0 28 12" style={{ overflow: 'visible', marginLeft: '-2px' }}>
+                        <path
+                            d="M0,6 L6,6 L8,2 L10,10 L12,4 L14,8 L16,6 L28,6"
+                            fill="none"
+                            stroke="#4ade80"
+                            strokeWidth="1.2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            style={{ strokeDasharray: '30', strokeDashoffset: '0', animation: 'ecg-draw 2s linear infinite' }}
+                        />
+                    </svg>
+                    System Status
+                </a>
             </div>
 
             {/* ── NAVBAR ── */}
@@ -171,6 +223,8 @@ const Login = () => {
                 {/* Interactive Navbar Center */}
                 <div className="hidden lg:flex items-center gap-7" style={{ fontSize: '13px', fontWeight: 500, color: '#9CA3AF' }}>
                     <button onClick={() => document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', transition: 'color 0.2s', padding: 0 }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>Pipeline Structure</button>
+                    
+                    <button onClick={() => document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', transition: 'color 0.2s', padding: 0 }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>Live Demo</button>
                     
                     <button onClick={() => document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' })} style={{ background: 'transparent', border: 'none', color: 'inherit', cursor: 'pointer', transition: 'color 0.2s', padding: 0 }} onMouseOver={e => e.target.style.color = '#fff'} onMouseOut={e => e.target.style.color = '#9CA3AF'}>My Fine-Tuned Models</button>
                     
@@ -217,6 +271,7 @@ const Login = () => {
             {mobileMenuOpen && (
                 <div className="lg:hidden" style={{ position: 'absolute', top: '130px', left: '16px', right: '16px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 100, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     <button onClick={() => { document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Pipeline Structure</button>
+                    <button onClick={() => { document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Live Demo</button>
                     <button onClick={() => { document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>My Fine-Tuned Models</button>
                     
                     <div style={{ height: '1px', background: '#1B1F2A' }} />
@@ -394,6 +449,69 @@ const Login = () => {
                 </div>
             </section>
 
+            {/* ══════════════════ LIVE DEMO VIDEO SECTION ══════════════════ */}
+            <section id="demo" style={{ padding: '80px 16px', position: 'relative', zIndex: 10 }}>
+                <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+
+                    {/* Section Header */}
+                    <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+                        <span style={{
+                            display: 'inline-flex', alignItems: 'center', gap: '6px',
+                            padding: '6px 16px', fontSize: '11px', fontWeight: 600,
+                            textTransform: 'uppercase', letterSpacing: '0.12em', color: '#F59E0B',
+                            border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '100px', marginBottom: '20px',
+                            background: 'rgba(245, 158, 11, 0.05)'
+                        }}>
+                            <span style={{ fontSize: '12px' }}>▶</span> Live Demo
+                        </span>
+                        <h2 style={{ fontSize: '32px', fontWeight: 600, letterSpacing: '-0.02em', color: '#fff', marginBottom: '12px' }}>
+                            See It In Action.
+                        </h2>
+                        <p style={{ fontSize: '15px', color: '#6B7280', lineHeight: 1.6, maxWidth: '520px', margin: '0 auto' }}>
+                            Watch the AI parse legal queries in real-time with streaming responses and source-grounded citations.
+                        </p>
+                    </div>
+
+                    {/* Video Container — Glassmorphism Frame */}
+                    <div style={{
+                        position: 'relative',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(245, 158, 11, 0.15)',
+                        background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.5) 0%, rgba(10, 13, 18, 0.9) 100%)',
+                        padding: '6px',
+                        boxShadow: '0 0 60px rgba(245, 158, 11, 0.06), 0 20px 60px rgba(0,0,0,0.5)',
+                        overflow: 'hidden'
+                    }}>
+                        {/* Top Edge Highlight */}
+                        <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 100%)', zIndex: 2 }} />
+
+                        <iframe
+                            src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=bot_response_k79sbj"
+                            width="640"
+                            height="360"
+                            style={{
+                                height: 'auto',
+                                width: '100%',
+                                aspectRatio: '640 / 360',
+                                borderRadius: '12px',
+                                display: 'block',
+                                border: 'none'
+                            }}
+                            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                            allowFullScreen
+                            frameBorder="0"
+                            title="Citizen Safety AI — Live Bot Response Demo"
+                        />
+                    </div>
+
+                    {/* Caption */}
+                    <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '12px', color: '#4B5563', letterSpacing: '0.5px' }}>
+                        Real-time RAG pipeline response · Streaming · Source verification against PDF
+                    </p>
+
+                </div>
+            </section>
+
             {/* ===== OPEN SOURCE MODEL ===== */}
             <section id="opensource" className="opensource-section" style={{ padding: '60px 16px', background: '#0a0a0a', borderTop: '1px solid #1B1F2A', borderBottom: '1px solid #1B1F2A' }}>
                 <div style={{ maxWidth: '900px', margin: '0 auto' }}>
@@ -454,6 +572,62 @@ const Login = () => {
                 </div>
 
                 <p style={{ color: '#aaa', fontSize: '12px', marginTop: '20px', textAlign: 'center', letterSpacing: '0.5px' }}>Built with Llama 3.2 · Fine-tuned by <strong style={{ color: '#c9a84c' }}>Ambuj Kumar Tripathi</strong> · Llama 3.2 Community License</p>
+
+                {/* ── Training Pipeline Video ── */}
+                <div style={{ marginTop: '64px' }}>
+                    <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+                        <span style={{
+                            display: 'inline-flex', alignItems: 'center', gap: '6px',
+                            padding: '6px 16px', fontSize: '11px', fontWeight: 600,
+                            textTransform: 'uppercase', letterSpacing: '0.12em', color: '#c9a84c',
+                            border: '1px solid rgba(201, 168, 76, 0.25)', borderRadius: '100px', marginBottom: '20px',
+                            background: 'rgba(201, 168, 76, 0.05)'
+                        }}>
+                            <span style={{ fontSize: '12px' }}>▶</span> Training Process
+                        </span>
+                        <h3 style={{ fontSize: '28px', fontWeight: 600, letterSpacing: '-0.02em', color: '#fff', marginBottom: '12px' }}>
+                            Training Pipeline.
+                        </h3>
+                        <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, maxWidth: '480px', margin: '0 auto' }}>
+                            Watch the full qLoRA fine-tuning cycle — from training steps and loss convergence to GGUF quantization export.
+                        </p>
+                    </div>
+
+                    <div style={{
+                        position: 'relative',
+                        borderRadius: '16px',
+                        border: '1px solid rgba(201, 168, 76, 0.15)',
+                        background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.5) 0%, rgba(10, 13, 18, 0.9) 100%)',
+                        padding: '6px',
+                        boxShadow: '0 0 60px rgba(201, 168, 76, 0.06), 0 20px 60px rgba(0,0,0,0.5)',
+                        overflow: 'hidden'
+                    }}>
+                        {/* Top Edge Highlight */}
+                        <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 100%)', zIndex: 2 }} />
+
+                        <iframe
+                            src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=qlora_training_nsjd7g"
+                            width="640"
+                            height="360"
+                            style={{
+                                height: 'auto',
+                                width: '100%',
+                                aspectRatio: '640 / 360',
+                                borderRadius: '12px',
+                                display: 'block',
+                                border: 'none'
+                            }}
+                            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                            allowFullScreen
+                            frameBorder="0"
+                            title="qLoRA Fine-Tuning — Training Steps & GGUF Export"
+                        />
+                    </div>
+
+                    <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '12px', color: '#4B5563', letterSpacing: '0.5px' }}>
+                        qLoRA 4-bit training · Loss convergence · GGUF Q4_K_M quantization export
+                    </p>
+                </div>
 
                 </div>
             </section>
