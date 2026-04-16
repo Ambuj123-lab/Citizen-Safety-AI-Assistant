@@ -213,7 +213,7 @@ const Login = () => {
             {/* ── NAVBAR ── */}
             <nav style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '16px 16px', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 50,
+                padding: '16px 16px', maxWidth: '1200px', margin: '0 auto', position: 'relative', zIndex: 9999,
                 flexWrap: 'wrap', gap: '12px'
             }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -270,7 +270,7 @@ const Login = () => {
 
             {/* ── MOBILE MENU OVERLAY ── */}
             {mobileMenuOpen && (
-                <div className="lg:hidden" style={{ position: 'absolute', top: '130px', left: '16px', right: '16px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 100, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                <div className="lg:hidden" style={{ position: 'absolute', top: '90px', left: '16px', right: '16px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 9998, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
                     <button onClick={() => { document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Pipeline Structure</button>
                     <button onClick={() => { document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Live Demo</button>
                     <button onClick={() => { document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>My Fine-Tuned Models</button>
