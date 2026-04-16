@@ -167,11 +167,11 @@ const Login = () => {
                     100% { stroke-dashoffset: -60; }
                 }
                 @keyframes border-glow-pulse {
-                    0%   { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
-                    25%  { box-shadow: 0 0 8px rgba(56, 189, 248, 0.5), inset 0 0 4px rgba(56, 189, 248, 0.1) !important; border-color: rgba(56, 189, 248, 0.4) !important; }
-                    50%  { box-shadow: 0 0 8px rgba(168, 85, 247, 0.5), inset 0 0 4px rgba(168, 85, 247, 0.1) !important; border-color: rgba(168, 85, 247, 0.4) !important; }
-                    75%  { box-shadow: 0 0 8px rgba(245, 158, 11, 0.5), inset 0 0 4px rgba(245, 158, 11, 0.1) !important; border-color: rgba(245, 158, 11, 0.4) !important; }
-                    100% { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1) !important; border-color: rgba(74, 222, 128, 0.3) !important; }
+                    0%   { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
+                    25%  { box-shadow: 0 0 8px rgba(56, 189, 248, 0.5), inset 0 0 4px rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.4); }
+                    50%  { box-shadow: 0 0 8px rgba(168, 85, 247, 0.5), inset 0 0 4px rgba(168, 85, 247, 0.1); border-color: rgba(168, 85, 247, 0.4); }
+                    75%  { box-shadow: 0 0 8px rgba(245, 158, 11, 0.5), inset 0 0 4px rgba(245, 158, 11, 0.1); border-color: rgba(245, 158, 11, 0.4); }
+                    100% { box-shadow: 0 0 6px rgba(74, 222, 128, 0.4), inset 0 0 4px rgba(74, 222, 128, 0.1); border-color: rgba(74, 222, 128, 0.3); }
                 }
                 .status-badge {
                     display: inline-flex; align-items: center; gap: 6px;
