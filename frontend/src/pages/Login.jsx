@@ -266,26 +266,25 @@ const Login = () => {
                         </svg>
                     </button>
                 </div>
-            </nav>
 
-            {/* ── MOBILE MENU OVERLAY ── */}
-            {mobileMenuOpen && (
-                <div className="lg:hidden" style={{ position: 'absolute', top: '130px', left: '16px', right: '16px', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 9998, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
-                    <button onClick={() => { document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Pipeline Structure</button>
-                    <button onClick={() => { document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Live Demo</button>
-                    <button onClick={() => { document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>My Fine-Tuned Models</button>
-                    
-                    <div style={{ height: '1px', background: '#1B1F2A' }} />
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                        <span style={{ fontSize: '13px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Live Systems</span>
-                        <a href="https://agentic-rag-financial-parser.onrender.com/" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>💰</span> Agentic Financial Parser</a>
-                        <a href="https://indian-legal-ai-expert.onrender.com/login" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>⚖️</span> Indian Legal AI Expert</a>
+                {/* ── MOBILE MENU OVERLAY (inside nav, top:100% = always below navbar) ── */}
+                {mobileMenuOpen && (
+                    <div className="lg:hidden" style={{ position: 'absolute', top: '100%', left: '0', right: '0', margin: '8px 16px 0', background: '#0A0D14', border: '1px solid #1B1F2A', borderRadius: '16px', padding: '24px', zIndex: 9998, boxShadow: '0 20px 40px rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                        <button onClick={() => { document.getElementById('pipeline')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Pipeline Structure</button>
+                        <button onClick={() => { document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>Live Demo</button>
+                        <button onClick={() => { document.getElementById('opensource')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }} style={{ background: 'transparent', border: 'none', color: '#fff', cursor: 'pointer', fontSize: '15px', fontWeight: 500, textAlign: 'left', padding: '0' }}>My Fine-Tuned Models</button>
+                        
+                        <div style={{ height: '1px', background: '#1B1F2A' }} />
+                        
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                            <span style={{ fontSize: '13px', fontWeight: 600, color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Live Systems</span>
+                            <a href="https://agentic-rag-financial-parser.onrender.com/" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>💰</span> Agentic Financial Parser</a>
+                            <a href="https://indian-legal-ai-expert.onrender.com/login" target="_blank" rel="noreferrer" style={{ color: '#D1D5DB', textDecoration: 'none', fontSize: '15px', display: 'flex', alignItems: 'center', gap: '12px' }}><span style={{fontSize:'18px'}}>⚖️</span> Indian Legal AI Expert</a>
+                        </div>
+                        <button onClick={() => setMobileMenuOpen(false)} style={{ background: 'rgba(239, 68, 68, 0.15)', border: '1px solid rgba(239, 68, 68, 0.4)', color: '#ef4444', cursor: 'pointer', fontSize: '14px', fontWeight: 600, padding: '12px', borderRadius: '8px', textAlign: 'center' }}>✕ Close Menu</button>
                     </div>
-                    {/* Explicit Close Button inside dropdown to prevent unreachable UI issues */}
-                    <button onClick={() => setMobileMenuOpen(false)} style={{ background: 'rgba(239, 68, 68, 0.2)', border: '1px solid rgba(239, 68, 68, 0.5)', color: '#ef4444', cursor: 'pointer', fontSize: '15px', fontWeight: 'bold', padding: '12px', borderRadius: '8px', textAlign: 'center', marginTop: '4px' }}>❌ Close Menu</button>
-                </div>
-            )}
+                )}
+            </nav>
 
             {/* ── SUPER DYNAMIC AMBIENT GLOW (LUXURY WEBFLOW SPOTLIGHT) ── */}
             {/* Large Wide Amber Base */}
