@@ -487,21 +487,22 @@ const Login = () => {
                         {/* Top Edge Highlight */}
                         <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'radial-gradient(circle, rgba(245, 158, 11, 0.3) 0%, transparent 100%)', zIndex: 2 }} />
 
-                        <iframe
-                            src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=bot_response_k79sbj"
-                            style={{
-                                height: 'auto',
-                                width: '100%',
-                                aspectRatio: '640 / 360',
-                                borderRadius: '12px',
-                                display: 'block',
-                                border: 'none'
-                            }}
-                            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                            allowFullScreen
-                            frameBorder="0"
-                            title="Citizen Safety AI — Live Bot Response Demo"
-                        />
+                        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, borderRadius: '12px', overflow: 'hidden' }}>
+                          <iframe
+                              src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=bot_response_k79sbj"
+                              style={{
+                                  position: 'absolute', top: 0, left: 0,
+                                  width: '100%', height: '100%',
+                                  borderRadius: '12px',
+                                  display: 'block',
+                                  border: 'none'
+                              }}
+                              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                              allowFullScreen
+                              frameBorder="0"
+                              title="Citizen Safety AI — Live Bot Response Demo"
+                          />
+                        </div>
                     </div>
 
                     {/* Caption */}
@@ -605,21 +606,22 @@ const Login = () => {
                         {/* Top Edge Highlight */}
                         <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 100%)', zIndex: 2 }} />
 
-                        <iframe
-                            src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=qlora_training_nsjd7g"
-                            style={{
-                                height: 'auto',
-                                width: '100%',
-                                aspectRatio: '640 / 360',
-                                borderRadius: '12px',
-                                display: 'block',
-                                border: 'none'
-                            }}
-                            allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                            allowFullScreen
-                            frameBorder="0"
-                            title="qLoRA Fine-Tuning — Training Steps & GGUF Export"
-                        />
+                        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, borderRadius: '12px', overflow: 'hidden' }}>
+                          <iframe
+                              src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=qlora_training_nsjd7g"
+                              style={{
+                                  position: 'absolute', top: 0, left: 0,
+                                  width: '100%', height: '100%',
+                                  borderRadius: '12px',
+                                  display: 'block',
+                                  border: 'none'
+                              }}
+                              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                              allowFullScreen
+                              frameBorder="0"
+                              title="qLoRA Fine-Tuning — Training Steps & GGUF Export"
+                          />
+                        </div>
                     </div>
 
                     <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '12px', color: '#4B5563', letterSpacing: '0.5px' }}>
