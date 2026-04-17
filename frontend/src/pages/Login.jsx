@@ -187,6 +187,34 @@ const Login = () => {
                     transition: border-color 0.3s;
                 }
             `}</style>
+            <style>{`
+                @keyframes blueprint-red-glow {
+                    0%   { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
+                    35%  { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
+                    50%  { box-shadow: 0 0 20px rgba(255,0,0,0.6), 0 0 40px rgba(255,0,0,0.4), 0 0 60px rgba(255,0,0,0.2); }
+                    65%  { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
+                    100% { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
+                }
+                .blueprint-btn {
+                    display: inline-flex; align-items: center; gap: 8px;
+                    padding: 12px 26px;
+                    background: #000000;
+                    border: 1px solid rgba(255,255,255,0.1);
+                    border-radius: 10px;
+                    color: #ffffff;
+                    font-size: 14px; font-weight: 600;
+                    letter-spacing: 0.5px;
+                    text-decoration: none;
+                    cursor: pointer;
+                    animation: blueprint-red-glow 5s ease-in-out infinite;
+                    transition: transform 0.2s, background 0.3s;
+                }
+                .blueprint-btn:hover {
+                    transform: translateY(-2px);
+                    background: #0a0a0a;
+                    box-shadow: 0 0 30px rgba(255,0,0,0.6), 0 0 50px rgba(255,0,0,0.4), 0 0 80px rgba(255,0,0,0.25) !important;
+                }
+            `}</style>
             <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '8px 16px', textAlign: 'center', fontSize: '10px', fontWeight: 500, color: '#FCD34D', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px', lineHeight: '1.5' }}>
                 <span style={{ fontSize: '13px' }}>⚠️</span> 
                 <span><strong>Disclaimer:</strong> This is an experimental AI platform by Ambuj Kumar Tripathi. It does NOT substitute professional legal counsel.</span>
@@ -330,6 +358,13 @@ const Login = () => {
                     </svg>
                     Get Started with Google
                 </button>
+
+                <div style={{ marginTop: '16px' }}>
+                    <a href="/architecture.html" target="_blank" rel="noreferrer" className="blueprint-btn">
+                        <span style={{ fontSize: '16px' }}>🏗️</span>
+                        System Blueprint
+                    </a>
+                </div>
             </section>
 
             {/* ══════════════════ FEATURES SECTION ══════════════════ */}

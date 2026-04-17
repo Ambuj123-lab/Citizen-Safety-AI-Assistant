@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>Citizen Safety AI – System Architecture 2026</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center}
+/* Desktop: lock viewport. Mobile: allow scroll */
+@media (min-width:769px){
+  html,body{height:100vh;overflow:hidden;}
+}
+@media (max-width:768px){
+  html,body{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;}
+}
+.wrap{position:relative;width:1380px;height:760px;background:#070a14;flex-shrink:0;overflow:hidden}
+.wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(14,36,80,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(14,36,80,.1) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+
+@media (max-width:768px){
+  .wrap{width:100%;min-width:1000px;height:auto;min-height:760px;}
+  .outer-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+}
+
+.sec{position:absolute;border-radius:9px;border:1px dashed}
+.sl{position:absolute;top:-9px;background:#070a14;padding:0 8px;font-size:8px;letter-spacing:3.5px;font-weight:700;text-transform:uppercase;white-space:nowrap;left:14px}
+.sl.c{left:50%;transform:translateX(-50%)}
+
+.box{position:absolute;border:2px solid;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 10px}
+.n{font-size:11.5px;font-weight:700;line-height:1.3}
+.s{font-size:7.5px;opacity:.72;margin-top:2px;line-height:1.5}
+
+@keyframes gGn{0%,100%{box-shadow:0 0 6px #00cc4433}50%{box-shadow:0 0 18px #00cc4466,0 0 32px #00cc4420}}
+@keyframes gRd{0%,100%{box-shadow:0 0 6px #ff334433}50%{box-shadow:0 0 18px #ff334466,0 0 32px #ff334420}}
+@keyframes gPu{0%,100%{box-shadow:0 0 6px #8844ff33}50%{box-shadow:0 0 18px #8844ff55,0 0 32px #8844ff20}}
+@keyframes gBl{0%,100%{box-shadow:0 0 6px #0088ff33}50%{box-shadow:0 0 18px #0088ff55,0 0 32px #0088ff20}}
+@keyframes gOr{0%,100%{box-shadow:0 0 8px #ffaa0033}50%{box-shadow:0 0 22px #ffaa0077,0 0 40px #ffaa0020}}
+@keyframes gGd{0%,100%{box-shadow:0 0 6px #ccaa0033}50%{box-shadow:0 0 18px #ccaa0055,0 0 32px #ccaa0020}}
+@keyframes gVi{0%,100%{box-shadow:0 0 6px #7744ff33}50%{box-shadow:0 0 18px #7744ff55,0 0 32px #7744ff20}}
+
+.pg{animation:gGn 3s ease-in-out infinite}
+.pr{animation:gRd 3s ease-in-out infinite}
+.pp{animation:gPu 2.8s ease-in-out infinite}
+.pb{animation:gBl 3s ease-in-out infinite}
+.po{animation:gOr 2.5s ease-in-out infinite}
+.pgd{animation:gGd 3s ease-in-out infinite}
+.pv{animation:gVi 3s ease-in-out infinite}
+
+.title{position:absolute;top:20px;left:28px}
+.t1{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
+.t2{font-size:10px;color:#5577aa;letter-spacing:4px;margin-top:2px;text-transform:uppercase}
+.t3{font-size:8px;color:#2d3d4e;margin-top:4px;letter-spacing:1px}
+
+/* Branding footer — prominent */
+.footer{position:absolute;bottom:10px;left:28px;right:22px;display:flex;align-items:center;justify-content:space-between;}
+.footer-left{font-size:12px;color:#5577aa;letter-spacing:1px;font-weight:700;}
+.footer-left span{color:#00ccff;}
+.footer-right{font-size:8px;color:#253040;letter-spacing:.8px;}
+.footer-right span{color:#3366ff;}
+
+.svgo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
+
+/* Landscape hint for mobile */
+.landscape-hint{
+  display:none;
+  position:fixed;bottom:12px;left:50%;transform:translateX(-50%);
+  background:rgba(0,204,255,.12);border:1px solid rgba(0,204,255,.25);
+  color:#00ccff;font-family:'Courier New',monospace;
+  font-size:10px;padding:6px 16px;border-radius:20px;
+  z-index:1000;white-space:nowrap;letter-spacing:0.5px;
+  animation:hintFade 6s ease-in-out forwards;
+}
+@keyframes hintFade{0%{opacity:1}70%{opacity:1}100%{opacity:0;pointer-events:none;}}
+@media (max-width:768px) and (orientation:portrait){
+  .landscape-hint{display:block;}
+}
+</style>
+</head>
+<body>
+<div class="landscape-hint">📱🔄 Rotate to landscape for best view</div>
+<div class="outer-scroll">
+<div class="wrap">
+
+<!-- ===== SVG: ALL CONNECTIONS + ANIMATED PARTICLES ===== -->
+<svg class="svgo" viewBox="0 0 1380 760" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <filter id="fc"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fp"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fg"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fo"><feGaussianBlur stdDeviation="3.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="fr"><feGaussianBlur stdDeviation="2.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+
+  <marker id="aCy" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M1,1L6,3.5L1,6Z" fill="#00ccff"/></marker>
+  <marker id="aPu" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M1,1L6,3.5L1,6Z" fill="#9944ff"/></marker>
+  <marker id="aGr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M1,1L6,3.5L1,6Z" fill="#00ee77"/></marker>
+  <marker id="aOr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M1,1L6,3.5L1,6Z" fill="#ffaa00"/></marker>
+  <marker id="aRe" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M1,1L6,3.5L1,6Z" fill="#ff4455"/></marker>
+
+  <!-- Animatable paths for particle motion -->
+  <path id="pm1" d="M501,188 L501,210"/>
+  <path id="pm2" d="M634,188 L634,210"/>
+  <path id="pm3" d="M567,266 L567,328"/>
+  <path id="pm4" d="M207,405 L232,392"/>
+  <path id="pm5" d="M310,412 L310,426"/>
+  <path id="pm6" d="M386,448 L400,448 L400,395 L409,395"/>
+  <path id="pm7" d="M551,418 L551,430"/>
+  <path id="pm8" d="M551,476 L551,498"/>
+  <path id="pm9" d="M691,523 L708,523 L708,465 L713,465"/>
+  <path id="pm10" d="M881,465 L904,449"/>
+  <path id="pm11" d="M1046,447 L1052,447"/>
+  <path id="pm12" d="M976,518 L976,478"/>
+  <path id="pm13" d="M976,592 L976,578"/>
+  <path id="pmf"  d="M142,405 L207,405 L232,392 L310,392 L310,412 L310,426 L386,426 L386,448 L400,448 L400,395 L411,395 L551,395 L551,418 L551,430 L551,476 L551,498 L551,523 L691,523 L708,523 L708,465 L881,465 L904,449 L976,449 L1046,449"/>
+</defs>
+
+<!-- === STATIC LINES === -->
+<line x1="501" y1="188" x2="501" y2="212" stroke="#00cc44" stroke-width="1.5" marker-end="url(#aGr)" opacity=".75"/>
+<line x1="634" y1="188" x2="634" y2="212" stroke="#ff4455" stroke-width="1.5" marker-end="url(#aRe)" opacity=".75"/>
+<line x1="567" y1="266" x2="567" y2="330" stroke="#9944ff" stroke-width="1.5" stroke-dasharray="5 4" opacity=".65">
+  <animate attributeName="stroke-dashoffset" values="18;0" dur="1.2s" repeatCount="indefinite"/>
+</line>
+<polygon points="563,269 571,269 567,263" fill="#9944ff" opacity=".65"/>
+<polygon points="563,327 571,327 567,333" fill="#9944ff" opacity=".65"/>
+<line x1="207" y1="405" x2="232" y2="392" stroke="#00aaff" stroke-width="1.5" marker-end="url(#aCy)" opacity=".85">
+  <animate attributeName="opacity" values=".85;1;.85" dur="2s" repeatCount="indefinite"/>
+</line>
+<line x1="310" y1="412" x2="310" y2="426" stroke="#4477ff" stroke-width="1.5" marker-end="url(#aCy)" opacity=".8"/>
+<path d="M386,448 L400,448 L400,395 L409,395" fill="none" stroke="#00aaff" stroke-width="1.5" marker-end="url(#aCy)" opacity=".8"/>
+<line x1="551" y1="418" x2="551" y2="430" stroke="#9944ff" stroke-width="1.5" marker-end="url(#aPu)" opacity=".85"/>
+<line x1="551" y1="476" x2="551" y2="498" stroke="#9944ff" stroke-width="1.5" marker-end="url(#aPu)" opacity=".85"/>
+<path d="M691,523 L708,523 L708,465 L713,465" fill="none" stroke="#00ee77" stroke-width="1.5" marker-end="url(#aGr)" opacity=".8"/>
+<line x1="881" y1="465" x2="904" y2="449" stroke="#ffaa00" stroke-width="1.5" marker-end="url(#aOr)" opacity=".85">
+  <animate attributeName="opacity" values=".85;1;.85" dur="2.5s" repeatCount="indefinite"/>
+</line>
+<line x1="1046" y1="447" x2="1052" y2="447" stroke="#ffaa00" stroke-width="1.5" marker-end="url(#aOr)" opacity=".9"/>
+<line x1="976" y1="518" x2="976" y2="478" stroke="#ffaa00" stroke-width="1.5" marker-end="url(#aOr)" opacity=".8"/>
+<line x1="1116" y1="484" x2="1113" y2="522" stroke="#ffaa00" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#aOr)" opacity=".6"/>
+<line x1="976" y1="592" x2="976" y2="578" stroke="#ccaa00" stroke-width="1.2" marker-end="url(#aOr)" opacity=".6"/>
+
+<!-- === FLOWING ANIMATED DASHED LINES === -->
+<line x1="551" y1="418" x2="551" y2="430" stroke="#cc77ff" stroke-width="1" stroke-dasharray="4 2" opacity=".5">
+  <animate attributeName="stroke-dashoffset" values="12;0" dur=".6s" repeatCount="indefinite"/>
+</line>
+<line x1="551" y1="476" x2="551" y2="498" stroke="#cc77ff" stroke-width="1" stroke-dasharray="4 2" opacity=".5">
+  <animate attributeName="stroke-dashoffset" values="12;0" dur=".8s" repeatCount="indefinite"/>
+</line>
+
+<!-- === ARROW LABELS === -->
+<text x="210" y="392" fill="#00aaff" font-size="8" font-family="Courier New" letter-spacing="1" opacity=".9">HTTPS</text>
+<text x="404" y="434" fill="#00aaff" font-size="8" font-family="Courier New" letter-spacing="1" opacity=".9">REST/WS</text>
+<text x="714" y="537" fill="#00ee77" font-size="8" font-family="Courier New" letter-spacing="1" opacity=".9">NLP</text>
+<text x="856" y="445" fill="#ffaa00" font-size="8" font-family="Courier New" letter-spacing="1" opacity=".9">Vector</text>
+
+<!-- === ANIMATED PARTICLES === -->
+<circle r="2.8" fill="#00cc44" filter="url(#fg)" opacity=".9">
+  <animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#pm1"/></animateMotion>
+</circle>
+<circle r="2.8" fill="#ff4455" filter="url(#fr)" opacity=".9">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s"><mpath href="#pm2"/></animateMotion>
+</circle>
+<circle r="2.5" fill="#9944ff" filter="url(#fp)" opacity=".85">
+  <animateMotion dur="2.2s" repeatCount="indefinite" begin="0.4s"><mpath href="#pm3"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#00aaff" filter="url(#fc)" opacity=".9">
+  <animateMotion dur="2s" repeatCount="indefinite"><mpath href="#pm4"/></animateMotion>
+</circle>
+<circle r="3" fill="#4477ff" filter="url(#fc)" opacity=".9">
+  <animateMotion dur="0.8s" repeatCount="indefinite" begin="0.5s"><mpath href="#pm5"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#00aaff" filter="url(#fc)" opacity=".9">
+  <animateMotion dur="2.2s" repeatCount="indefinite" begin="0.9s"><mpath href="#pm6"/></animateMotion>
+</circle>
+<circle r="3" fill="#9944ff" filter="url(#fp)" opacity=".9">
+  <animateMotion dur="0.8s" repeatCount="indefinite" begin="1.1s"><mpath href="#pm7"/></animateMotion>
+</circle>
+<circle r="3" fill="#9944ff" filter="url(#fp)" opacity=".9">
+  <animateMotion dur="1s" repeatCount="indefinite" begin="0.5s"><mpath href="#pm8"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#00ee77" filter="url(#fg)" opacity=".9">
+  <animateMotion dur="2s" repeatCount="indefinite" begin="0.7s"><mpath href="#pm9"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#ffaa00" filter="url(#fo)" opacity=".9">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="1.1s"><mpath href="#pm10"/></animateMotion>
+</circle>
+<circle r="4" fill="#ffaa00" filter="url(#fo)" opacity="1">
+  <animateMotion dur="0.6s" repeatCount="indefinite" begin="0.2s"><mpath href="#pm11"/></animateMotion>
+</circle>
+<circle r="3" fill="#ffaa00" filter="url(#fo)" opacity=".85">
+  <animateMotion dur="1.8s" repeatCount="indefinite" begin="0.4s"><mpath href="#pm12"/></animateMotion>
+</circle>
+<circle r="2.5" fill="#ccaa00" filter="url(#fo)" opacity=".75">
+  <animateMotion dur="1.2s" repeatCount="indefinite" begin="0.8s"><mpath href="#pm13"/></animateMotion>
+</circle>
+
+<!-- MASTER FLOW PARTICLE -->
+<circle r="5" fill="#ffffff" filter="url(#fc)" opacity=".55">
+  <animateMotion dur="7s" repeatCount="indefinite" begin="1.5s"><mpath href="#pmf"/></animateMotion>
+</circle>
+<circle r="3.5" fill="#aaccff" filter="url(#fc)" opacity=".45">
+  <animateMotion dur="7s" repeatCount="indefinite" begin="5s"><mpath href="#pmf"/></animateMotion>
+</circle>
+
+</svg>
+
+<!-- ===== TITLE ===== -->
+<div class="title">
+  <div class="t1">CITIZEN SAFETY AI</div>
+  <div class="t2">SYSTEM ARCHITECTURE 2026</div>
+  <div class="t3">Production-Grade RAG · GDPR Compliant · Fault Tolerant · Observable</div>
+</div>
+
+<!-- ===== PERSISTENCE SECTION ===== -->
+<div class="sec" style="left:426px;top:112px;width:285px;height:182px;border-color:#00ccff33">
+  <div class="sl c" style="color:#00ccff66">PERSISTENCE</div>
+  <div class="box pg" style="left:12px;top:22px;width:126px;height:54px;background:linear-gradient(135deg,#091e0c,#112914);border-color:#00cc44;color:#fff">
+    <div class="n" style="color:#44ff88">MongoDB Atlas</div>
+    <div class="s">Chat History · TTL 30d</div>
+  </div>
+  <div class="box pr" style="left:147px;top:22px;width:122px;height:54px;background:linear-gradient(135deg,#1e0808,#320e0e);border-color:#ff3344;color:#fff">
+    <div class="n" style="color:#ff6677">Upstash Redis</div>
+    <div class="s">Cache · SHA-256 · 1hr TTL</div>
+  </div>
+  <div class="box pv" style="left:20px;top:100px;width:242px;height:54px;background:linear-gradient(135deg,#0e0828,#181038);border-color:#7744ff;color:#fff">
+    <div class="n" style="color:#aa77ff">Langfuse</div>
+    <div class="s">Traces · Token Cost · Latency</div>
+  </div>
+</div>
+
+<!-- ===== CLIENT SECTION ===== -->
+<div class="sec" style="left:63px;top:350px;width:158px;height:136px;border-color:#ff224444">
+  <div class="sl" style="color:#ff224466">CLIENT</div>
+  <div class="box pr" style="left:14px;top:28px;width:130px;height:54px;background:linear-gradient(135deg,#160408,#22070e);border-color:#ff2244;color:#ff4466">
+    <div class="n">Browser / PWA</div>
+  </div>
+</div>
+
+<!-- ===== FRONTEND SECTION ===== -->
+<div class="sec" style="left:224px;top:350px;width:172px;height:170px;border-color:#00ccff33">
+  <div class="sl" style="color:#00ccff66">FRONTEND</div>
+  <div class="box pb" style="left:10px;top:22px;width:152px;height:40px;background:linear-gradient(135deg,#030c1a,#060f22);border-color:#00aaff;color:#fff">
+    <div class="n" style="color:#44bbff">Google OAuth 2.0</div>
+  </div>
+  <div class="box pb" style="left:10px;top:78px;width:152px;height:40px;background:linear-gradient(135deg,#030c1a,#060f22);border-color:#3366ff;color:#fff">
+    <div class="n" style="color:#5588ff">Dashboard UI</div>
+  </div>
+</div>
+
+<!-- ===== FASTAPI BACKEND ===== -->
+<div class="sec" style="left:397px;top:330px;width:308px;height:252px;border-color:#7744ff33">
+  <div class="sl" style="color:#7744ff66">FASTAPI BACKEND</div>
+  <div class="box pp" style="left:14px;top:42px;width:280px;height:46px;background:linear-gradient(135deg,#0f0828,#1a0d42);border-color:#8855ff;color:#fff">
+    <div class="n" style="color:#cc99ff">SlowAPI Rate Limiter</div>
+    <div class="s">5-20 req/min · IP-based</div>
+  </div>
+  <div class="box pp" style="left:14px;top:100px;width:280px;height:46px;background:linear-gradient(135deg,#0f0828,#1a0d42);border-color:#8855ff;color:#fff">
+    <div class="n" style="color:#cc99ff">Circuit Breaker</div>
+    <div class="s">pybreaker · fail_max=5 · 120s reset</div>
+  </div>
+  <div class="box pp" style="left:14px;top:170px;width:280px;height:46px;background:linear-gradient(135deg,#130a32,#200f4e);border-color:#aa66ff;color:#fff">
+    <div class="n" style="color:#ddaaff">LangChain RAG Engine</div>
+    <div class="s">Parent-Child · Idempotent Upsert</div>
+  </div>
+</div>
+
+<!-- ===== SECURITY SECTION ===== -->
+<div class="sec" style="left:703px;top:358px;width:190px;height:232px;border-color:#00ff8833">
+  <div class="sl c" style="color:#00ff8866">SECURITY</div>
+  <div class="box pg" style="left:12px;top:76px;width:166px;height:62px;background:linear-gradient(135deg,#032010,#053318);border-color:#00cc66;color:#fff">
+    <div class="n" style="color:#44ff99">Presidio PII Masking</div>
+    <div class="s">Aadhaar · Phone · Email</div>
+  </div>
+  <div class="box pg" style="left:12px;top:150px;width:166px;height:54px;background:linear-gradient(135deg,#032010,#053318);border-color:#00cc66;color:#fff">
+    <div class="n" style="color:#44ff99">spaCy NLP</div>
+    <div class="s">Trilingual Detection</div>
+  </div>
+</div>
+
+<!-- ===== AI LAYER ===== -->
+<div class="sec" style="left:892px;top:330px;width:298px;height:350px;border-color:#ff880033">
+  <div class="sl c" style="color:#ff880066">AI LAYER · LangChain RAG</div>
+  <div class="box pb" style="left:14px;top:88px;width:140px;height:58px;background:linear-gradient(135deg,#060e28,#0b1838);border-color:#4488ff;color:#fff">
+    <div class="n" style="color:#88bbff">Pinecone</div>
+    <div class="s">614 Vectors · Jina Embed</div>
+  </div>
+  <div class="box po" style="left:160px;top:81px;width:128px;height:72px;background:linear-gradient(135deg,#1a0e00,#2c1a00);border-color:#ffaa00;color:#fff">
+    <div class="n" style="color:#ffcc44;font-size:12.5px">Llama 3.3 70B</div>
+    <div class="s">via Groq · sub-5s response</div>
+  </div>
+  <div class="box pgd" style="left:14px;top:188px;width:140px;height:58px;background:linear-gradient(135deg,#110e00,#1c1800);border-color:#ccaa00;color:#fff">
+    <div class="n" style="color:#ffdd55">Google Embeddings</div>
+    <div class="s">Jina AI · 10M token quota</div>
+  </div>
+  <div class="box pr" style="left:160px;top:192px;width:118px;height:52px;background:linear-gradient(135deg,#1a0508,#280710);border-color:#ff3344;color:#fff">
+    <div class="n" style="color:#ff6677;font-size:11px">Safety Guard</div>
+    <div class="s" style="color:#ff8888;font-size:9px">112/100</div>
+  </div>
+  <div class="box pgd" style="left:14px;top:262px;width:140px;height:52px;background:linear-gradient(135deg,#110e00,#1c1800);border-color:#ccaa00;color:#fff">
+    <div class="n" style="color:#ffdd55">Confidence Scoring</div>
+    <div class="s">70-85% · Cosine Similarity</div>
+  </div>
+</div>
+
+<!-- BRANDING FOOTER -->
+<div class="footer">
+  <div class="footer-left">Architected by <span>Ambuj Kumar Tripathi</span></div>
+  <div class="footer-right">GenAI Solution Architect · RAG Systems Specialist · © 2026 <span>All Rights Reserved</span></div>
+</div>
+
+</div><!-- wrap -->
+</div><!-- outer-scroll -->
+</body>
+</html>
