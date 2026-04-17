@@ -14,11 +14,11 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 @media (max-width:768px){
   html,body{overflow-x:hidden;overflow-y:auto;justify-content:flex-start;}
 }
-.wrap{position:relative;width:1380px;height:760px;background:#070a14;flex-shrink:0;overflow:hidden}
-.wrap::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(14,36,80,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(14,36,80,.1) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
+.wrap{position:relative;width:1380px;height:800px;background:#070a14;flex-shrink:0;overflow:visible}
+.wrap::before{content:'';position:absolute;inset:0;height:800px;background-image:linear-gradient(rgba(14,36,80,.1) 1px,transparent 1px),linear-gradient(90deg,rgba(14,36,80,.1) 1px,transparent 1px);background-size:38px 38px;pointer-events:none}
 
 @media (max-width:768px){
-  .wrap{width:100%;min-width:1000px;height:auto;min-height:760px;}
+  .wrap{width:100%;min-width:1000px;height:auto;min-height:800px;}
   .outer-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;}
 }
 
@@ -28,7 +28,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 .box{position:absolute;border:2px solid;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:4px 10px}
 .n{font-size:11.5px;font-weight:700;line-height:1.3}
-.s{font-size:7.5px;opacity:.72;margin-top:2px;line-height:1.5}
+.s{font-size:7.5px;opacity:.9;margin-top:2px;line-height:1.5;color:#aabbcc}
 
 @keyframes gGn{0%,100%{box-shadow:0 0 6px #00cc4433}50%{box-shadow:0 0 18px #00cc4466,0 0 32px #00cc4420}}
 @keyframes gRd{0%,100%{box-shadow:0 0 6px #ff334433}50%{box-shadow:0 0 18px #ff334466,0 0 32px #ff334420}}
@@ -49,14 +49,14 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 .title{position:absolute;top:20px;left:28px}
 .t1{font-size:24px;font-weight:900;color:#fff;letter-spacing:2px;text-transform:uppercase}
 .t2{font-size:10px;color:#5577aa;letter-spacing:4px;margin-top:2px;text-transform:uppercase}
-.t3{font-size:8px;color:#2d3d4e;margin-top:4px;letter-spacing:1px}
+.t3{font-size:9px;color:#6688aa;margin-top:4px;letter-spacing:1px}
 
 /* Branding footer — prominent */
-.footer{position:absolute;bottom:10px;left:28px;right:22px;display:flex;align-items:center;justify-content:space-between;}
-.footer-left{font-size:12px;color:#5577aa;letter-spacing:1px;font-weight:700;}
-.footer-left span{color:#00ccff;}
-.footer-right{font-size:8px;color:#253040;letter-spacing:.8px;}
-.footer-right span{color:#3366ff;}
+.footer{position:absolute;bottom:14px;left:28px;right:22px;display:flex;align-items:center;justify-content:space-between;}
+.footer-left{font-size:13px;color:#7799cc;letter-spacing:1px;font-weight:700;}
+.footer-left span{color:#00ddff;text-shadow:0 0 8px rgba(0,204,255,0.3);}
+.footer-right{font-size:9px;color:#446688;letter-spacing:.8px;}
+.footer-right span{color:#5588ff;}
 
 .svgo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:5}
 
@@ -211,7 +211,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== PERSISTENCE SECTION ===== -->
 <div class="sec" style="left:426px;top:112px;width:285px;height:182px;border-color:#00ccff33">
-  <div class="sl c" style="color:#00ccff66">PERSISTENCE</div>
+  <div class="sl c" style="color:#00ccffcc">PERSISTENCE</div>
   <div class="box pg" style="left:12px;top:22px;width:126px;height:54px;background:linear-gradient(135deg,#091e0c,#112914);border-color:#00cc44;color:#fff">
     <div class="n" style="color:#44ff88">MongoDB Atlas</div>
     <div class="s">Chat History · TTL 30d</div>
@@ -228,7 +228,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== CLIENT SECTION ===== -->
 <div class="sec" style="left:63px;top:350px;width:158px;height:136px;border-color:#ff224444">
-  <div class="sl" style="color:#ff224466">CLIENT</div>
+  <div class="sl" style="color:#ff4466cc">CLIENT</div>
   <div class="box pr" style="left:14px;top:28px;width:130px;height:54px;background:linear-gradient(135deg,#160408,#22070e);border-color:#ff2244;color:#ff4466">
     <div class="n">Browser / PWA</div>
   </div>
@@ -236,7 +236,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== FRONTEND SECTION ===== -->
 <div class="sec" style="left:224px;top:350px;width:172px;height:170px;border-color:#00ccff33">
-  <div class="sl" style="color:#00ccff66">FRONTEND</div>
+  <div class="sl" style="color:#00ccffcc">FRONTEND</div>
   <div class="box pb" style="left:10px;top:22px;width:152px;height:40px;background:linear-gradient(135deg,#030c1a,#060f22);border-color:#00aaff;color:#fff">
     <div class="n" style="color:#44bbff">Google OAuth 2.0</div>
   </div>
@@ -247,7 +247,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== FASTAPI BACKEND ===== -->
 <div class="sec" style="left:397px;top:330px;width:308px;height:252px;border-color:#7744ff33">
-  <div class="sl" style="color:#7744ff66">FASTAPI BACKEND</div>
+  <div class="sl" style="color:#9966ffcc">FASTAPI BACKEND</div>
   <div class="box pp" style="left:14px;top:42px;width:280px;height:46px;background:linear-gradient(135deg,#0f0828,#1a0d42);border-color:#8855ff;color:#fff">
     <div class="n" style="color:#cc99ff">SlowAPI Rate Limiter</div>
     <div class="s">5-20 req/min · IP-based</div>
@@ -264,7 +264,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== SECURITY SECTION ===== -->
 <div class="sec" style="left:703px;top:358px;width:190px;height:232px;border-color:#00ff8833">
-  <div class="sl c" style="color:#00ff8866">SECURITY</div>
+  <div class="sl c" style="color:#00ff88cc">SECURITY</div>
   <div class="box pg" style="left:12px;top:76px;width:166px;height:62px;background:linear-gradient(135deg,#032010,#053318);border-color:#00cc66;color:#fff">
     <div class="n" style="color:#44ff99">Presidio PII Masking</div>
     <div class="s">Aadhaar · Phone · Email</div>
@@ -277,7 +277,7 @@ html,body{background:#060911;font-family:'Courier New',Courier,monospace;min-hei
 
 <!-- ===== AI LAYER ===== -->
 <div class="sec" style="left:892px;top:330px;width:298px;height:350px;border-color:#ff880033">
-  <div class="sl c" style="color:#ff880066">AI LAYER · LangChain RAG</div>
+  <div class="sl c" style="color:#ffaa44cc">AI LAYER · LangChain RAG</div>
   <div class="box pb" style="left:14px;top:88px;width:140px;height:58px;background:linear-gradient(135deg,#060e28,#0b1838);border-color:#4488ff;color:#fff">
     <div class="n" style="color:#88bbff">Pinecone</div>
     <div class="s">614 Vectors · Jina Embed</div>
