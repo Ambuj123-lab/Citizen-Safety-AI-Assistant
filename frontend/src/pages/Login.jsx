@@ -495,7 +495,7 @@ const Login = () => {
                                 }}>{f.desc}</p>
                             </div>
                             </FadeIn>
-                        )})
+                        )})}
                     </div>
                 </div>
             </section>
