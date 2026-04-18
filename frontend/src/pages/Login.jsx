@@ -28,6 +28,33 @@ const useCountUp = (target, duration = 2200) => {
     return { count, ref };
 };
 
+/* ── Fade-In on Scroll ── */
+const useFadeIn = (delay = 0) => {
+    const [visible, setVisible] = useState(false);
+    const ref = useRef(null);
+    useEffect(() => {
+        const observer = new IntersectionObserver(([entry]) => {
+            if (entry.isIntersecting) { setVisible(true); observer.disconnect(); }
+        }, { threshold: 0.15 });
+        if (ref.current) observer.observe(ref.current);
+        return () => observer.disconnect();
+    }, []);
+    return {
+        ref,
+        style: {
+            opacity: visible ? 1 : 0,
+            transform: visible ? 'translateY(0)' : 'translateY(30px)',
+            transition: `opacity 0.6s ease ${delay}s, transform 0.6s ease ${delay}s`,
+        }
+    };
+};
+
+/* ── Fade-In Wrapper Component ── */
+const FadeIn = ({ delay = 0, children, style = {} }) => {
+    const fade = useFadeIn(delay);
+    return <div ref={fade.ref} style={{ ...fade.style, ...style }}>{children}</div>;
+};
+
 /* ── Typewriter Code Block ── */
 function TypewriterCodeBlock() {
   const [displayText, setDisplayText] = useState('');
@@ -74,6 +101,13 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))`;
 /* ═══════════════════ LOGIN PAGE ═══════════════════ */
 const Login = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+    const [showBackToTop, setShowBackToTop] = useState(false);
+
+    useEffect(() => {
+        const handleScroll = () => setShowBackToTop(window.scrollY > 600);
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
 
     const handleGoogleLogin = () => {
         window.location.href = authAPI.getLoginUrl();
@@ -396,7 +430,8 @@ const Login = () => {
                             ];
 
                             return (
-                            <div key={i} style={{
+                            <FadeIn key={i} delay={i * 0.1}>
+                            <div style={{
                                 background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.4) 0%, rgba(10, 13, 18, 0.8) 100%)',
                                 border: '1px solid rgba(255,255,255,0.06)',
                                 borderRadius: '24px',
@@ -459,7 +494,8 @@ const Login = () => {
                                     fontSize: '14px', color: '#9CA3AF', lineHeight: 1.6, margin: 0
                                 }}>{f.desc}</p>
                             </div>
-                        )})}
+                            </FadeIn>
+                        )})
                     </div>
                 </div>
             </section>
@@ -482,6 +518,63 @@ const Login = () => {
                             };
                             return <StatItem key={i} />;
                         })}
+                    </div>
+                </div>
+            </section>
+
+            {/* ══════════════════ TECH STACK MARQUEE ══════════════════ */}
+            <style>{`
+                @keyframes marquee-scroll {
+                    0% { transform: translateX(0); }
+                    100% { transform: translateX(-50%); }
+                }
+                .marquee-container {
+                    overflow: hidden;
+                    position: relative;
+                    padding: 32px 0;
+                    border-top: 1px solid rgba(255,255,255,0.03);
+                    border-bottom: 1px solid rgba(255,255,255,0.03);
+                }
+                .marquee-track {
+                    display: flex;
+                    width: max-content;
+                    animation: marquee-scroll 30s linear infinite;
+                }
+                .marquee-track:hover { animation-play-state: paused; }
+                .marquee-item {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 8px 24px;
+                    margin: 0 12px;
+                    background: rgba(255,255,255,0.02);
+                    border: 1px solid rgba(255,255,255,0.06);
+                    border-radius: 100px;
+                    font-size: 13px;
+                    font-weight: 500;
+                    color: #9CA3AF;
+                    white-space: nowrap;
+                    transition: all 0.3s;
+                    cursor: default;
+                }
+                .marquee-item:hover {
+                    border-color: rgba(245, 158, 11, 0.3);
+                    color: #F59E0B;
+                    background: rgba(245, 158, 11, 0.05);
+                }
+                .marquee-icon { font-size: 18px; }
+            `}</style>
+            <section style={{ position: 'relative', zIndex: 10 }}>
+                <div className="marquee-container">
+                    <div className="marquee-track">
+                        {[...Array(2)].map((_, setIdx) => (
+                            ['⛓️ LangChain', '🌲 Pinecone', '⚡ FastAPI', '🔴 Redis', '🍃 MongoDB', '🛡️ Presidio', '🧠 spaCy NLP', '📊 Langfuse', '🔐 Google OAuth', '🐳 Docker', '🚀 Groq', '🧬 Jina AI', '🔥 Llama 3.3 70B', '☁️ Vercel', '🐍 Python'].map((tech, i) => (
+                                <span className="marquee-item" key={`${setIdx}-${i}`}>
+                                    <span className="marquee-icon">{tech.split(' ')[0]}</span>
+                                    {tech.split(' ').slice(1).join(' ')}
+                                </span>
+                            ))
+                        ))}
                     </div>
                 </div>
             </section>
@@ -772,6 +865,35 @@ const Login = () => {
                     <span style={{ color: '#4B5563', fontSize: '11px', marginTop: '4px', display: 'inline-block' }}>Production RAG, engineered for scale.</span>
                 </p>
             </footer>
+
+            {/* ══════════════════ BACK TO TOP ══════════════════ */}
+            <button
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                style={{
+                    position: 'fixed',
+                    bottom: '24px',
+                    right: '24px',
+                    width: '44px',
+                    height: '44px',
+                    borderRadius: '12px',
+                    background: 'rgba(7, 9, 15, 0.9)',
+                    border: '1px solid rgba(245, 158, 11, 0.2)',
+                    color: '#F59E0B',
+                    fontSize: '20px',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    zIndex: 9999,
+                    opacity: showBackToTop ? 1 : 0,
+                    pointerEvents: showBackToTop ? 'auto' : 'none',
+                    transform: showBackToTop ? 'translateY(0)' : 'translateY(20px)',
+                    transition: 'all 0.3s ease',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.5)',
+                    backdropFilter: 'blur(8px)'
+                }}
+                title="Back to Top"
+            >↑</button>
         </div>
     );
 };
