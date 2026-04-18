@@ -603,20 +603,20 @@ const Login = () => {
                     <div className="marquee-track">
                         {[...Array(2)].map((_, setIdx) => (
                             [
-                                { name: 'FastAPI', icon: 'https://cdn.simpleicons.org/fastapi/009688', color: '#009688' },
-                                { name: 'LangChain', icon: 'https://cdn.simpleicons.org/langchain/1E88E5', color: '#1E88E5' },
-                                { name: 'Pinecone', icon: 'https://cdn.simpleicons.org/pinecone/D1D5DB', color: '#D1D5DB' },
-                                { name: 'Redis', icon: 'https://cdn.simpleicons.org/redis/FF4438', color: '#FF4438' },
-                                { name: 'MongoDB', icon: 'https://cdn.simpleicons.org/mongodb/47A248', color: '#47A248' },
+                                { name: 'FastAPI', emoji: '⚡', color: '#009688' },
+                                { name: 'LangChain', emoji: '🔗', color: '#1E88E5' },
+                                { name: 'Pinecone', emoji: '🌲', color: '#D1D5DB' },
+                                { name: 'Redis', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/redis/redis-original.svg', color: '#FF4438' },
+                                { name: 'MongoDB', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/mongodb/mongodb-original.svg', color: '#47A248' },
                                 { name: 'Presidio', emoji: '🛡️', color: '#0078D4' },
                                 { name: 'Langfuse', emoji: '📈', color: '#F59E0B' },
                                 { name: 'Jina AI', emoji: '🧬', color: '#009193' },
-                                { name: 'React', icon: 'https://cdn.simpleicons.org/react/61DAFB', color: '#61DAFB' },
-                                { name: 'Vite', icon: 'https://cdn.simpleicons.org/vite/646CFF', color: '#646CFF' },
-                                { name: 'Docker', icon: 'https://cdn.simpleicons.org/docker/2496ED', color: '#2496ED' },
-                                { name: 'Python', icon: 'https://cdn.simpleicons.org/python/3776AB', color: '#3776AB' },
-                                { name: 'Google Cloud', icon: 'https://cdn.simpleicons.org/googlecloud/4285F4', color: '#4285F4' },
-                                { name: 'Meta Llama', icon: 'https://cdn.simpleicons.org/meta/0668E1', color: '#0668E1' },
+                                { name: 'React', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg', color: '#61DAFB' },
+                                { name: 'Vite', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/vitejs/vitejs-original.svg', color: '#646CFF' },
+                                { name: 'Docker', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg', color: '#2496ED' },
+                                { name: 'Python', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg', color: '#3776AB' },
+                                { name: 'Google Cloud', icon: 'https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/google/google-original.svg', color: '#4285F4' },
+                                { name: 'Meta Llama', emoji: '🦙', color: '#0668E1' },
                             ].map((tech, i) => (
                                 <span className="marquee-item" key={`${setIdx}-${i}`} style={{ color: tech.color }}>
                                     <span className="marquee-icon">
