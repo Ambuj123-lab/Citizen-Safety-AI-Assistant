@@ -522,71 +522,103 @@ const Login = () => {
                 </div>
             </section>
 
-            {/* ══════════════════ TECH STACK MARQUEE ══════════════════ */}
+            {/* ══════════════════ TECH STACK MARQUEE (MERCOR STYLE) ══════════════════ */}
             <style>{`
                 @keyframes marquee-scroll {
                     0% { transform: translateX(0); }
                     100% { transform: translateX(-50%); }
                 }
-                .marquee-container {
-                    overflow: hidden;
+                .marquee-wrapper {
                     position: relative;
-                    padding: 32px 0 40px;
-                    border-top: 1px solid rgba(255,255,255,0.03);
-                    border-bottom: 1px solid rgba(255,255,255,0.03);
+                    background: #0a0a0a;
+                    border-top: 1px solid rgba(255,255,255,0.04);
+                    border-bottom: 1px solid rgba(255,255,255,0.04);
+                    overflow: hidden;
+                }
+                .marquee-container {
+                    display: flex;
+                    align-items: center;
+                    padding: 18px 0;
+                    position: relative;
+                }
+                .marquee-label-box {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    display: flex;
+                    align-items: center;
+                    padding: 0 40px;
+                    background: linear-gradient(90deg, #0a0a0a 80%, transparent 100%);
+                    z-index: 10;
+                }
+                .marquee-label-text {
+                    font-size: 11px;
+                    color: #4B5563;
+                    text-transform: uppercase;
+                    letter-spacing: 0.25em;
+                    font-weight: 700;
                 }
                 .marquee-track {
                     display: flex;
                     width: max-content;
-                    animation: marquee-scroll 30s linear infinite;
+                    animation: marquee-scroll 45s linear infinite;
+                    padding-left: 200px;
                 }
                 .marquee-track:hover { animation-play-state: paused; }
                 .marquee-item {
                     display: inline-flex;
                     align-items: center;
-                    gap: 10px;
-                    padding: 10px 24px;
-                    margin: 0 12px;
-                    background: rgba(255,255,255,0.02);
-                    border: 1px solid rgba(255,255,255,0.06);
-                    border-radius: 100px;
-                    font-size: 13px;
-                    font-weight: 500;
-                    color: #9CA3AF;
+                    gap: 8px;
+                    margin: 0 24px;
+                    font-size: 14px;
+                    font-weight: 600;
                     white-space: nowrap;
-                    transition: all 0.3s;
+                    transition: opacity 0.2s;
                     cursor: default;
                 }
-                .marquee-item:hover {
-                    border-color: rgba(245, 158, 11, 0.3);
-                    color: #F59E0B;
-                    background: rgba(245, 158, 11, 0.05);
+                .marquee-item:hover { opacity: 0.7; }
+                .marquee-icon { display: flex; align-items: center; font-size: 16px; }
+                .marquee-icon img { height: 16px; width: auto; object-fit: contain; }
+                
+                /* Right fade out gradient */
+                .marquee-gradient-right {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    bottom: 0;
+                    width: 60px;
+                    background: linear-gradient(-90deg, #0a0a0a 0%, transparent 100%);
+                    z-index: 10;
+                    pointer-events: none;
                 }
-                .marquee-icon { font-size: 18px; display: flex; align-items: center; }
-                .marquee-icon img { height: 18px; width: auto; }
             `}</style>
-            <section style={{ position: 'relative', zIndex: 10 }}>
+            <section className="marquee-wrapper" style={{ zIndex: 10 }}>
                 <div className="marquee-container">
-                    <p style={{ textAlign: 'center', fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '24px', fontWeight: 600 }}>Powered By</p>
+                    <div className="marquee-label-box">
+                        <span className="marquee-label-text">Tech Stack</span>
+                    </div>
+                    <div className="marquee-gradient-right"></div>
+                    
                     <div className="marquee-track">
                         {[...Array(2)].map((_, setIdx) => (
                             [
-                                { name: 'LangChain', icon: 'https://cdn.simpleicons.org/langchain/white' },
-                                { name: 'FastAPI', icon: 'https://cdn.simpleicons.org/fastapi/009688' },
-                                { name: 'Redis', icon: 'https://cdn.simpleicons.org/redis/FF4438' },
-                                { name: 'MongoDB', icon: 'https://cdn.simpleicons.org/mongodb/47A248' },
-                                { name: 'Docker', icon: 'https://cdn.simpleicons.org/docker/2496ED' },
-                                { name: 'Python', icon: 'https://cdn.simpleicons.org/python/3776AB' },
-                                { name: 'Vercel', icon: 'https://cdn.simpleicons.org/vercel/white' },
-                                { name: 'Meta Llama', icon: 'https://cdn.simpleicons.org/meta/0668E1' },
-                                { name: 'Google OAuth', icon: 'https://cdn.simpleicons.org/google/4285F4' },
-                                { name: 'Pinecone', emoji: '🌲' },
-                                { name: 'spaCy NLP', icon: 'https://cdn.simpleicons.org/spacy/09A3D5' },
-                                { name: 'Langfuse', emoji: '📊' },
-                                { name: 'Presidio', emoji: '🛡️' },
-                                { name: 'Jina AI', emoji: '🧬' }
+                                { name: 'FastAPI', icon: 'https://cdn.simpleicons.org/fastapi/009688', color: '#009688' },
+                                { name: 'LangChain', icon: 'https://cdn.simpleicons.org/langchain/1E88E5', color: '#1E88E5' },
+                                { name: 'Pinecone', icon: 'https://cdn.simpleicons.org/pinecone/D1D5DB', color: '#D1D5DB' },
+                                { name: 'Redis', icon: 'https://cdn.simpleicons.org/redis/FF4438', color: '#FF4438' },
+                                { name: 'MongoDB', icon: 'https://cdn.simpleicons.org/mongodb/47A248', color: '#47A248' },
+                                { name: 'Presidio', emoji: '🛡️', color: '#0078D4' },
+                                { name: 'Langfuse', emoji: '📈', color: '#F59E0B' },
+                                { name: 'Jina AI', emoji: '🧬', color: '#009193' },
+                                { name: 'React', icon: 'https://cdn.simpleicons.org/react/61DAFB', color: '#61DAFB' },
+                                { name: 'Vite', icon: 'https://cdn.simpleicons.org/vite/646CFF', color: '#646CFF' },
+                                { name: 'Docker', icon: 'https://cdn.simpleicons.org/docker/2496ED', color: '#2496ED' },
+                                { name: 'Python', icon: 'https://cdn.simpleicons.org/python/3776AB', color: '#3776AB' },
+                                { name: 'Google Cloud', icon: 'https://cdn.simpleicons.org/googlecloud/4285F4', color: '#4285F4' },
+                                { name: 'Meta Llama', icon: 'https://cdn.simpleicons.org/meta/0668E1', color: '#0668E1' },
                             ].map((tech, i) => (
-                                <span className="marquee-item" key={`${setIdx}-${i}`}>
+                                <span className="marquee-item" key={`${setIdx}-${i}`} style={{ color: tech.color }}>
                                     <span className="marquee-icon">
                                         {tech.icon ? <img src={tech.icon} alt={tech.name} /> : tech.emoji}
                                     </span>
