@@ -531,7 +531,7 @@ const Login = () => {
                 .marquee-container {
                     overflow: hidden;
                     position: relative;
-                    padding: 32px 0;
+                    padding: 32px 0 40px;
                     border-top: 1px solid rgba(255,255,255,0.03);
                     border-bottom: 1px solid rgba(255,255,255,0.03);
                 }
@@ -544,8 +544,8 @@ const Login = () => {
                 .marquee-item {
                     display: inline-flex;
                     align-items: center;
-                    gap: 8px;
-                    padding: 8px 24px;
+                    gap: 10px;
+                    padding: 10px 24px;
                     margin: 0 12px;
                     background: rgba(255,255,255,0.02);
                     border: 1px solid rgba(255,255,255,0.06);
@@ -562,16 +562,35 @@ const Login = () => {
                     color: #F59E0B;
                     background: rgba(245, 158, 11, 0.05);
                 }
-                .marquee-icon { font-size: 18px; }
+                .marquee-icon { font-size: 18px; display: flex; align-items: center; }
+                .marquee-icon img { height: 18px; width: auto; }
             `}</style>
             <section style={{ position: 'relative', zIndex: 10 }}>
                 <div className="marquee-container">
+                    <p style={{ textAlign: 'center', fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '24px', fontWeight: 600 }}>Powered By</p>
                     <div className="marquee-track">
                         {[...Array(2)].map((_, setIdx) => (
-                            ['⛓️ LangChain', '🌲 Pinecone', '⚡ FastAPI', '🔴 Redis', '🍃 MongoDB', '🛡️ Presidio', '🧠 spaCy NLP', '📊 Langfuse', '🔐 Google OAuth', '🐳 Docker', '🚀 Groq', '🧬 Jina AI', '🔥 Llama 3.3 70B', '☁️ Vercel', '🐍 Python'].map((tech, i) => (
+                            [
+                                { name: 'LangChain', icon: 'https://cdn.simpleicons.org/langchain/white' },
+                                { name: 'FastAPI', icon: 'https://cdn.simpleicons.org/fastapi/009688' },
+                                { name: 'Redis', icon: 'https://cdn.simpleicons.org/redis/FF4438' },
+                                { name: 'MongoDB', icon: 'https://cdn.simpleicons.org/mongodb/47A248' },
+                                { name: 'Docker', icon: 'https://cdn.simpleicons.org/docker/2496ED' },
+                                { name: 'Python', icon: 'https://cdn.simpleicons.org/python/3776AB' },
+                                { name: 'Vercel', icon: 'https://cdn.simpleicons.org/vercel/white' },
+                                { name: 'Meta Llama', icon: 'https://cdn.simpleicons.org/meta/0668E1' },
+                                { name: 'Google OAuth', icon: 'https://cdn.simpleicons.org/google/4285F4' },
+                                { name: 'Pinecone', emoji: '🌲' },
+                                { name: 'spaCy NLP', icon: 'https://cdn.simpleicons.org/spacy/09A3D5' },
+                                { name: 'Langfuse', emoji: '📊' },
+                                { name: 'Presidio', emoji: '🛡️' },
+                                { name: 'Jina AI', emoji: '🧬' }
+                            ].map((tech, i) => (
                                 <span className="marquee-item" key={`${setIdx}-${i}`}>
-                                    <span className="marquee-icon">{tech.split(' ')[0]}</span>
-                                    {tech.split(' ').slice(1).join(' ')}
+                                    <span className="marquee-icon">
+                                        {tech.icon ? <img src={tech.icon} alt={tech.name} /> : tech.emoji}
+                                    </span>
+                                    {tech.name}
                                 </span>
                             ))
                         ))}
