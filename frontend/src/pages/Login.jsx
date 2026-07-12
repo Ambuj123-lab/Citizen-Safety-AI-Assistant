@@ -370,10 +370,10 @@ const Login = () => {
                 )}
             </nav>
 
-            {/* ── SUPER DYNAMIC AMBIENT GLOW (MIXED AI COLORS) ── */}
-            <div style={{ position: 'fixed', top: '-10%', left: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'fixed', top: '20%', right: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'fixed', bottom: '-20%', left: '20%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* ── SUPER DYNAMIC AMBIENT GLOW (GEMINI INSPIRED AESTHETIC) ── */}
+            <div style={{ position: 'fixed', top: '-150px', left: '35%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(147, 51, 234, 0.25) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
+            <div style={{ position: 'fixed', top: '-100px', left: '55%', width: '550px', height: '550px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
+            <div style={{ position: 'fixed', top: '150px', left: '45%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
