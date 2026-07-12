@@ -415,7 +415,7 @@ const Login = () => {
                 <p style={{
                     fontSize: '17px', color: '#6B7280', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto 40px'
                 }}>
-                    AI-powered retrieval-augmented generation tailored for Indian legal frameworks with real-time PII redaction.
+                    AI-powered <span style={{ color: '#F3F4F6', fontWeight: 500 }}>retrieval-augmented generation</span> tailored for <span style={{ color: '#F3F4F6', fontWeight: 500 }}>Indian legal frameworks</span> with <span style={{ color: '#c084fc', fontWeight: 500 }}>real-time PII redaction</span>.
                 </p>
 
                 {/* Hero Stats */}
@@ -533,19 +533,19 @@ const Login = () => {
                         {/* Glowing Line */}
                         <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #3b82f6 0%, #8b5cf6 30%, #d946ef 70%, #f43f5e 100%)', opacity: 0.6 }}></div>
 
-                        {[
-                            { step: "Linear RAG", desc: "Built the foundational retrieval pipeline enabling accurate similarity-based document search.", color: "#3b82f6" },
-                            { step: "Security", desc: "Secured the entire ecosystem with robust access controls, preventing unauthorized API abuse.", color: "#3b82f6" },
-                            { step: "PII Anonymization", desc: "Ensured enterprise-grade privacy by automatically redacting sensitive user data in real-time.", color: "#6366f1" },
-                            { step: "Semantic Caching", desc: "Reduced repeated-query latency and slashed LLM costs by leveraging intelligent Redis caching.", color: "#6366f1" },
-                            { step: "Observability", desc: "Enabled end-to-end observability across latency, token usage, retrieval quality, and reasoning traces.", color: "#8b5cf6" },
-                            { step: "Fine-Tuning", desc: "Boosted model accuracy on domain-specific tasks through efficient custom qLoRA 4-bit training.", color: "#8b5cf6" },
-                            { step: "Legal Specialization", desc: "Engineered highly accurate, citation-backed responses specifically structured for complex Indian Law.", color: "#a855f7" },
-                            { step: "Stateful Graphs", desc: "Unlocked complex multi-step reasoning by migrating from rigid linear chains to dynamic stateful graphs.", color: "#a855f7" },
-                            { step: "Agentic RAG", desc: "Enabled self-correcting AI that autonomously routes, grades, and refines its own generated answers.", color: "#d946ef" },
-                            { step: "Financial Parsing", desc: "Engineered specialized parsing pipelines to reliably extract and interpret structured data from complex financial reports.", color: "#d946ef" },
-                            { step: "Edge Integration", desc: "Expanded user accessibility by deploying the AI brain directly to real-time conversational platforms like WhatsApp.", color: "#ec4899" },
-                            { step: "Adaptive ReAct", desc: "Achieved true autonomy with an orchestrator capable of dynamic tool-use and continuous logical reasoning.", color: "#f43f5e" }
+                         {[
+                            { step: "Linear RAG", desc: <span>Built the <span style={{ color: '#fff', fontWeight: 500 }}>foundational retrieval pipeline</span> enabling accurate <span style={{ color: '#fff', fontWeight: 500 }}>similarity-based document search</span>.</span>, color: "#3b82f6" },
+                            { step: "Security", desc: <span>Secured the entire ecosystem with <span style={{ color: '#fff', fontWeight: 500 }}>robust access controls</span>, preventing <span style={{ color: '#fff', fontWeight: 500 }}>unauthorized API abuse</span>.</span>, color: "#3b82f6" },
+                            { step: "PII Anonymization", desc: <span>Ensured <span style={{ color: '#fff', fontWeight: 500 }}>enterprise-grade privacy</span> by <span style={{ color: '#fff', fontWeight: 500 }}>automatically redacting</span> sensitive user data in <span style={{ color: '#34d399', fontWeight: 500 }}>real-time</span>.</span>, color: "#6366f1" },
+                            { step: "Semantic Caching", desc: <span>Reduced repeated-query latency and <span style={{ color: '#34d399', fontWeight: 500 }}>slashed LLM costs</span> by leveraging <span style={{ color: '#fff', fontWeight: 500 }}>intelligent Redis caching</span>.</span>, color: "#6366f1" },
+                            { step: "Observability", desc: <span>Enabled <span style={{ color: '#fff', fontWeight: 500 }}>end-to-end observability</span> across latency, token usage, retrieval quality, and <span style={{ color: '#fff', fontWeight: 500 }}>reasoning traces</span>.</span>, color: "#8b5cf6" },
+                            { step: "Fine-Tuning", desc: <span><span style={{ color: '#fff', fontWeight: 500 }}>Boosted model accuracy</span> on domain-specific tasks through efficient custom <span style={{ color: '#fff', fontWeight: 500 }}>qLoRA 4-bit training</span>.</span>, color: "#8b5cf6" },
+                            { step: "Legal Specialization", desc: <span>Engineered highly accurate, <span style={{ color: '#fff', fontWeight: 500 }}>citation-backed responses</span> specifically structured for complex <span style={{ color: '#fff', fontWeight: 500 }}>Indian Law</span>.</span>, color: "#a855f7" },
+                            { step: "Stateful Graphs", desc: <span>Unlocked <span style={{ color: '#fff', fontWeight: 500 }}>complex multi-step reasoning</span> by migrating from rigid linear chains to <span style={{ color: '#fff', fontWeight: 500 }}>dynamic stateful graphs</span>.</span>, color: "#a855f7" },
+                            { step: "Agentic RAG", desc: <span>Enabled <span style={{ color: '#fff', fontWeight: 500 }}>self-correcting AI</span> that <span style={{ color: '#fff', fontWeight: 500 }}>autonomously routes, grades, and refines</span> its own generated answers.</span>, color: "#d946ef" },
+                            { step: "Financial Parsing", desc: <span>Engineered <span style={{ color: '#fff', fontWeight: 500 }}>specialized parsing pipelines</span> to reliably extract and interpret <span style={{ color: '#fff', fontWeight: 500 }}>structured data</span> from complex financial reports.</span>, color: "#d946ef" },
+                            { step: "Edge Integration", desc: <span>Expanded user accessibility by <span style={{ color: '#fff', fontWeight: 500 }}>deploying the AI brain</span> directly to <span style={{ color: '#fff', fontWeight: 500 }}>real-time conversational platforms</span> like WhatsApp.</span>, color: "#ec4899" },
+                            { step: "Adaptive ReAct", desc: <span>Achieved <span style={{ color: '#fff', fontWeight: 500 }}>true autonomy</span> with an orchestrator capable of <span style={{ color: '#fff', fontWeight: 500 }}>dynamic tool-use</span> and <span style={{ color: '#fff', fontWeight: 500 }}>continuous logical reasoning</span>.</span>, color: "#f43f5e" }
                         ].map((item, i) => (
                             <div key={i} style={{ position: 'relative', marginBottom: '32px' }}>
                                 {/* Glowing Dot */}
