@@ -197,10 +197,10 @@ const Login = () => {
     ];
 
     const stats = [
-        { val: 31, suf: 'k+', lbl: 'Chunks' },
+        { val: 31500, suf: '+', lbl: 'Knowledge Chunks' },
         { val: 3, suf: '', lbl: 'Live Systems' },
         { val: 5600, suf: '+', lbl: 'Downloads' },
-        { val: 14, suf: 'k+', lbl: 'Legal QA' },
+        { val: 14000, suf: '+', lbl: 'Legal Responses' },
     ];
 
     return (
@@ -382,10 +382,6 @@ const Login = () => {
 
                 {/* Top Right: Version Badge */}
                 <div className="hidden md:flex" style={{ position: 'absolute', top: '40px', right: '40px', alignItems: 'center', gap: '10px' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '6px 12px', borderRadius: '100px', background: 'rgba(16, 185, 129, 0.1)', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                        <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#10b981', boxShadow: '0 0 8px #10b981' }} />
-                        <span style={{ fontSize: '10px', fontWeight: 700, color: '#10b981', letterSpacing: '0.1em' }}>LIVE</span>
-                    </div>
                     <div style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '6px 12px', borderRadius: '100px', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)' }}>
                         <span style={{ fontSize: '11px', fontWeight: 600, color: '#9CA3AF', letterSpacing: '0.05em' }}>v1.8</span>
                         <span style={{ fontSize: '10px', color: '#6B7280' }}>Updated July 2026</span>
@@ -403,7 +399,7 @@ const Login = () => {
                     </h1>
 
                 <p style={{
-                    fontSize: '17px', color: '#6B7280', lineHeight: 1.7, maxWidth: '520px', marginBottom: '40px'
+                    fontSize: '17px', color: '#6B7280', lineHeight: 1.7, maxWidth: '520px', margin: '0 auto 40px'
                 }}>
                     AI-powered retrieval-augmented generation tailored for Indian legal frameworks with real-time PII redaction.
                 </p>
