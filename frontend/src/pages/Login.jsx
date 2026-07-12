@@ -449,11 +449,11 @@ const Login = () => {
                         <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #3b82f6 0%, #8b5cf6 30%, #d946ef 70%, #f43f5e 100%)', opacity: 0.6 }}></div>
 
                         {[
-                            { step: "Linear RAG", desc: "Established the foundational AI pipeline for highly accurate, similarity-based document retrieval.", color: "#3b82f6" },
+                            { step: "Linear RAG", desc: "Built the foundational retrieval pipeline enabling accurate similarity-based document search.", color: "#3b82f6" },
                             { step: "Security", desc: "Secured the entire ecosystem with robust access controls, preventing unauthorized API abuse.", color: "#3b82f6" },
                             { step: "PII Anonymization", desc: "Ensured enterprise-grade privacy by automatically redacting sensitive user data in real-time.", color: "#6366f1" },
                             { step: "Semantic Caching", desc: "Reduced repeated-query latency and slashed LLM costs by leveraging intelligent Redis caching.", color: "#6366f1" },
-                            { step: "Observability", desc: "Achieved full system transparency to monitor performance, token costs, and AI reasoning traces.", color: "#8b5cf6" },
+                            { step: "Observability", desc: "Enabled end-to-end observability across latency, token usage, retrieval quality, and reasoning traces.", color: "#8b5cf6" },
                             { step: "Fine-Tuning", desc: "Boosted model accuracy on domain-specific tasks through efficient custom qLoRA 4-bit training.", color: "#8b5cf6" },
                             { step: "Legal Specialization", desc: "Engineered highly accurate, citation-backed responses specifically structured for complex Indian Law.", color: "#a855f7" },
                             { step: "Stateful Graphs", desc: "Unlocked complex multi-step reasoning by migrating from rigid linear chains to dynamic stateful graphs.", color: "#a855f7" },
@@ -476,6 +476,26 @@ const Login = () => {
                                 </div>
                             </div>
                         ))}
+
+                        {/* END CARD */}
+                        <div style={{ position: 'relative', marginTop: '48px', marginBottom: '20px' }}>
+                            {/* Glowing Star Dot */}
+                            <div style={{ position: 'absolute', left: '-34px', top: '35px', width: '20px', height: '20px', borderRadius: '50%', background: '#030303', border: `3px solid #10b981`, boxShadow: `0 0 20px #10b981` }}></div>
+                            
+                            <div style={{ background: 'linear-gradient(145deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.02) 100%)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '30px', borderRadius: '16px', width: '100%', transition: 'all 0.3s ease', boxShadow: '0 10px 40px rgba(16, 185, 129, 0.1)' }}>
+                                <div style={{ fontSize: '11px', fontWeight: 700, color: '#10b981', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>Current Architecture</div>
+                                <h3 style={{ fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 700, color: '#fff', marginBottom: '20px', letterSpacing: '-0.02em' }}>Production-Ready Multi-Agent AI</h3>
+                                
+                                <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#D1D5DB', fontSize: '15px', lineHeight: 2, fontWeight: 500 }}>
+                                    {['Autonomous routing', 'Tool orchestration', 'Memory & Statefulness', 'Human-in-the-loop', 'Enterprise deployment'].map((feat, idx) => (
+                                        <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                            {feat}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
