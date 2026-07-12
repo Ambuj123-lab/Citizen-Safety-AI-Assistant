@@ -105,7 +105,7 @@ const Login = () => {
     const [showBackToTop, setShowBackToTop] = useState(false);
     const [uptimeData, setUptimeData] = useState(null);
     const [legalModal, setLegalModal] = useState(null);
-    const UPTIME_API_URL = 'https://ambuj-portfolio-micro.vercel.app/api/uptime'; // TODO: Update when new API is provided
+    const UPTIME_API_URL = '/api/uptime';
 
     useEffect(() => {
         const fetchUptime = async () => {
