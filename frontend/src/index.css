@@ -310,3 +310,15 @@ body {
   100% { transform: translateX(-100%); }
 }
 
+
+.marquee-content {
+  display: flex;
+  width: max-content;
+  animation: marquee 30s linear infinite;
+  gap: 40px;
+  padding-left: 40px;
+}
+.marquee-container:hover .marquee-content {
+  animation-play-state: paused;
+}
+
