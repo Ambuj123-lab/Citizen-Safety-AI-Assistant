@@ -370,12 +370,6 @@ const Login = () => {
                 )}
             </nav>
 
-            {/* ── SUPER DYNAMIC AMBIENT GLOW (LUXURY WEBFLOW SPOTLIGHT) ── */}
-            {/* Large Wide Amber Base */}
-            <div style={{ position: 'fixed', top: '-300px', left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '900px', background: 'radial-gradient(ellipse at 50% 10%, rgba(245, 158, 11, 0.25) 0%, rgba(234, 88, 12, 0.15) 40%, transparent 70%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
-            {/* Deep Crimson Core */}
-            <div style={{ position: 'fixed', top: '-150px', left: '50%', transform: 'translateX(-50%)', width: '700px', height: '500px', background: 'radial-gradient(circle at center, rgba(220, 38, 38, 0.45) 0%, rgba(153, 27, 27, 0.25) 40%, transparent 70%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 0 }} />
-
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
                 display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
@@ -847,8 +841,7 @@ const Login = () => {
 
             {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
             <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(220, 38, 38, 0.1)', background: '#07090F', overflow: 'hidden' }}>
-                {/* Accent Gradients (Matched to Hero Crimson/Amber) */}
-                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '120vw', height: '100%', background: 'radial-gradient(circle at 20% 0%, rgba(245, 158, 11, 0.15) 0%, transparent 50%), radial-gradient(circle at 80% 100%, rgba(220, 38, 38, 0.15) 0%, transparent 60%)', filter: 'blur(60px)', pointerEvents: 'none' }} />
+                {/* Accent Gradients (Removed for deep clean look) */}
                 
                 <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
                     
