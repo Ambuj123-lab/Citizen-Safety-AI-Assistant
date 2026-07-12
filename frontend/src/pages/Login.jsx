@@ -443,6 +443,58 @@ const Login = () => {
                 </div>
             </section>
 
+            {/* ══════════════════ EVOLUTION JOURNEY SECTION ══════════════════ */}
+            <section style={{ padding: '100px 20px', position: 'relative', zIndex: 10, background: '#030303' }}>
+                <div style={{ maxWidth: '700px', margin: '0 auto' }}>
+                    
+                    <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+                        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '6px 16px', borderRadius: '100px', background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', marginBottom: '20px' }}>
+                            <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', color: '#a78bfa', textTransform: 'uppercase' }}>The Evolution</span>
+                        </div>
+                        <h2 style={{ fontSize: 'clamp(32px, 5vw, 46px)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '20px' }}>
+                            From Linear RAG to <br/><span style={{ color: '#c084fc' }}>Adaptive Intelligence.</span>
+                        </h2>
+                        <p style={{ color: '#9CA3AF', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
+                            A complete architectural journey showing how this ecosystem evolved step-by-step into a fully autonomous multi-agent system.
+                        </p>
+                    </div>
+
+                    <div style={{ position: 'relative', paddingLeft: '32px' }}>
+                        {/* Glowing Line */}
+                        <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #3b82f6 0%, #8b5cf6 30%, #d946ef 70%, #f43f5e 100%)', opacity: 0.6 }}></div>
+
+                        {[
+                            { step: "Linear RAG", desc: "Baseline ingestion, embedding generation, and cosine similarity retrieval.", color: "#3b82f6" },
+                            { step: "Security", desc: "Implementation of JWT auth, rate limiting, and role-based access controls.", color: "#3b82f6" },
+                            { step: "PII", desc: "Microsoft Presidio integration for real-time redaction of sensitive entities.", color: "#6366f1" },
+                            { step: "Caching", desc: "Upstash Redis integration to instantly serve similar queries, cutting latency.", color: "#6366f1" },
+                            { step: "Observability", desc: "Langfuse tracing added to monitor LLM token usage and reasoning steps.", color: "#8b5cf6" },
+                            { step: "Fine Tuning", desc: "Custom qLoRA 4-bit model training for specialized domain tasks.", color: "#8b5cf6" },
+                            { step: "Legal AI", desc: "Structuring data specifically for the Constitution of India and penal codes.", color: "#a855f7" },
+                            { step: "LangGraph", desc: "Transitioning from rigid chains to stateful, cyclic reasoning graphs.", color: "#a855f7" },
+                            { step: "Agentic RAG", desc: "Introducing autonomous routing, grading, and self-correction loops.", color: "#d946ef" },
+                            { step: "Financial Parser", desc: "Scaling the architecture to handle complex SEC 10-K and XBRL data.", color: "#d946ef" },
+                            { step: "WhatsApp", desc: "Connecting the AI brain to real-time conversational channels via Twilio.", color: "#ec4899" },
+                            { step: "Adaptive ReAct", desc: "The ultimate orchestrator: Dynamic multi-tool reasoning and autonomous action.", color: "#f43f5e" }
+                        ].map((item, i) => (
+                            <div key={i} style={{ position: 'relative', marginBottom: '32px' }}>
+                                {/* Glowing Dot */}
+                                <div style={{ position: 'absolute', left: '-32px', top: '4px', width: '16px', height: '16px', borderRadius: '50%', background: '#030303', border: `2px solid ${item.color}`, boxShadow: `0 0 10px ${item.color}` }}></div>
+                                
+                                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '20px 24px', borderRadius: '12px', transition: 'all 0.3s ease' }}
+                                     onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = item.color + '40'; }}
+                                     onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; }}>
+                                    <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 600, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <span style={{ color: item.color }}>{i + 1}.</span> {item.step}
+                                    </h4>
+                                    <p style={{ color: '#9CA3AF', fontSize: '14px', lineHeight: 1.6 }}>{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
             {/* ══════════════════ FEATURES SECTION ══════════════════ */}
             <section id="pipeline" style={{ padding: '60px 16px 80px', position: 'relative', zIndex: 10 }}>
                 <div style={{ maxWidth: '960px', margin: '0 auto' }}>
@@ -845,57 +897,7 @@ const Login = () => {
                 </div>
             </section>
 
-            {/* ══════════════════ EVOLUTION JOURNEY SECTION ══════════════════ */}
-            <section style={{ padding: '100px 20px', position: 'relative', zIndex: 10, background: '#030303' }}>
-                <div style={{ maxWidth: '700px', margin: '0 auto' }}>
-                    
-                    <div style={{ textAlign: 'center', marginBottom: '60px' }}>
-                        <div style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', padding: '6px 16px', borderRadius: '100px', background: 'rgba(139, 92, 246, 0.05)', border: '1px solid rgba(139, 92, 246, 0.2)', marginBottom: '20px' }}>
-                            <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', color: '#a78bfa', textTransform: 'uppercase' }}>The Evolution</span>
-                        </div>
-                        <h2 style={{ fontSize: 'clamp(32px, 5vw, 46px)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '20px' }}>
-                            From Linear RAG to <br/><span style={{ color: '#c084fc' }}>Adaptive Intelligence.</span>
-                        </h2>
-                        <p style={{ color: '#9CA3AF', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
-                            A complete architectural journey showing how this ecosystem evolved step-by-step into a fully autonomous multi-agent system.
-                        </p>
-                    </div>
 
-                    <div style={{ position: 'relative', paddingLeft: '32px' }}>
-                        {/* Glowing Line */}
-                        <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #3b82f6 0%, #8b5cf6 30%, #d946ef 70%, #f43f5e 100%)', opacity: 0.6 }}></div>
-
-                        {[
-                            { step: "Linear RAG", desc: "Baseline ingestion, embedding generation, and cosine similarity retrieval.", color: "#3b82f6" },
-                            { step: "Security", desc: "Implementation of JWT auth, rate limiting, and role-based access controls.", color: "#3b82f6" },
-                            { step: "PII", desc: "Microsoft Presidio integration for real-time redaction of sensitive entities.", color: "#6366f1" },
-                            { step: "Caching", desc: "Upstash Redis integration to instantly serve similar queries, cutting latency.", color: "#6366f1" },
-                            { step: "Observability", desc: "Langfuse tracing added to monitor LLM token usage and reasoning steps.", color: "#8b5cf6" },
-                            { step: "Fine Tuning", desc: "Custom qLoRA 4-bit model training for specialized domain tasks.", color: "#8b5cf6" },
-                            { step: "Legal AI", desc: "Structuring data specifically for the Constitution of India and penal codes.", color: "#a855f7" },
-                            { step: "LangGraph", desc: "Transitioning from rigid chains to stateful, cyclic reasoning graphs.", color: "#a855f7" },
-                            { step: "Agentic RAG", desc: "Introducing autonomous routing, grading, and self-correction loops.", color: "#d946ef" },
-                            { step: "Financial Parser", desc: "Scaling the architecture to handle complex SEC 10-K and XBRL data.", color: "#d946ef" },
-                            { step: "WhatsApp", desc: "Connecting the AI brain to real-time conversational channels via Twilio.", color: "#ec4899" },
-                            { step: "Adaptive ReAct", desc: "The ultimate orchestrator: Dynamic multi-tool reasoning and autonomous action.", color: "#f43f5e" }
-                        ].map((item, i) => (
-                            <div key={i} style={{ position: 'relative', marginBottom: '32px' }}>
-                                {/* Glowing Dot */}
-                                <div style={{ position: 'absolute', left: '-32px', top: '4px', width: '16px', height: '16px', borderRadius: '50%', background: '#030303', border: `2px solid ${item.color}`, boxShadow: `0 0 10px ${item.color}` }}></div>
-                                
-                                <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', padding: '20px 24px', borderRadius: '12px', transition: 'all 0.3s ease' }}
-                                     onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; e.currentTarget.style.borderColor = item.color + '40'; }}
-                                     onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.02)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.05)'; }}>
-                                    <h4 style={{ color: '#fff', fontSize: '18px', fontWeight: 600, marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <span style={{ color: item.color }}>{i + 1}.</span> {item.step}
-                                    </h4>
-                                    <p style={{ color: '#9CA3AF', fontSize: '14px', lineHeight: 1.6 }}>{item.desc}</p>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </section>
 
             {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
             <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(255, 255, 255, 0.05)', background: '#050505', overflow: 'hidden' }}>
