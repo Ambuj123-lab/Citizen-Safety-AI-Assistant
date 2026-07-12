@@ -196,6 +196,20 @@ const Login = () => {
         }
     ];
 
+    const techStack = [
+        { name: "LangChain", icon: "🦜" },
+        { name: "Pinecone", icon: "🌲" },
+        { name: "Presidio", icon: "🛡️" },
+        { name: "Redis", icon: "⚡" },
+        { name: "FastAPI", icon: "🚀" },
+        { name: "React", icon: "⚛️" },
+        { name: "Vercel", icon: "▲" },
+        { name: "Gemini 1.5", icon: "✨" },
+        { name: "Python", icon: "🐍" },
+        { name: "TailwindCSS", icon: "🎨" }
+    ];
+    const marqueeItems = [...techStack, ...techStack, ...techStack];
+
     const stats = [
         { val: 31500, suf: '+', lbl: 'Knowledge Chunks' },
         { val: 3, suf: '', lbl: 'Live Systems' },
@@ -482,6 +496,20 @@ const Login = () => {
                         View Portfolio
                     </a>
                 </div>
+                </div>
+
+                {/* Tech Stack Marquee */}
+                <div style={{ width: '100%', overflow: 'hidden', marginTop: '60px', borderTop: '1px solid rgba(255,255,255,0.05)', borderBottom: '1px solid rgba(255,255,255,0.05)', background: 'rgba(0,0,0,0.3)', padding: '16px 0', position: 'relative' }}>
+                    <div style={{ position: 'absolute', top: 0, left: 0, width: '100px', height: '100%', background: 'linear-gradient(to right, #030303, transparent)', zIndex: 2 }} />
+                    <div style={{ position: 'absolute', top: 0, right: 0, width: '100px', height: '100%', background: 'linear-gradient(to left, #030303, transparent)', zIndex: 2 }} />
+                    <div style={{ display: 'flex', width: 'max-content', animation: 'marquee 40s linear infinite', gap: '40px', paddingLeft: '40px' }}>
+                        {marqueeItems.map((tech, idx) => (
+                            <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', opacity: 0.6, transition: 'opacity 0.3s' }} onMouseOver={e=>e.currentTarget.style.opacity=1} onMouseOut={e=>e.currentTarget.style.opacity=0.6}>
+                                <span style={{ fontSize: '18px' }}>{tech.icon}</span>
+                                <span style={{ color: '#9CA3AF', fontSize: '14px', fontWeight: 500, letterSpacing: '0.05em' }}>{tech.name}</span>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </section>
 
