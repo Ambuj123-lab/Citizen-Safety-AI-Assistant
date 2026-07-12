@@ -197,10 +197,10 @@ const Login = () => {
     ];
 
     const stats = [
-        { val: 31500, suf: '+', lbl: 'Chunks Indexed' },
-        { val: 28000, suf: '+', lbl: 'Dense Vectors' },
-        { val: 75, suf: '%', lbl: 'Storage Saved' },
-        { val: 7, suf: ' Layer', lbl: 'Security Shield' },
+        { val: 31, suf: 'k+', lbl: 'Chunks' },
+        { val: 3, suf: '', lbl: 'Live Systems' },
+        { val: 5600, suf: '+', lbl: 'Downloads' },
+        { val: 14, suf: 'k+', lbl: 'Legal QA' },
     ];
 
     return (
@@ -399,6 +399,24 @@ const Login = () => {
                     AI-powered retrieval-augmented generation tailored for Indian legal frameworks with real-time PII redaction.
                 </p>
 
+                {/* Hero Stats */}
+                <div style={{ width: '100%', maxWidth: '700px', margin: '0 auto 40px', display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '30px' }}>
+                    {stats.map((s, i) => {
+                        const StatItem = () => {
+                            const { count, ref } = useCountUp(s.val);
+                            return (
+                                <div ref={ref} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minWidth: '120px' }}>
+                                    <p style={{ fontSize: 'clamp(24px, 4vw, 32px)', fontWeight: 700, color: '#fff', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '6px', fontVariantNumeric: 'tabular-nums' }}>
+                                        {count.toLocaleString()}{s.suf}
+                                    </p>
+                                    <p style={{ fontSize: '11px', color: '#6B7280', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{s.lbl}</p>
+                                </div>
+                            );
+                        };
+                        return <StatItem key={i} />;
+                    })}
+                </div>
+
                 <button onClick={handleGoogleLogin} style={{
                     display: 'flex', alignItems: 'center', gap: '10px', height: '48px', padding: '0 28px',
                     background: '#fff', color: '#000', fontSize: '14px', fontWeight: 600,
@@ -524,27 +542,7 @@ const Login = () => {
                 </div>
             </section>
 
-            {/* ══════════════════ STATS SECTION ══════════════════ */}
-            <section style={{ padding: '0 20px 80px', position: 'relative', zIndex: 10 }}>
-                <div style={{ maxWidth: '960px', margin: '0 auto', borderTop: '1px solid #1B1F2A', paddingTop: '80px' }}>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-                        {stats.map((s, i) => {
-                            const StatItem = () => {
-                                const { count, ref } = useCountUp(s.val);
-                                return (
-                                    <div ref={ref}>
-                                        <p style={{ fontSize: 'clamp(28px, 6vw, 42px)', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.02em', lineHeight: 1, marginBottom: '10px', fontVariantNumeric: 'tabular-nums' }}>
-                                            {count.toLocaleString()}{s.suf}
-                                        </p>
-                                        <p style={{ fontSize: '13px', color: '#6B7280', fontWeight: 500 }}>{s.lbl}</p>
-                                    </div>
-                                );
-                            };
-                            return <StatItem key={i} />;
-                        })}
-                    </div>
-                </div>
-            </section>
+
 
             {/* ══════════════════ TECH STACK MARQUEE (MERCOR STYLE) ══════════════════ */}
             <style>{`
