@@ -204,7 +204,7 @@ const Login = () => {
     ];
 
     return (
-        <div style={{ background: '#0B0101', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
+        <div style={{ background: '#030303', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
             <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
             {/* ── TOP DISCLAIMER BANNER ── */}
@@ -369,6 +369,11 @@ const Login = () => {
                     </div>
                 )}
             </nav>
+
+            {/* ── SUPER DYNAMIC AMBIENT GLOW (MIXED AI COLORS) ── */}
+            <div style={{ position: 'fixed', top: '-10%', left: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+            <div style={{ position: 'fixed', top: '20%', right: '-10%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(6, 182, 212, 0.12) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
+            <div style={{ position: 'fixed', bottom: '-20%', left: '20%', width: '70vw', height: '70vw', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 60%)', filter: 'blur(80px)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
@@ -840,8 +845,9 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
-            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(220, 38, 38, 0.1)', background: '#0B0101', overflow: 'hidden' }}>
-                {/* Accent Gradients (Removed for deep clean look) */}
+            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(255, 255, 255, 0.05)', background: '#050505', overflow: 'hidden' }}>
+                {/* Accent Gradients */}
+                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '100vw', height: '100%', background: 'radial-gradient(circle at 30% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%), radial-gradient(circle at 70% 50%, rgba(6, 182, 212, 0.1) 0%, transparent 50%)', filter: 'blur(60px)', pointerEvents: 'none', zIndex: 1 }} />
                 
                 <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
                     
@@ -927,7 +933,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ FAT FOOTER ══════════════════ */}
-            <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#0B0101', borderTop: '1px solid rgba(220, 38, 38, 0.2)', color: '#9CA3AF', fontSize: '0.9rem' }}>
+            <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#030303', borderTop: '1px solid rgba(255, 255, 255, 0.05)', color: '#9CA3AF', fontSize: '0.9rem' }}>
                 <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
                     
                     {/* Left Column: Logo & Copyright */}
