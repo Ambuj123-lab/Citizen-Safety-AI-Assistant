@@ -370,10 +370,13 @@ const Login = () => {
                 )}
             </nav>
 
-            {/* ── SUPER DYNAMIC AMBIENT GLOW (GEMINI INSPIRED AESTHETIC) ── */}
-            <div style={{ position: 'fixed', top: '-150px', left: '35%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(147, 51, 234, 0.25) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'fixed', top: '-100px', left: '55%', width: '550px', height: '550px', background: 'radial-gradient(circle, rgba(59, 130, 246, 0.25) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
-            <div style={{ position: 'fixed', top: '150px', left: '45%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, transparent 70%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* ── SUPER DYNAMIC AMBIENT GLOW (UNIQUE BRAND AESTHETIC) ── */}
+            {/* Deep Rich Purple Dominant Core */}
+            <div style={{ position: 'fixed', top: '-150px', left: '30%', width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(88, 28, 135, 0.35) 0%, rgba(107, 33, 168, 0.15) 40%, transparent 70%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* Electric Cobalt Blue Accent */}
+            <div style={{ position: 'fixed', top: '-80px', left: '55%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
+            {/* Magenta/Fuchsia Warm Edge */}
+            <div style={{ position: 'fixed', top: '150px', left: '48%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(219, 39, 119, 0.15) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
