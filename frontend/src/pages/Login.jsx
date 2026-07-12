@@ -466,7 +466,7 @@ const Login = () => {
                         System Blueprint
                     </a>
 
-                    <a href="https://ambuj-portfolio.vercel.app" target="_blank" rel="noreferrer" style={{
+                    <a href="https://ambuj-ai-portfolio.vercel.app/" target="_blank" rel="noreferrer" style={{
                         display: 'inline-flex', alignItems: 'center', gap: '8px',
                         padding: '0 26px', height: '48px', boxSizing: 'border-box',
                         background: 'rgba(255, 255, 255, 0.03)',
