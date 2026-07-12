@@ -118,10 +118,10 @@ const Login = () => {
                         return;
                     }
                 }
-                setUptimeData({ uptime: '--' }); // Fallback if data is missing
+                setUptimeData({ uptime: '--', latency: '--' }); // Fallback
             } catch (error) {
                 console.error("Failed to fetch uptime:", error);
-                setUptimeData({ uptime: '--' }); // Fallback on error
+                setUptimeData({ uptime: '--', latency: '--' }); // Fallback
             }
         };
         fetchUptime();
@@ -282,7 +282,7 @@ const Login = () => {
                             style={{ strokeDasharray: '30', strokeDashoffset: '0', animation: 'ecg-draw 2s linear infinite' }}
                         />
                     </svg>
-                    {uptimeData ? `${uptimeData.uptime}` : 'System Status'}
+                    {uptimeData ? `${uptimeData.uptime} • ${uptimeData.latency}` : 'System Status'}
                 </a>
             </div>
 
@@ -1072,7 +1072,7 @@ const Login = () => {
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '1rem', fontSize: '0.8rem', color: '#6b7280' }}>
                                 <span style={{ color: '#9CA3AF' }}>Version: <span style={{ color: '#fff' }}>v1.0</span></span>
                                 <span style={{ color: '#9CA3AF' }}>Deployment: <span style={{ color: '#fff' }}>Vercel / AWS</span></span>
-                                <span style={{ color: '#9CA3AF' }}>API Uptime: <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" style={{ color: '#F59E0B', textDecoration: 'none' }} onMouseOver={e=>e.target.style.textDecoration='underline'} onMouseOut={e=>e.target.style.textDecoration='none'}>{uptimeData ? `${uptimeData.uptime}` : '--%'}</a></span>
+                                <span style={{ color: '#9CA3AF' }}>API Uptime: <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" style={{ color: '#F59E0B', textDecoration: 'none' }} onMouseOver={e=>e.target.style.textDecoration='underline'} onMouseOut={e=>e.target.style.textDecoration='none'}>{uptimeData ? `${uptimeData.uptime} • ${uptimeData.latency}` : '--%'}</a></span>
                                 <span style={{ color: '#9CA3AF' }}>Last Updated: <span style={{ color: '#fff' }}>July 2026</span></span>
                             </div>
                             <p style={{ marginBottom: '1rem', fontSize: '0.85rem' }}>&copy; {new Date().getFullYear()} Ambuj Kumar Tripathi.</p>

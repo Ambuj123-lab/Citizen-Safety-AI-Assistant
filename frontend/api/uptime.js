@@ -19,7 +19,7 @@ export default async function handler(req, res) {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
-            body: `api_key=${apiKey}&format=json&custom_uptime_ratios=30`
+            body: `api_key=${apiKey}&format=json&custom_uptime_ratios=30&response_times=1`
         });
 
         const data = await response.json();
@@ -28,10 +28,12 @@ export default async function handler(req, res) {
             const monitor = data.monitors[0];
             const isUp = monitor.status === 2; // 2 means up
             const ratio = parseFloat(monitor.custom_uptime_ratio).toFixed(1);
+            const latency = (monitor.response_times && monitor.response_times.length > 0) ? monitor.response_times[0].value : null;
             
             return res.status(200).json({
                 status: isUp ? 'operational' : 'down',
                 uptime: isUp ? `${ratio}%` : 'DOWN',
+                latency: latency ? `${latency}ms` : '--',
                 monitorName: monitor.friendly_name
             });
         }
