@@ -204,7 +204,7 @@ const Login = () => {
     ];
 
     return (
-        <div style={{ background: '#07090F', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
+        <div style={{ background: '#0B0101', color: '#fff', fontFamily: "'Inter', system-ui, -apple-system, sans-serif", minHeight: '100vh', overflowX: 'hidden', width: '100%', maxWidth: '100vw' }}>
             <style>{`@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');`}</style>
 
             {/* ── TOP DISCLAIMER BANNER ── */}
@@ -840,7 +840,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ ENGINEERED BY SECTION ══════════════════ */}
-            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(220, 38, 38, 0.1)', background: '#07090F', overflow: 'hidden' }}>
+            <section style={{ padding: '80px 20px', position: 'relative', zIndex: 10, borderTop: '1px solid rgba(220, 38, 38, 0.1)', background: '#0B0101', overflow: 'hidden' }}>
                 {/* Accent Gradients (Removed for deep clean look) */}
                 
                 <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center', position: 'relative', zIndex: 2 }}>
@@ -927,7 +927,7 @@ const Login = () => {
             </section>
 
             {/* ══════════════════ FAT FOOTER ══════════════════ */}
-            <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#07090F', borderTop: '1px solid rgba(220, 38, 38, 0.2)', color: '#9CA3AF', fontSize: '0.9rem' }}>
+            <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#0B0101', borderTop: '1px solid rgba(220, 38, 38, 0.2)', color: '#9CA3AF', fontSize: '0.9rem' }}>
                 <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
                     
                     {/* Left Column: Logo & Copyright */}
