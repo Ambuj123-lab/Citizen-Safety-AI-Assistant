@@ -4,6 +4,7 @@ import { chatAPI, uploadAPI, statsAPI } from '../api';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import logo from '../assets/logo.png';
+import { Copy, Check } from 'lucide-react';
 
 const Dashboard = () => {
     const { user, logout } = useAuth();
@@ -13,6 +14,28 @@ const Dashboard = () => {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [lastResponse, setLastResponse] = useState(null);
+    const [copiedIndex, setCopiedIndex] = useState(null);
+
+    const handleCopy = (msg, index) => {
+        const userQuery = index > 0 ? messages[index - 1].content : '';
+        const aiResponse = msg.content;
+        const sources = msg.sources && msg.sources.length > 0 
+            ? "\n\nSources / Citations:\n" + msg.sources.map((src, idx) => `[Source ${src.source_id || idx + 1}] File: ${src.file || 'Source'}, Page: ${src.page || '1'}\nPreview: "${src.preview || ''}"`).join('\n\n')
+            : '';
+            
+        const textToCopy = `User Query:\n${userQuery}\n\nAI Response:\n${aiResponse}${sources}`;
+        
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                setCopiedIndex(index);
+                showToast('Copied to clipboard with citations!', 'success');
+                setTimeout(() => setCopiedIndex(null), 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                showToast('Failed to copy message', 'error');
+            });
+    };
 
     // UI State
     const [toasts, setToasts] = useState([]);
@@ -569,7 +592,7 @@ const Dashboard = () => {
                         {/* Messages */}
                         <div style={{ paddingBottom: '40px' }}>
                             {messages.map((msg, i) => (
-                                <div key={i} style={{ ...S.msgWrap, flexDirection: msg.role === 'user' ? 'row-reverse' : 'row' }}>
+                                <div key={i} className="group" style={{ ...S.msgWrap, flexDirection: msg.role === 'user' ? 'row-reverse' : 'row', position: 'relative' }}>
 
                                     {/* Avatar */}
                                     {msg.role === 'assistant' ? (
@@ -582,8 +605,22 @@ const Dashboard = () => {
                                         )
                                     )}
 
-                                    <div style={{ flex: 1, maxWidth: msg.role === 'user' ? '80%' : '100%', minWidth: 0 }}>
-                                        <div style={msg.role === 'user' ? S.userBubble : S.botBubble}>
+                                    <div style={{ flex: 1, maxWidth: msg.role === 'user' ? '80%' : '100%', minWidth: 0, position: 'relative' }}>
+                                        {msg.role === 'assistant' && (
+                                            <button
+                                                onClick={() => handleCopy(msg, i)}
+                                                className="absolute top-0 right-0 p-1.5 rounded-lg bg-slate-800/50 hover:bg-slate-700/80 border border-slate-700/50 text-slate-400 hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
+                                                title="Copy message with citations"
+                                                style={{ zIndex: 10 }}
+                                            >
+                                                {copiedIndex === i ? (
+                                                    <Check size={14} className="text-emerald-400" />
+                                                ) : (
+                                                    <Copy size={14} />
+                                                )}
+                                            </button>
+                                        )}
+                                        <div style={msg.role === 'user' ? S.userBubble : { ...S.botBubble, paddingRight: msg.role === 'assistant' ? '40px' : '0px' }}>
                                             {msg.role === 'assistant' ? (
                                                 <div className="prose-chat prose-sm max-w-none w-full break-words">
                                                     <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
