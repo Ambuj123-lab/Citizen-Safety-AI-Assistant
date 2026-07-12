@@ -1,6 +1,7 @@
 import { authAPI } from '../api';
 import logo from '../assets/logo.png';
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { FaLinkedin, FaXTwitter, FaMedium, FaGithub } from 'react-icons/fa6';
 
 /* ── Animated Counter ── */
 const useCountUp = (target, duration = 2200) => {
@@ -102,8 +103,29 @@ print(tokenizer.decode(outputs[0], skip_special_tokens=True))`;
 const Login = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [showBackToTop, setShowBackToTop] = useState(false);
+    const [uptimeData, setUptimeData] = useState(null);
+    const [legalModal, setLegalModal] = useState(null);
+    const UPTIME_API_URL = 'https://ambuj-portfolio-micro.vercel.app/api/uptime'; // TODO: Update when new API is provided
 
     useEffect(() => {
+        const fetchUptime = async () => {
+            try {
+                const response = await fetch(UPTIME_API_URL);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.uptime) {
+                        setUptimeData(data);
+                        return;
+                    }
+                }
+                setUptimeData({ uptime: '--' }); // Fallback if data is missing
+            } catch (error) {
+                console.error("Failed to fetch uptime:", error);
+                setUptimeData({ uptime: '--' }); // Fallback on error
+            }
+        };
+        fetchUptime();
+        
         const handleScroll = () => setShowBackToTop(window.scrollY > 600);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
@@ -268,7 +290,7 @@ const Login = () => {
                             style={{ strokeDasharray: '30', strokeDashoffset: '0', animation: 'ecg-draw 2s linear infinite' }}
                         />
                     </svg>
-                    System Status
+                    {uptimeData ? `API ${uptimeData.uptime}` : 'System Status'}
                 </a>
             </div>
 
@@ -361,10 +383,10 @@ const Login = () => {
                 position: 'relative', zIndex: 10, minHeight: '70vh'
             }}>
                 <h1 style={{
-                    fontSize: 'clamp(42px, 6vw, 72px)', fontWeight: 600, letterSpacing: '-0.03em',
+                    fontSize: 'clamp(36px, 5vw, 60px)', fontWeight: 600, letterSpacing: '-0.03em',
                     lineHeight: 1.1, marginBottom: '24px'
                 }}>
-                    <span style={{ color: '#fff' }}>Legal Intelligence.</span>
+                    <span style={{ color: '#fff' }}>Secure Linear RAG &amp; PII Anonymization.</span>
                     <br />
                     <span style={{ color: '#4B5563' }}>Citizen Empowerment.</span>
                 </h1>
@@ -911,25 +933,136 @@ const Login = () => {
                 </div>
             </section>
 
-            {/* ══════════════════ FOOTER ══════════════════ */}
-            <footer style={{ 
-                padding: '40px 40px', 
-                background: '#05070A', 
-                textAlign: 'center',
-                position: 'relative',
-                borderTop: '1px solid rgba(255,255,255,0.02)'
-            }}>
-                {/* Glowing Gradient Top Border */}
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: '1px', background: 'linear-gradient(90deg, transparent, rgba(220,38,38,0.5), rgba(245,158,11,0.5), transparent)' }} />
-                
-                <p style={{ fontSize: '12px', color: '#6B7280', fontWeight: 500, letterSpacing: '0.02em' }}>
-                    &copy; 2026 Citizen Safety AI — Engineered by <span style={{ color: '#Ef4444', fontWeight: 600 }}>Ambuj Kumar Tripathi</span>.
-                    <br />
-                    <span style={{ color: '#4B5563', fontSize: '11px', marginTop: '4px', display: 'inline-block' }}>Production RAG, engineered for scale.</span>
-                </p>
+            {/* ══════════════════ FAT FOOTER ══════════════════ */}
+            <footer id="about" style={{ padding: '5rem 4rem 3rem 4rem', background: '#07090F', borderTop: '1px solid rgba(220, 38, 38, 0.2)', color: '#9CA3AF', fontSize: '0.9rem' }}>
+                <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', gap: '3rem' }}>
+                    
+                    {/* Left Column: Logo & Copyright */}
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '300px', flex: 1.5, minWidth: '250px' }}>
+                        <div>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
+                                <img src={logo} alt="Logo" style={{ height: '40px', borderRadius: '8px' }} />
+                                <span style={{ fontWeight: 700, fontSize: '1.4rem', color: '#fff', letterSpacing: '-0.5px' }}>CitizenSafety<span style={{ color: '#F59E0B' }}>AI</span></span>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem', marginTop: '1.5rem' }}>
+                                <a href="https://www.linkedin.com/in/ambuj-tripathi-042b4a118/" target="_blank" rel="noreferrer" style={{ color: '#a1a1aa', transition: 'color 0.2s' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#a1a1aa'}><FaLinkedin size={22} /></a>
+                                <a href="https://x.com/Ambuj_KTripathi" target="_blank" rel="noreferrer" style={{ color: '#a1a1aa', transition: 'color 0.2s' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#a1a1aa'}><FaXTwitter size={22} /></a>
+                                <a href="https://github.com/Ambuj123-lab" target="_blank" rel="noreferrer" style={{ color: '#a1a1aa', transition: 'color 0.2s' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#a1a1aa'}><FaGithub size={22} /></a>
+                                <a href="https://medium.com/@ambuj_tripathi" target="_blank" rel="noreferrer" style={{ color: '#a1a1aa', transition: 'color 0.2s' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#a1a1aa'}><FaMedium size={22} /></a>
+                            </div>
+                        </div>
+
+                        <div style={{ marginTop: 'auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', marginBottom: '1rem', fontSize: '0.8rem', color: '#6b7280' }}>
+                                <span style={{ color: '#9CA3AF' }}>Version: <span style={{ color: '#fff' }}>v1.0</span></span>
+                                <span style={{ color: '#9CA3AF' }}>Deployment: <span style={{ color: '#fff' }}>Vercel / AWS</span></span>
+                                <span style={{ color: '#9CA3AF' }}>API Uptime: <a href="https://stats.uptimerobot.com/4tYmSQnuBE" target="_blank" rel="noreferrer" style={{ color: '#F59E0B', textDecoration: 'none' }} onMouseOver={e=>e.target.style.textDecoration='underline'} onMouseOut={e=>e.target.style.textDecoration='none'}>{uptimeData ? `API ${uptimeData.uptime}` : '--%'}</a></span>
+                                <span style={{ color: '#9CA3AF' }}>Last Updated: <span style={{ color: '#fff' }}>July 2026</span></span>
+                            </div>
+                            <p style={{ marginBottom: '1rem', fontSize: '0.85rem' }}>&copy; {new Date().getFullYear()} Ambuj Kumar Tripathi.</p>
+                        </div>
+                    </div>
+
+                    {/* Columns Container */}
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '2rem', flex: 3 }}>
+                        {/* Column 1 */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.95rem' }}>Platform</h4>
+                            <a href="#pipeline" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>RAG Engine</a>
+                            <a href="#pipeline" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>PII Anonymization</a>
+                            <a href="#pipeline" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Semantic Caching</a>
+                        </div>
+
+                        {/* Column 2 */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.95rem' }}>Solutions</h4>
+                            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Emergency Routing</a>
+                            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Crisis Response</a>
+                            <a href="#" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Police Departments</a>
+                        </div>
+                        
+                        {/* Column - Ecosystem */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.95rem' }}>Ecosystem</h4>
+                            <a href="https://agentic-rag-financial-parser.onrender.com/" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Financial Parser</a>
+                            <a href="https://indian-legal-ai-expert.onrender.com/" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Indian Legal AI Expert</a>
+                            <a href="https://ambuj-ai-portfolio.vercel.app" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>AI Portfolio Hub</a>
+                        </div>
+
+                        {/* Column 3 */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.95rem' }}>Resources</h4>
+                            <a href="https://github.com/Ambuj123-lab" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>GitHub</a>
+                            <a href="https://ambuj-rag-docs.netlify.app/" target="_blank" rel="noreferrer" style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Documentation</a>
+                        </div>
+
+                        {/* Column 4 */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <h4 style={{ color: '#fff', fontWeight: 600, marginBottom: '0.5rem', fontSize: '0.95rem' }}>Legal</h4>
+                            <a href="#legal" onClick={(e) => { e.preventDefault(); setLegalModal('PRIVACY'); }} style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Privacy Policy</a>
+                            <a href="#legal" onClick={(e) => { e.preventDefault(); setLegalModal('TOS'); }} style={{ color: 'inherit', textDecoration: 'none' }} onMouseOver={e=>e.target.style.color='#fff'} onMouseOut={e=>e.target.style.color='#9CA3AF'}>Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
             </footer>
 
-            {/* ══════════════════ BACK TO TOP ══════════════════ */}
+            {/* ══════════════════ LEGAL MODALS ══════════════════ */}
+            {legalModal && (
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.85)', zIndex: 100000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', backdropFilter: 'blur(5px)' }} onClick={() => setLegalModal(null)}>
+                    <div className="legal-modal-container" style={{ background: '#0f172a', border: '1px solid rgba(245, 158, 11, 0.2)', borderRadius: '12px', padding: '0', width: '100%', maxWidth: '800px', maxHeight: '85vh', overflowY: 'auto', position: 'relative', color: '#e5e7eb', boxShadow: '0 20px 40px rgba(0,0,0,0.7)' }} onClick={(e) => e.stopPropagation()}>
+                        
+                        <div style={{ position: 'sticky', top: 0, right: 0, display: 'flex', justifyContent: 'flex-end', padding: '1rem', background: 'linear-gradient(to bottom, #0f172a 80%, transparent)', zIndex: 10 }}>
+                            <button onClick={() => setLegalModal(null)} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#9ca3af', width: '32px', height: '32px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'all 0.2s' }} onMouseOver={e=>{e.target.style.background='rgba(255,255,255,0.1)'; e.target.style.color='#fff'}} onMouseOut={e=>{e.target.style.background='rgba(255,255,255,0.05)'; e.target.style.color='#9ca3af'}}>
+                                &times;
+                            </button>
+                        </div>
+                        
+                        <div style={{ padding: '0 2rem 3rem 2rem' }}>
+                            {legalModal === 'TOS' && (
+                                <div>
+                                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                                        <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>Terms of Service</h2>
+                                        <p style={{ color: '#F59E0B', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1rem' }}>Effective July 2026</p>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', overflow: 'hidden' }}>
+                                        <div style={{ background: '#1e293b', padding: '1.5rem 2rem' }}>
+                                            <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>🎓 Learning & Development Use Only</h3>
+                                            <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: 1.6 }}>This platform is provided exclusively for educational and learning purposes. There is no exchange of money or commercial service involved. It is an AI simulation and is NOT a replacement for official 911 or emergency dispatch services.</p>
+                                        </div>
+                                        <div style={{ background: '#1e293b', padding: '1.5rem 2rem' }}>
+                                            <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>🛡️ PII Masking Notice</h3>
+                                            <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: 1.6 }}><b>While we use Microsoft Presidio for PII masking, which never reaches the LLM and sits as orphaned or stale vectors in the vector db</b>, users acknowledge that providing extremely sensitive data is at their own risk during this beta phase.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
+                            {legalModal === 'PRIVACY' && (
+                                <div>
+                                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                                        <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#fff', marginBottom: '0.5rem', letterSpacing: '-0.5px' }}>Privacy Policy</h2>
+                                        <p style={{ color: '#F59E0B', fontSize: '0.95rem', fontWeight: 600, marginBottom: '1rem' }}>Effective July 2026</p>
+                                    </div>
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', overflow: 'hidden' }}>
+                                        <div style={{ background: '#1e293b', padding: '1.5rem 2rem' }}>
+                                            <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>🔒 PII Anonymization</h3>
+                                            <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: 1.6 }}>All incoming emergency requests are immediately scrubbed of Personally Identifiable Information (PII) such as phone numbers, names, and locations using Microsoft Presidio before reaching the LLM layer.</p>
+                                        </div>
+                                        <div style={{ background: '#1e293b', padding: '1.5rem 2rem' }}>
+                                            <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>🗑️ No Retention Policy</h3>
+                                            <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: 1.6 }}>We do not store your emergency prompts. Data is processed in-memory for routing purposes and instantly discarded.</p>
+                                        </div>
+                                        <div style={{ background: '#1e293b', padding: '1.5rem 2rem' }}>
+                                            <h3 style={{ fontSize: '1.1rem', color: '#fff', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '8px' }}>👁️ Telemetry & Observability</h3>
+                                            <p style={{ color: '#9ca3af', fontSize: '0.95rem', lineHeight: 1.6 }}>We use Langfuse for system observability (latency, token usage) with strict zero-user tracking configurations. Your identity is never logged.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}            {/* ══════════════════ BACK TO TOP ══════════════════ */}
             <button
                 onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
                 style={{
