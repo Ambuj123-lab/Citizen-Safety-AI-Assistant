@@ -437,7 +437,7 @@ const Login = () => {
                             <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.12em', color: '#a78bfa', textTransform: 'uppercase' }}>The Evolution</span>
                         </div>
                         <h2 style={{ fontSize: 'clamp(32px, 5vw, 46px)', fontWeight: 700, color: '#fff', letterSpacing: '-0.03em', lineHeight: 1.1, marginBottom: '20px' }}>
-                            From Linear RAG to <br/><span style={{ color: '#c084fc' }}>Adaptive Intelligence.</span>
+                            Engineering Evolution: <br/>From Linear RAG to <span style={{ color: '#c084fc' }}>Autonomous AI.</span>
                         </h2>
                         <p style={{ color: '#9CA3AF', fontSize: '16px', maxWidth: '500px', margin: '0 auto' }}>
                             A complete architectural journey showing how this ecosystem evolved step-by-step into a fully autonomous multi-agent system.
@@ -449,18 +449,18 @@ const Login = () => {
                         <div style={{ position: 'absolute', left: '7px', top: '10px', bottom: '10px', width: '2px', background: 'linear-gradient(to bottom, #3b82f6 0%, #8b5cf6 30%, #d946ef 70%, #f43f5e 100%)', opacity: 0.6 }}></div>
 
                         {[
-                            { step: "Linear RAG", desc: "Baseline ingestion, embedding generation, and cosine similarity retrieval.", color: "#3b82f6" },
-                            { step: "Security", desc: "Implementation of JWT auth, rate limiting, and role-based access controls.", color: "#3b82f6" },
-                            { step: "PII", desc: "Microsoft Presidio integration for real-time redaction of sensitive entities.", color: "#6366f1" },
-                            { step: "Caching", desc: "Upstash Redis integration to instantly serve similar queries, cutting latency.", color: "#6366f1" },
-                            { step: "Observability", desc: "Langfuse tracing added to monitor LLM token usage and reasoning steps.", color: "#8b5cf6" },
-                            { step: "Fine Tuning", desc: "Custom qLoRA 4-bit model training for specialized domain tasks.", color: "#8b5cf6" },
-                            { step: "Legal AI", desc: "Structuring data specifically for the Constitution of India and penal codes.", color: "#a855f7" },
-                            { step: "LangGraph", desc: "Transitioning from rigid chains to stateful, cyclic reasoning graphs.", color: "#a855f7" },
-                            { step: "Agentic RAG", desc: "Introducing autonomous routing, grading, and self-correction loops.", color: "#d946ef" },
-                            { step: "Financial Parser", desc: "Scaling the architecture to handle complex SEC 10-K and XBRL data.", color: "#d946ef" },
-                            { step: "WhatsApp", desc: "Connecting the AI brain to real-time conversational channels via Twilio.", color: "#ec4899" },
-                            { step: "Adaptive ReAct", desc: "The ultimate orchestrator: Dynamic multi-tool reasoning and autonomous action.", color: "#f43f5e" }
+                            { step: "Linear RAG", desc: "Established the foundational AI pipeline for highly accurate, similarity-based document retrieval.", color: "#3b82f6" },
+                            { step: "Security", desc: "Secured the entire ecosystem with robust access controls, preventing unauthorized API abuse.", color: "#3b82f6" },
+                            { step: "PII Anonymization", desc: "Ensured enterprise-grade privacy by automatically redacting sensitive user data in real-time.", color: "#6366f1" },
+                            { step: "Semantic Caching", desc: "Reduced repeated-query latency and slashed LLM costs by leveraging intelligent Redis caching.", color: "#6366f1" },
+                            { step: "Observability", desc: "Achieved full system transparency to monitor performance, token costs, and AI reasoning traces.", color: "#8b5cf6" },
+                            { step: "Fine-Tuning", desc: "Boosted model accuracy on domain-specific tasks through efficient custom qLoRA 4-bit training.", color: "#8b5cf6" },
+                            { step: "Legal Specialization", desc: "Engineered highly accurate, citation-backed responses specifically structured for complex Indian Law.", color: "#a855f7" },
+                            { step: "Stateful Graphs", desc: "Unlocked complex multi-step reasoning by migrating from rigid linear chains to dynamic stateful graphs.", color: "#a855f7" },
+                            { step: "Agentic RAG", desc: "Enabled self-correcting AI that autonomously routes, grades, and refines its own generated answers.", color: "#d946ef" },
+                            { step: "Financial Parsing", desc: "Scaled data processing capabilities to reliably extract actionable insights from massive SEC 10-K and XBRL data.", color: "#d946ef" },
+                            { step: "Edge Integration", desc: "Expanded user accessibility by deploying the AI brain directly to real-time conversational platforms like WhatsApp.", color: "#ec4899" },
+                            { step: "Adaptive ReAct", desc: "Achieved true autonomy with an orchestrator capable of dynamic tool-use and continuous logical reasoning.", color: "#f43f5e" }
                         ].map((item, i) => (
                             <div key={i} style={{ position: 'relative', marginBottom: '32px' }}>
                                 {/* Glowing Dot */}
