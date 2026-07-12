@@ -244,13 +244,6 @@ const Login = () => {
                 }
             `}</style>
             <style>{`
-                @keyframes blueprint-red-glow {
-                    0%   { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
-                    35%  { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
-                    50%  { box-shadow: 0 0 20px rgba(255,0,0,0.6), 0 0 40px rgba(255,0,0,0.4), 0 0 60px rgba(255,0,0,0.2); }
-                    65%  { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
-                    100% { box-shadow: 0 0 0px rgba(255,0,0,0), 0 0 0px rgba(255,0,0,0); }
-                }
                 .blueprint-btn {
                     display: inline-flex; align-items: center; gap: 8px;
                     padding: 12px 26px;
@@ -262,13 +255,12 @@ const Login = () => {
                     letter-spacing: 0.5px;
                     text-decoration: none;
                     cursor: pointer;
-                    animation: blueprint-red-glow 5s ease-in-out infinite;
-                    transition: transform 0.2s, background 0.3s;
+                    transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
                 }
                 .blueprint-btn:hover {
                     transform: translateY(-2px);
                     background: #0a0a0a;
-                    box-shadow: 0 0 30px rgba(255,0,0,0.6), 0 0 50px rgba(255,0,0,0.4), 0 0 80px rgba(255,0,0,0.25) !important;
+                    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
                 }
             `}</style>
             <div style={{ background: 'rgba(245, 158, 11, 0.1)', borderBottom: '1px solid rgba(245, 158, 11, 0.2)', padding: '8px 16px', textAlign: 'center', fontSize: '10px', fontWeight: 500, color: '#FCD34D', letterSpacing: '0.02em', position: 'relative', zIndex: 100, display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center', gap: '4px', lineHeight: '1.5' }}>
@@ -370,13 +362,7 @@ const Login = () => {
                 )}
             </nav>
 
-            {/* ── SUPER DYNAMIC AMBIENT GLOW (UNIQUE BRAND AESTHETIC) ── */}
-            {/* Deep Rich Purple Dominant Core */}
-            <div style={{ position: 'fixed', top: '-150px', left: '30%', width: '700px', height: '700px', background: 'radial-gradient(circle, rgba(88, 28, 135, 0.35) 0%, rgba(107, 33, 168, 0.15) 40%, transparent 70%)', filter: 'blur(100px)', pointerEvents: 'none', zIndex: 0 }} />
-            {/* Electric Cobalt Blue Accent */}
-            <div style={{ position: 'fixed', top: '-80px', left: '55%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 65%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
-            {/* Magenta/Fuchsia Warm Edge */}
-            <div style={{ position: 'fixed', top: '150px', left: '48%', width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(219, 39, 119, 0.15) 0%, transparent 60%)', filter: 'blur(90px)', pointerEvents: 'none', zIndex: 0 }} />
+
 
             {/* ══════════════════ HERO SECTION ══════════════════ */}
             <section style={{
@@ -420,8 +406,7 @@ const Login = () => {
                 <button onClick={handleGoogleLogin} style={{
                     display: 'flex', alignItems: 'center', gap: '10px', height: '48px', padding: '0 28px',
                     background: '#fff', color: '#000', fontSize: '14px', fontWeight: 600,
-                    borderRadius: '10px', border: 'none', cursor: 'pointer', transition: 'transform 0.15s, box-shadow 0.3s',
-                    boxShadow: '0 0 40px rgba(255,255,255,0.08)'
+                    borderRadius: '10px', border: 'none', cursor: 'pointer', transition: 'transform 0.15s, box-shadow 0.3s'
                 }}
                 onMouseDown={e => e.target.style.transform = 'scale(0.97)'}
                 onMouseUp={e => e.target.style.transform = 'scale(1)'}
