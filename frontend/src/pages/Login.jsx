@@ -487,7 +487,7 @@ const Login = () => {
                                 <h3 style={{ fontSize: 'clamp(20px, 3vw, 26px)', fontWeight: 700, color: '#fff', marginBottom: '20px', letterSpacing: '-0.02em' }}>Production-Ready Multi-Agent AI</h3>
                                 
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#D1D5DB', fontSize: '15px', lineHeight: 2, fontWeight: 500 }}>
-                                    {['Autonomous routing', 'Tool orchestration', 'Memory & Statefulness', 'Human-in-the-loop', 'Enterprise deployment'].map((feat, idx) => (
+                                    {['Autonomous routing', 'Tool orchestration', 'Memory & Statefulness', 'Human-in-the-loop', 'Security', 'Data Privacy', 'Enterprise deployment'].map((feat, idx) => (
                                         <li key={idx} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
                                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
                                             {feat}
