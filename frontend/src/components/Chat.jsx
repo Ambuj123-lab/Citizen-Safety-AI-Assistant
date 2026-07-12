@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { chatAPI, uploadAPI, statsAPI } from '../api';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { Copy, Check } from 'lucide-react';
 
 const Chat = () => {
     const { user } = useAuth();
@@ -15,6 +16,28 @@ const Chat = () => {
     const [uploading, setUploading] = useState(false);
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
+    const [copiedIndex, setCopiedIndex] = useState(null);
+
+    const handleCopy = (msg, index) => {
+        const userQuery = index > 0 ? messages[index - 1].content : '';
+        const aiResponse = msg.content;
+        const sources = msg.sources && msg.sources.length > 0 
+            ? "\n\nSources / Citations:\n" + msg.sources.map((src, idx) => `[Source ${src.source_id}] File: ${src.file}, Page: ${src.page}\nPreview: "${src.preview}"`).join('\n\n')
+            : '';
+            
+        const textToCopy = `User Query:\n${userQuery}\n\nAI Response:\n${aiResponse}${sources}`;
+        
+        navigator.clipboard.writeText(textToCopy)
+            .then(() => {
+                setCopiedIndex(index);
+                showToast('Copied to clipboard with citations!', 'success');
+                setTimeout(() => setCopiedIndex(null), 2000);
+            })
+            .catch(err => {
+                console.error('Failed to copy text: ', err);
+                showToast('Failed to copy message', 'error');
+            });
+    };
 
     // Toast notification system
     const showToast = (message, type = 'info') => {
@@ -263,10 +286,23 @@ const Chat = () => {
                     {/* Chat Messages */}
                     {messages.map((msg, i) => (
                         <div key={i} className={`mb-6 animate-fade-in ${msg.role === 'user' ? 'flex justify-end' : ''}`}>
-                            <div className={`max-w-[85%] ${msg.role === 'user'
+                            <div className={`max-w-[85%] relative group ${msg.role === 'user'
                                 ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-900 rounded-2xl rounded-br-md px-5 py-3'
-                                : 'bg-[#111] border border-[#222] rounded-2xl rounded-bl-md px-5 py-4'}`}
+                                : 'bg-[#111] border border-[#222] rounded-2xl rounded-bl-md px-5 py-4 pr-12'}`}
                             >
+                                {msg.role === 'assistant' && (
+                                    <button
+                                        onClick={() => handleCopy(msg, i)}
+                                        className="absolute top-3 right-3 p-1.5 rounded-lg bg-slate-800/50 hover:bg-slate-700/80 border border-slate-700/50 text-slate-400 hover:text-slate-200 opacity-0 group-hover:opacity-100 transition-all duration-200 cursor-pointer"
+                                        title="Copy message with citations"
+                                    >
+                                        {copiedIndex === i ? (
+                                            <Check size={14} className="text-emerald-400" />
+                                        ) : (
+                                            <Copy size={14} />
+                                        )}
+                                    </button>
+                                )}
                                 <div className={`${msg.role === 'assistant' ? 'text-slate-200 prose prose-invert prose-sm max-w-none' : 'font-medium'}`}>
                                     {msg.role === 'assistant' ? (
                                         <ReactMarkdown remarkPlugins={[remarkGfm]}>{msg.content}</ReactMarkdown>
