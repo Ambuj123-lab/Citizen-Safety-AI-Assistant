@@ -8,11 +8,14 @@ export default async function handler(req, res) {
 
     try {
         // Try multiple variations of env variable name to be safe
-        // Try multiple variations of env variable name, fallback to public read-only portfolio key if missing
+        // Try multiple variations of env variable name to be safe
         const apiKey = process.env.UPTIMEROBOT_API_KEY || 
                        process.env.UPTIME_ROBOT_API_KEY || 
-                       process.env.VITE_UPTIMEROBOT_API_KEY || 
-                       'ur3293690-5a09e92504e29189fadf3be2'; // Public read-only portfolio fallback key
+                       process.env.VITE_UPTIMEROBOT_API_KEY;
+
+        if (!apiKey) {
+            return res.status(500).json({ error: 'UptimeRobot API Key missing in environment' });
+        }
 
         const response = await fetch('https://api.uptimerobot.com/v2/getMonitors', {
             method: 'POST',
