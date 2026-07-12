@@ -718,6 +718,10 @@ async def search_and_respond_stream(
     user_id: str = "anonymous"
 ):
     import json
+    from app.db.database import save_message
+    
+    # Save the user's incoming message
+    save_message(user_id, "user", question)
     
     if is_abusive(question):
         yield f"data: {json.dumps({'type': 'error', 'message': 'Professional queries only.'})}\n\n"
@@ -774,6 +778,9 @@ async def search_and_respond_stream(
         async for chunk in generate_response_stream(safe_question, context, history_text, user_name, user_id):
             full_response += chunk
             yield f"data: {json.dumps({'type': 'token', 'content': chunk})}\n\n"
+            
+        # Save the assistant's response to DB after stream completes
+        save_message(user_id, "assistant", full_response, sources, pii_found, pii_entities)
             
         yield f"data: {json.dumps({'type': 'node', 'id': 'llm', 'label': 'Generating Answer', 'icon': '🧠', 'status': 'done'})}\n\n"
         yield f"data: {json.dumps({'type': 'done'})}\n\n"
