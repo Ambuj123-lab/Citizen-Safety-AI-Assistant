@@ -458,7 +458,7 @@ const Login = () => {
                             { step: "Legal Specialization", desc: "Engineered highly accurate, citation-backed responses specifically structured for complex Indian Law.", color: "#a855f7" },
                             { step: "Stateful Graphs", desc: "Unlocked complex multi-step reasoning by migrating from rigid linear chains to dynamic stateful graphs.", color: "#a855f7" },
                             { step: "Agentic RAG", desc: "Enabled self-correcting AI that autonomously routes, grades, and refines its own generated answers.", color: "#d946ef" },
-                            { step: "Financial Parsing", desc: "Scaled data processing capabilities to reliably extract actionable insights from massive SEC 10-K and XBRL data.", color: "#d946ef" },
+                            { step: "Financial Parsing", desc: "Engineered specialized parsing pipelines to reliably extract and interpret structured data from complex financial reports.", color: "#d946ef" },
                             { step: "Edge Integration", desc: "Expanded user accessibility by deploying the AI brain directly to real-time conversational platforms like WhatsApp.", color: "#ec4899" },
                             { step: "Adaptive ReAct", desc: "Achieved true autonomy with an orchestrator capable of dynamic tool-use and continuous logical reasoning.", color: "#f43f5e" }
                         ].map((item, i) => (
