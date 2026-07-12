@@ -226,15 +226,15 @@ body {
 
 /* --- Prose Overrides for Chat Markdown --- */
 .prose-chat {
-  --tw-prose-headings: var(--accent-cyan-light);
-  --tw-prose-bold: var(--text-primary);
+  --tw-prose-headings: #fff;
+  --tw-prose-bold: #fff;
   --tw-prose-body: var(--text-secondary);
 }
 
 .prose-chat :where(h1, h2, h3, h4):not(:where([class~="not-prose"] *)) {
   font-weight: 800;
   letter-spacing: -0.01em;
-  color: var(--accent-amber);
+  color: #fff;
 }
 
 .prose-chat :where(strong):not(:where([class~="not-prose"] *)) {
@@ -243,8 +243,8 @@ body {
 }
 
 .prose-chat :where(blockquote):not(:where([class~="not-prose"] *)) {
-  border-left-color: var(--accent-amber);
-  background: rgba(245, 158, 11, 0.05);
+  border-left-color: var(--accent-red);
+  background: rgba(239, 68, 68, 0.05);
   padding: 0.75rem 1rem;
   border-radius: 0 0.5rem 0.5rem 0;
   font-style: italic;
@@ -253,11 +253,11 @@ body {
 }
 
 .prose-chat :where(code):not(:where([class~="not-prose"] *)) {
-  background: rgba(245, 158, 11, 0.1);
+  background: rgba(239, 68, 68, 0.15);
   padding: 0.15em 0.4em;
   border-radius: 0.25rem;
   font-size: 0.85em;
-  color: var(--accent-amber);
+  color: #fca5a5;
 }
 
 .prose-chat :where(table):not(:where([class~="not-prose"] *)) {
@@ -266,20 +266,20 @@ body {
   border-collapse: separate;
   border-spacing: 0;
   margin: 1rem 0;
-  border: 1px solid rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.2);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .prose-chat :where(th):not(:where([class~="not-prose"] *)) {
-  background: rgba(245, 158, 11, 0.1);
-  color: var(--accent-amber);
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.75rem;
   padding: 12px 14px;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+  border-bottom: 1px solid rgba(239, 68, 68, 0.2);
   text-align: left;
 }
 
