@@ -105,7 +105,7 @@ const Login = () => {
     const [showBackToTop, setShowBackToTop] = useState(false);
     const [uptimeData, setUptimeData] = useState(null);
     const [legalModal, setLegalModal] = useState(null);
-    const UPTIME_API_URL = '/api/uptime';
+    const UPTIME_API_URL = `${import.meta.env.VITE_API_URL || 'http://localhost:8000'}/api/uptime`;
 
     useEffect(() => {
         const fetchUptime = async () => {
