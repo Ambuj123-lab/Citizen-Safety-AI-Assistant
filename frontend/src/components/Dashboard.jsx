@@ -15,6 +15,7 @@ const Dashboard = () => {
     const [loading, setLoading] = useState(false);
     const [lastResponse, setLastResponse] = useState(null);
     const [copiedIndex, setCopiedIndex] = useState(null);
+    const [activeNode, setActiveNode] = useState(null);
 
     const handleCopy = (msg, index) => {
         const userQuery = index > 0 ? messages[index - 1].content : '';
@@ -153,6 +154,7 @@ const Dashboard = () => {
             while (true) {
                 const { value, done } = await reader.read();
                 if (done) {
+                    setActiveNode(null);
                     setMessages(prev => {
                         const newMsgs = [...prev];
                         if (newMsgs.length > 0) {
@@ -203,6 +205,8 @@ const Dashboard = () => {
                                     newMsgs[newMsgs.length - 1].content += data.content;
                                     return newMsgs;
                                 });
+                            } else if (data.type === 'node') {
+                                setActiveNode({ id: data.id, label: data.label, icon: data.icon, status: data.status });
                             }
                         } catch (e) {}
                     }
@@ -228,6 +232,7 @@ const Dashboard = () => {
             showToast('Service temporarily unavailable', 'error');
         } finally {
             setLoading(false);
+            setActiveNode(null);
         }
     };
 
@@ -322,89 +327,89 @@ const Dashboard = () => {
     ═══════════════════════════════════════════════════════════════ */
 
     const S = {
-        root: { display: 'flex', height: '100vh', background: '#0D1117', fontFamily: "'Inter', system-ui, sans-serif", color: '#E5E7EB', overflow: 'hidden' },
+        root: { display: 'flex', height: '100vh', background: '#07090F', fontFamily: "'Inter', system-ui, sans-serif", color: '#E5E7EB', overflow: 'hidden' },
 
         // Sidebar
-        sidebar: { width: '240px', background: '#0D1117', borderRight: '1px solid #1B1F2A', flexDirection: 'column', flexShrink: 0 },
-        sidebarHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid #1B1F2A' },
+        sidebar: { width: '240px', background: 'rgba(13, 17, 23, 0.7)', borderRight: '1px solid rgba(27, 31, 42, 0.5)', flexDirection: 'column', flexShrink: 0, backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)' },
+        sidebarHeader: { padding: '16px 20px', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid rgba(27, 31, 42, 0.5)' },
         sidebarLogo: { width: '24px', height: '24px', objectFit: 'contain' },
         sidebarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6', letterSpacing: '-0.01em' },
 
-        userSection: { padding: '12px 16px', borderBottom: '1px solid #1B1F2A' },
+        userSection: { padding: '12px 16px', borderBottom: '1px solid rgba(27, 31, 42, 0.5)' },
         userRow: { display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 8px', borderRadius: '8px' },
         userAvatar: { width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover' },
-        userAvatarFallback: { width: '32px', height: '32px', borderRadius: '50%', background: '#1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '13px', fontWeight: 600 },
+        userAvatarFallback: { width: '32px', height: '32px', borderRadius: '50%', background: 'rgba(27, 31, 42, 0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9CA3AF', fontSize: '13px', fontWeight: 600 },
         userName: { fontSize: '13px', color: '#E5E7EB', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', flex: 1 },
         userEmail: { fontSize: '11px', color: '#6B7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' },
 
         navSection: { flex: 1, overflowY: 'auto', padding: '8px 12px', scrollbarWidth: 'none' },
         navBtn: { width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px', border: 'none', background: 'transparent', color: '#9CA3AF', fontSize: '13px', cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left' },
         navIcon: { width: '16px', height: '16px', flexShrink: 0 },
-        navDivider: { height: '1px', background: '#1B1F2A', margin: '8px 4px' },
+        navDivider: { height: '1px', background: 'rgba(27, 31, 42, 0.5)', margin: '8px 4px' },
 
         kbItem: { display: 'flex', alignItems: 'center', gap: '8px', padding: '6px 8px', marginLeft: '16px', borderRadius: '6px', fontSize: '12px', color: '#6B7280', cursor: 'default', transition: 'background 0.15s' },
         kbIcon: { width: '12px', height: '12px', color: '#4B5563', flexShrink: 0 },
 
         indexBtn: { width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', padding: '7px 12px', borderRadius: '8px', border: 'none', fontSize: '12px', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s', background: '#10B981', color: '#fff' },
 
-        logoutSection: { padding: '12px 12px', borderTop: '1px solid #1B1F2A' },
+        logoutSection: { padding: '12px 12px', borderTop: '1px solid rgba(27, 31, 42, 0.5)' },
         logoutBtn: { width: '100%', display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', borderRadius: '8px', border: 'none', background: 'transparent', color: '#6B7280', fontSize: '13px', cursor: 'pointer', transition: 'all 0.15s', textAlign: 'left' },
 
         // Main
         main: { flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0, background: '#07090F' },
 
-        topBar: { position: 'sticky', top: 0, zIndex: 50, height: '52px', borderBottom: '1px solid #1B1F2A', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: '#0D1117' },
+        topBar: { position: 'sticky', top: 0, zIndex: 50, height: '52px', borderBottom: '1px solid rgba(27, 31, 42, 0.5)', padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0, background: 'rgba(13, 17, 23, 0.8)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' },
         topBarTitle: { fontSize: '14px', fontWeight: 600, color: '#F3F4F6' },
         statusBadge: { display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '4px 12px', borderRadius: '100px', fontSize: '11px', fontWeight: 600, background: 'rgba(16,185,129,0.1)', color: '#10B981', border: '1px solid rgba(16,185,129,0.2)', textDecoration: 'none', cursor: 'pointer', transition: 'background 0.2s' },
         statusDot: { width: '6px', height: '6px', borderRadius: '50%', background: '#10B981' },
         topBarMeta: { display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#4B5563' },
         builtByBadge: { background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.2)', padding: '4px 10px', borderRadius: '4px', color: '#F59E0B', fontFamily: 'monospace', letterSpacing: '0.02em', fontSize: '10px' },
 
-        chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: '#1B1F2A transparent', display: 'flex', flexDirection: 'column' },
+        chatArea: { flex: 1, overflowY: 'auto', scrollbarWidth: 'thin', scrollbarColor: 'rgba(27, 31, 42, 0.5) transparent', display: 'flex', flexDirection: 'column' },
         chatInner: { width: '100%', padding: '24px 40px', flex: 1 },
 
         // Welcome
         welcomeWrap: { padding: '60px 0', textAlign: 'center' },
-        welcomeIcon: { width: '48px', height: '48px', borderRadius: '14px', background: '#111827', border: '1px solid #1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' },
-        welcomeTitle: { fontSize: '22px', fontWeight: 600, color: '#F3F4F6', marginBottom: '8px' },
-        welcomeDesc: { fontSize: '14px', color: '#6B7280', maxWidth: '400px', margin: '0 auto 40px' },
-        quickGrid: { gap: '8px', maxWidth: '480px', margin: '0 auto' },
-        quickBtn: { padding: '14px', borderRadius: '12px', background: '#111827', border: '1px solid #1B1F2A', cursor: 'pointer', textAlign: 'left', transition: 'border-color 0.2s' },
+        welcomeIcon: { width: '48px', height: '48px', borderRadius: '14px', background: 'rgba(17, 24, 39, 0.6)', border: '1px solid rgba(27, 31, 42, 0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px', fontSize: '24px' },
+        welcomeTitle: { fontSize: '24px', fontWeight: 700, background: 'linear-gradient(135deg, #60A5FA 0%, #34D399 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', marginBottom: '8px', display: 'inline-block' },
+        welcomeDesc: { fontSize: '14px', color: '#9CA3AF', maxWidth: '400px', margin: '0 auto 40px', lineHeight: '1.5' },
+        quickGrid: { gap: '10px', maxWidth: '520px', margin: '0 auto' },
+        quickBtn: { padding: '14px', borderRadius: '12px', background: 'rgba(17, 24, 39, 0.45)', border: '1px solid rgba(27, 31, 42, 0.6)', cursor: 'pointer', textAlign: 'left', transition: 'all 0.2s', backdropFilter: 'blur(4px)', WebkitBackdropFilter: 'blur(4px)' },
         quickIcon: { fontSize: '16px', display: 'block', marginBottom: '8px' },
         quickText: { fontSize: '12px', color: '#9CA3AF', lineHeight: '1.4' },
 
         // Messages
         msgWrap: { display: 'flex', gap: '16px', marginBottom: '32px', wFull: '100%' },
-        msgAvatar: { width: '30px', height: '30px', borderRadius: '8px', objectFit: 'contain', flexShrink: 0, marginTop: '2px', padding: '2px', border: '1px solid #1B1F2A', background: '#0D1117' },
+        msgAvatar: { width: '30px', height: '30px', borderRadius: '8px', objectFit: 'contain', flexShrink: 0, marginTop: '2px', padding: '2px', border: '1px solid rgba(27, 31, 42, 0.6)', background: '#0D1117' },
         userMsgAvatar: { width: '30px', height: '30px', borderRadius: '50%', objectFit: 'cover', flexShrink: 0, marginTop: '2px' },
         userMsgAvatarFallback: { width: '30px', height: '30px', borderRadius: '50%', background: '#F59E0B', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontSize: '13px', fontWeight: 600, flexShrink: 0, marginTop: '2px' },
 
         botBubble: { width: '100%', fontSize: '14.5px', lineHeight: '1.7', color: '#D1D5DB' },
         userBubble: { padding: '14px 20px', borderRadius: '24px', background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.2)', color: '#fff', fontSize: '14.5px', lineHeight: '1.5', marginLeft: 'auto' },
 
-        sourceDetails: { marginTop: '16px', background: '#0D1117', border: '1px solid #1B1F2A', borderRadius: '8px', overflow: 'hidden' },
+        sourceDetails: { marginTop: '16px', background: 'rgba(13, 17, 23, 0.8)', border: '1px solid rgba(27, 31, 42, 0.6)', borderRadius: '8px', overflow: 'hidden', backdropFilter: 'blur(6px)', WebkitBackdropFilter: 'blur(6px)' },
         sourceSummary: { padding: '10px 16px', fontSize: '12px', fontWeight: 600, color: '#9CA3AF', cursor: 'pointer', userSelect: 'none', display: 'flex', alignItems: 'center', gap: '8px' },
-        sourceContainer: { padding: '12px 16px', borderTop: '1px solid #1B1F2A', background: '#07090F', display: 'flex', flexDirection: 'column', gap: '10px' },
-        sourceTag: { padding: '8px 12px', borderRadius: '6px', fontSize: '11px', color: '#D1D5DB', background: '#111827', border: '1px solid #1B1F2A', lineHeight: '1.5' },
+        sourceContainer: { padding: '12px 16px', borderTop: '1px solid rgba(27, 31, 42, 0.5)', background: 'rgba(7, 9, 15, 0.9)', display: 'flex', flexDirection: 'column', gap: '10px' },
+        sourceTag: { padding: '8px 12px', borderRadius: '6px', fontSize: '11px', color: '#D1D5DB', background: 'rgba(17, 24, 39, 0.5)', border: '1px solid rgba(27, 31, 42, 0.5)', lineHeight: '1.5' },
 
         // Input
-        inputWrap: { borderTop: '1px solid #1B1F2A', padding: '16px 24px', background: '#0D1117' },
+        inputWrap: { borderTop: '1px solid rgba(27, 31, 42, 0.5)', padding: '16px 24px', background: 'rgba(13, 17, 23, 0.8)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' },
         inputInner: { width: '100%', padding: '0 16px' },
-        inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '14px', padding: '10px 14px 10px 20px', transition: 'border-color 0.2s', boxShadow: '0 4px 20px rgba(0,0,0,0.2)' },
+        inputBox: { display: 'flex', alignItems: 'center', gap: '8px', background: 'rgba(17, 24, 39, 0.75)', border: '1px solid rgba(27, 31, 42, 0.8)', borderRadius: '14px', padding: '10px 14px 10px 20px', transition: 'all 0.2s', boxShadow: '0 4px 24px rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' },
         inputField: { flex: 1, background: 'transparent', border: 'none', outline: 'none', color: '#E5E7EB', fontSize: '14px', padding: '6px 0' },
         sendBtn: { width: '36px', height: '36px', borderRadius: '10px', border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', flexShrink: 0, transition: 'all 0.15s' },
         disclaimer: { textAlign: 'center', fontSize: '11.5px', color: '#6B7280', marginTop: '12px', userSelect: 'none', fontWeight: 500 },
 
         // Feedback
-        feedbackBar: { borderTop: '1px solid #1B1F2A', padding: '10px 24px', background: '#0D1117' },
+        feedbackBar: { borderTop: '1px solid rgba(27, 31, 42, 0.5)', padding: '10px 24px', background: 'rgba(13, 17, 23, 0.8)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' },
         feedbackInner: { width: '100%', padding: '0 16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
 
         // Audit Modal
-        modalOverlay: { position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' },
-        modalCard: { width: '100%', maxWidth: '440px', background: '#111827', border: '1px solid #1B1F2A', borderRadius: '16px', overflow: 'hidden' },
-        modalHeader: { padding: '16px 20px', borderBottom: '1px solid #1B1F2A', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
+        modalOverlay: { position: 'fixed', inset: 0, zIndex: 100, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '24px', background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)' },
+        modalCard: { width: '100%', maxWidth: '440px', background: '#111827', border: '1px solid rgba(27, 31, 42, 0.6)', borderRadius: '16px', overflow: 'hidden' },
+        modalHeader: { padding: '16px 20px', borderBottom: '1px solid rgba(27, 31, 42, 0.5)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' },
         modalBody: { padding: '16px 20px', maxHeight: '50vh', overflowY: 'auto' },
-        modalFooter: { padding: '12px 20px', borderTop: '1px solid #1B1F2A' },
+        modalFooter: { padding: '12px 20px', borderTop: '1px solid rgba(27, 31, 42, 0.5)' },
     };
 
     return (
@@ -578,8 +583,8 @@ const Dashboard = () => {
                                 <div style={S.quickGrid} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
                                     {quickActions.map((qa, i) => (
                                         <button key={i} onClick={() => setInput(qa.text)} style={S.quickBtn}
-                                            onMouseOver={e => e.currentTarget.style.borderColor = '#2D3348'}
-                                            onMouseOut={e => e.currentTarget.style.borderColor = '#1B1F2A'}
+                                            onMouseOver={e => { e.currentTarget.style.borderColor = '#3B82F6'; e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.15)'; }}
+                                            onMouseOut={e => { e.currentTarget.style.borderColor = 'rgba(27, 31, 42, 0.6)'; e.currentTarget.style.transform = 'none'; e.currentTarget.style.boxShadow = 'none'; }}
                                         >
                                             <span style={S.quickIcon}>{qa.icon}</span>
                                             <p style={S.quickText}>{qa.text}</p>
@@ -670,12 +675,85 @@ const Dashboard = () => {
                             {loading && (
                                 <div style={S.msgWrap}>
                                     <img src={logo} alt="AI" style={{ ...S.msgAvatar, opacity: 0.5 }} />
-                                    <div style={{ ...S.botBubble, display: 'flex', alignItems: 'center', gap: '6px', padding: '14px 20px' }}>
-                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite' }} />
-                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite 0.15s' }} />
-                                        <div style={{ width: '6px', height: '6px', background: '#4B5563', borderRadius: '50%', animation: 'bounce 1s infinite 0.3s' }} />
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', minWidth: 0, flex: 1 }}>
+                                        {/* Dynamic RAG Pipeline */}
+                                        {activeNode && (
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '12px',
+                                                padding: '12px 18px',
+                                                borderRadius: '12px',
+                                                background: 'rgba(17, 24, 39, 0.6)',
+                                                border: '1px solid rgba(27, 31, 42, 0.8)',
+                                                backdropFilter: 'blur(8px)',
+                                                width: 'fit-content',
+                                                boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+                                                marginBottom: '4px',
+                                                animation: 'fadeIn 0.3s ease-out'
+                                            }}>
+                                                <div style={{ fontSize: '11px', fontWeight: 600, color: '#6B7280', marginRight: '6px', letterSpacing: '0.05em' }}>
+                                                    AGENT STATE:
+                                                </div>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        width: '24px',
+                                                        height: '24px',
+                                                        borderRadius: '50%',
+                                                        background: activeNode.id === 'mask' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(75, 85, 99, 0.2)',
+                                                        border: activeNode.id === 'mask' ? '1px solid #3B82F6' : '1px solid rgba(75, 85, 99, 0.4)',
+                                                        animation: activeNode.id === 'mask' ? 'pulseBlue 1.5s infinite ease-in-out' : 'none'
+                                                    }}>{activeNode.id === 'mask' ? '🛡️' : '🔒'}</span>
+                                                    <span style={{ fontSize: '11.5px', color: activeNode.id === 'mask' ? '#60A5FA' : '#4B5563', fontWeight: activeNode.id === 'mask' ? 600 : 500 }}>PII Masking</span>
+                                                </div>
+                                                <span style={{ color: 'rgba(75, 85, 99, 0.4)', fontSize: '10px' }}>➔</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        width: '24px',
+                                                        height: '24px',
+                                                        borderRadius: '50%',
+                                                        background: activeNode.id === 'pinecone' ? 'rgba(245, 158, 11, 0.15)' : 'rgba(75, 85, 99, 0.2)',
+                                                        border: activeNode.id === 'pinecone' ? '1px solid #F59E0B' : '1px solid rgba(75, 85, 99, 0.4)',
+                                                        animation: activeNode.id === 'pinecone' ? 'pulseAmber 1.5s infinite ease-in-out' : 'none'
+                                                    }}>{activeNode.id === 'pinecone' ? '🔍' : '🗂️'}</span>
+                                                    <span style={{ fontSize: '11.5px', color: activeNode.id === 'pinecone' ? '#FBBF24' : '#4B5563', fontWeight: activeNode.id === 'pinecone' ? 600 : 500 }}>Vector Search</span>
+                                                </div>
+                                                <span style={{ color: 'rgba(75, 85, 99, 0.4)', fontSize: '10px' }}>➔</span>
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                    <span style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        width: '24px',
+                                                        height: '24px',
+                                                        borderRadius: '50%',
+                                                        background: activeNode.id === 'llm' ? 'rgba(16, 185, 129, 0.15)' : 'rgba(75, 85, 99, 0.2)',
+                                                        border: activeNode.id === 'llm' ? '1px solid #10B981' : '1px solid rgba(75, 85, 99, 0.4)',
+                                                        animation: activeNode.id === 'llm' ? 'pulseGreen 1.5s infinite ease-in-out' : 'none'
+                                                    }}>{activeNode.id === 'llm' ? '🧠' : '🤖'}</span>
+                                                    <span style={{ fontSize: '11.5px', color: activeNode.id === 'llm' ? '#34D399' : '#4B5563', fontWeight: activeNode.id === 'llm' ? 600 : 500 }}>LLM Answer</span>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div style={{ ...S.botBubble, display: 'flex', alignItems: 'center', gap: '6px', padding: '12px 18px', background: 'rgba(22, 27, 38, 0.3)', borderRadius: '12px', border: '1px solid rgba(27, 31, 42, 0.4)', width: 'fit-content' }}>
+                                            <div style={{ width: '6px', height: '6px', background: '#3B82F6', borderRadius: '50%', animation: 'bounce 1s infinite' }} />
+                                            <div style={{ width: '6px', height: '6px', background: '#3B82F6', borderRadius: '50%', animation: 'bounce 1s infinite 0.15s' }} />
+                                            <div style={{ width: '6px', height: '6px', background: '#3B82F6', borderRadius: '50%', animation: 'bounce 1s infinite 0.3s' }} />
+                                        </div>
                                     </div>
-                                    <style>{`@keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }`}</style>
+                                    <style>{`
+                                        @keyframes bounce { 0%, 80%, 100% { transform: translateY(0); } 40% { transform: translateY(-6px); } }
+                                        @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+                                        @keyframes pulseBlue { 0%, 100% { transform: scale(1); box-shadow: 0 0 4px rgba(59, 130, 246, 0.3); } 50% { transform: scale(1.08); box-shadow: 0 0 12px rgba(59, 130, 246, 0.7); } }
+                                        @keyframes pulseAmber { 0%, 100% { transform: scale(1); box-shadow: 0 0 4px rgba(245, 158, 11, 0.3); } 50% { transform: scale(1.08); box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); } }
+                                        @keyframes pulseGreen { 0%, 100% { transform: scale(1); box-shadow: 0 0 4px rgba(16, 185, 129, 0.3); } 50% { transform: scale(1.08); box-shadow: 0 0 12px rgba(16, 185, 129, 0.7); } }
+                                    `}</style>
                                 </div>
                             )}
 
