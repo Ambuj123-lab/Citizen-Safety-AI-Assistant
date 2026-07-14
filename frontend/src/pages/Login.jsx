@@ -1148,6 +1148,17 @@ const Login = () => {
                         </div>
                     </div>
                 </div>
+
+                {/* QR Code Strip */}
+                <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid rgba(255,255,255,0.06)', display: 'flex', justifyContent: 'center' }}>
+                    <a href="https://ambuj-ai-portfolio.vercel.app" target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '16px', textDecoration: 'none', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '14px 24px', transition: 'border-color 0.3s, transform 0.2s', maxWidth: '380px', width: '100%' }} onMouseOver={(e) => { e.currentTarget.style.borderColor='rgba(245,158,11,0.4)'; e.currentTarget.style.transform='translateY(-2px)'; }} onMouseOut={(e) => { e.currentTarget.style.borderColor='rgba(255,255,255,0.08)'; e.currentTarget.style.transform='translateY(0)'; }}>
+                        <img src="/qr-code-micro-portfolio.png" alt="Portfolio QR Code" style={{ width: '64px', height: '64px', minWidth: '64px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.15)', background: '#fff', padding: '2px' }} />
+                        <div style={{ fontSize: '0.8rem', color: '#9CA3AF', lineHeight: '1.6' }}>
+                            Scan to explore my<br/>
+                            <strong style={{ color: '#F59E0B', fontSize: '0.85rem' }}>AI Portfolio & Resume</strong>
+                        </div>
+                    </a>
+                </div>
             </footer>
 
             {/* ══════════════════ LEGAL MODALS ══════════════════ */}
