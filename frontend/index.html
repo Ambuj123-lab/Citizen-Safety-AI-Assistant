@@ -17,6 +17,39 @@
     
     <!-- Google Search Console Verification -->
     <meta name="google-site-verification" content="fxOa07w-yAhEUj0CTKjbGjZZNmffFNuuOC8Do7T9NGA" />
+
+    <!-- JSON-LD SEO Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://ambuj-ai-portfolio.vercel.app/#person",
+          "name": "Ambuj Kumar Tripathi",
+          "url": "https://ambuj-ai-portfolio.vercel.app/",
+          "jobTitle": "AI Architect & Full Stack Engineer",
+          "sameAs": [
+            "https://www.linkedin.com/in/ambuj-tripathi-042b4a118/",
+            "https://github.com/Ambuj123-lab",
+            "https://x.com/Ambuj_KTripathi"
+          ]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://citizen-safety-ai-assistant.onrender.com/#software",
+          "name": "Citizen Safety Awareness AI",
+          "url": "https://citizen-safety-ai-assistant.onrender.com/",
+          "description": "AI-driven public safety platform using Multi-modal RAG to answer queries on citizen rights and safety protocols.",
+          "applicationCategory": "EducationalApplication",
+          "operatingSystem": "Web",
+          "author": {
+            "@id": "https://ambuj-ai-portfolio.vercel.app/#person"
+          }
+        }
+      ]
+    }
+    </script>
   </head>
   <body>
     <div id="root"></div>
