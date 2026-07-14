@@ -929,60 +929,7 @@ const Login = () => {
                   </div>
                 </div>
 
-                {/* ── Training Pipeline Video ── */}
-                <div style={{ marginTop: '64px' }}>
-                    <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                        <span style={{
-                            display: 'inline-flex', alignItems: 'center', gap: '6px',
-                            padding: '6px 16px', fontSize: '11px', fontWeight: 600,
-                            textTransform: 'uppercase', letterSpacing: '0.12em', color: '#c9a84c',
-                            border: '1px solid rgba(201, 168, 76, 0.25)', borderRadius: '100px', marginBottom: '20px',
-                            background: 'rgba(201, 168, 76, 0.05)'
-                        }}>
-                            <span style={{ fontSize: '12px' }}>▶</span> Training Process
-                        </span>
-                        <h3 style={{ fontSize: '28px', fontWeight: 600, letterSpacing: '-0.02em', color: '#fff', marginBottom: '12px' }}>
-                            Training Pipeline.
-                        </h3>
-                        <p style={{ fontSize: '14px', color: '#6B7280', lineHeight: 1.6, maxWidth: '480px', margin: '0 auto' }}>
-                            Watch the full qLoRA fine-tuning cycle — from training steps and loss convergence to GGUF quantization export.
-                        </p>
-                    </div>
 
-                    <div style={{
-                        position: 'relative',
-                        borderRadius: '16px',
-                        border: '1px solid rgba(201, 168, 76, 0.15)',
-                        background: 'linear-gradient(180deg, rgba(22, 27, 38, 0.5) 0%, rgba(10, 13, 18, 0.9) 100%)',
-                        padding: '6px',
-                        boxShadow: '0 0 60px rgba(201, 168, 76, 0.06), 0 20px 60px rgba(0,0,0,0.5)',
-                        overflow: 'hidden'
-                    }}>
-                        {/* Top Edge Highlight */}
-                        <div style={{ position: 'absolute', top: 0, left: '15%', right: '15%', height: '1px', background: 'radial-gradient(circle, rgba(201, 168, 76, 0.3) 0%, transparent 100%)', zIndex: 2 }} />
-
-                        <div style={{ position: 'relative', width: '100%', paddingBottom: '56.25%', height: 0, borderRadius: '12px', overflow: 'hidden' }}>
-                          <iframe
-                              src="https://player.cloudinary.com/embed/?cloud_name=dra6lzzb9&public_id=qlora_training_nsjd7g"
-                              style={{
-                                  position: 'absolute', top: 0, left: 0,
-                                  width: '100%', height: '100%',
-                                  borderRadius: '12px',
-                                  display: 'block',
-                                  border: 'none'
-                              }}
-                              allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
-                              allowFullScreen
-                              frameBorder="0"
-                              title="qLoRA Fine-Tuning — Training Steps & GGUF Export"
-                          />
-                        </div>
-                    </div>
-
-                    <p style={{ textAlign: 'center', marginTop: '16px', fontSize: '12px', color: '#4B5563', letterSpacing: '0.5px' }}>
-                        qLoRA 4-bit training · Loss convergence · GGUF Q4_K_M quantization export
-                    </p>
-                </div>
 
                 </div>
             </section>
